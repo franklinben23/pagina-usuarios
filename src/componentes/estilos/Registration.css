@@ -32,6 +32,11 @@
     align-items: center;
 }
 
+.input-divider {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .input-field {
     max-width: 300px;
     width: 97%;
