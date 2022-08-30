@@ -33,6 +33,8 @@
 .input-divider {
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .input-field {
@@ -58,4 +60,13 @@
     border-radius: 10px;
     font-size: 15px;
     text-align: center;
+}
+
+.registration-link {
+    font-size: 0.8em;
+    color: black;
+}
+
+.form-register {
+    padding: 15px 0 8px 0;
 }

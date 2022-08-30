@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+
+// mover hacia el folder principal.
 import './estilos/Registration.css';
 import * as logoImg from './estilos/logo.png';
 
@@ -7,6 +9,7 @@ export const Registration = () => {
    const [mail, setMail] = useState('');
    const [validMail, setValidMail] = useState(false);
 
+   //Cambiar el regex para aceptar dominios de pais ej: ejemplo123@metrogas.com.do
    const EMAIL_REGEX = 	 /^\w+@(metrogas|rilix)+?\.[a-z]{2,3}$/;
 
    useEffect(() => {
