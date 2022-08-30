@@ -3,12 +3,20 @@ import { Link } from "react-router-dom";
 
 // mover hacia el folder principal.
 import './estilos/Registration.css';
+// ^
 import * as logoImg from './estilos/logo.png';
 
 export const Login = () => {
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+
+    const handleSubmit = (e) => {
+        //aquí es que se conectaría con el API
+        e.preventDefault();
+        setPassword('');
+        setEmail('');
+    };
 
     return (
         <div className='registration-back'>
@@ -19,7 +27,7 @@ export const Login = () => {
                 <div className="registration-header">
                     <h1 className="registration-header-h1"> Login</h1>
                 </div>
-                <form className='registration-form'>
+                <form className='registration-form' onSubmit={handleSubmit}>
                     <div className='input-divider'>
                         <label className='nombre-input-label' htmlFor='e-mail'>introduzca su email:</label>
                         <input className='email-input input-field' type='email' value={email} placeholder='ejemplo123@metrogas.com.do' onChange={(e)=> setEmail(e.target.value)} required/>

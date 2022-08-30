@@ -9,8 +9,7 @@ export const Registration = () => {
    const [mail, setMail] = useState('');
    const [validMail, setValidMail] = useState(false);
 
-   //Cambiar el regex para aceptar dominios de pais ej: ejemplo123@metrogas.com.do
-   const EMAIL_REGEX = 	 /^\w+@(metrogas|rilix)+?\.[a-z]{2,3}$/;
+   const EMAIL_REGEX = 	 /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(metrogas|rilix)+(?:\.[a-zA-Z0-9-]+)*$/;
 
    useEffect(() => {
     const okMail = EMAIL_REGEX.test(mail);
