@@ -1,22 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './estilos/Registration.css';
 import * as logoImg from './estilos/logo.png';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 
 export const Registration = () => {
-    const formSchema = Yup.object().shape({
-        password: Yup.string()
-          .required('Password is mendatory')
-          .min(3, 'Password must be at 3 char long'),
-        confirmPwd: Yup.string()
-          .required('Password is mendatory')
-          .oneOf([Yup.ref('password')], 'Passwords does not match'),
-      })
-      const formOptions = { resolver: yupResolver(formSchema) }
-      const { register, handleSubmit, reset, formState } = useForm(formOptions)
-      const { errors } = formState;
+
+   const [mail, setMail] = useState('');
+   const [validMail, setValidMail] = useState(false);
+
+   const EMAIL_REGEX = 	 /^\w+@(metrogas|rilix)+?\.[a-z]{2,3}$/;
+
+   useEffect(() => {
+    const okMail = EMAIL_REGEX.test(mail);
+    setValidMail(okMail);
+   }, [mail]);
+
 return (
     <div className='registration-back'>
         <div className='registration-form-div'>
@@ -25,32 +22,11 @@ return (
             </div>
             <form className='registration-form'>
                 <div className='input-divider'>
-                    <label className='email-input-label' htmlFor='e-mail'>introduzca su email de la empresa:</label>
-                    <input className='email-input input-field' type='email' placeholder='ejemplo123@metrogas.com.do' required/>
+                    <label className='nombre-input-label' htmlFor='e-mail'>introduzca su email de la empresa para comenzar el registro:</label>
+                    <input className='email-input input-field' type='email' placeholder='ejemplo123@metrogas.com.do' onChange={(e)=> setMail(e.target.value)} required/>
                 </div>
-
-                <div className="input-divider">
-                    <label>introduzca la contraseña:</label>
-                    <input
-                        name="password"
-                        type="password"
-                        {...register('password')}
-                        className='input-field'
-                    />
-                    <div className="invalid-feedback">{errors.password?.message}</div>
-                </div>
-                <div className="input-divider">
-                    <label>Confirme su contraseña:</label>
-                    <input
-                        name="confirmPwd"
-                        type="password"
-                        {...register('confirmPwd')}
-                        className='input-field'
-                    />
-                    <div className="invalid-feedback">{errors.confirmPwd?.message}</div>
-                </div>
-
-                <button type='submit' className='registration-btn'>entrar al sistema</button>
+                {validMail ? <button type='submit' className='registration-btn'>enviar al correo</button> : <span  className='registration-btn-no'> por favor inserte un correo de la empresa</span>}
+    
             </form>
         </div>
     </div>
