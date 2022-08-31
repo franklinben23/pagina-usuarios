@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { RegistrationMailer } from './componentes/RegistrationMailer';
+// import { Login } from './componentes/Login';
 import { Registration } from './componentes/Registration';
-import { Login } from './componentes/Login';
 // import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,8 +13,8 @@ root.render(
   <BrowserRouter>
     <React.StrictMode>
       <Routes>
-        <Route path='/' element={<Login /> } />
-        <Route path='/Registration' element={<Registration /> } />
+        <Route path='/' element={<Registration /> } />
+        <Route path='/Mailer' element={<RegistrationMailer /> } />
       </Routes>
     </React.StrictMode>
   </BrowserRouter>
