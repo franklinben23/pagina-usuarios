@@ -1,0 +1,72 @@
+.cuadre-cont {
+    background: rgb(255,115,16);
+    background: linear-gradient(90deg, rgba(255,115,16,1) 0%, rgba(39,255,30,1) 100%);
+}
+
+.cuadre-page {
+    width: 70%;
+    margin: auto;
+    background: white;
+}
+
+.cuadre-logo {
+    width: 30%;
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+.seccion {
+    margin: 0 20px 20px 30px;
+}
+
+table, tr, td, th {
+    border: 1px solid black;
+}
+
+.tabla-cuadre-principal th {
+    font-size: 0.7em;
+}
+
+.td-h {
+    font-size: 1em;
+    width: 15%;
+}
+
+.td-he {
+    width: 33%;
+}
+
+.td-cuadre-input, .td-capacidad-input {
+    width: 100%;
+    border: none;
+}
+
+.anotaciones-input {
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.capacidad-registro {
+    width: 50%;
+}
+
+.totales {
+    width: 50%;
+    justify-content: space-between;
+    margin-top: -20px;
+}
+
+.input-totales {
+    border: dashed black 2px;
+}
+
+.anotaciones-y-cuadro {
+    padding-bottom: 50px;
+    margin-bottom: -30px;
+}
+
+.anotacion-div {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+}
