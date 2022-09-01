@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // mover hacia el folder principal.
 import './estilos/Registration.css';
 // ^
+import Multiselect from 'multiselect-react-dropdown';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import * as logoImg from './estilos/logo.png';
 
 export const Registration = () => {
-    const [input, setInput] = useState({
+
+    const [selectOptions, setSelect] = useState([]);
+    /**Uso posible del efecto fetch abajo para traer información del API */
+    useEffect( ()=> {
+        const fetchApi = async () => {
+        const envaPull = await fetch("http://10.1.105.205:8080/webapp.metrogas/envasadora/all");
+        const envResp = await envaPull.json();
+        setSelect(envResp);
+        console.log(envResp[0]);
+        }
+        fetchApi();
+    }, []);
+
+      const [input, setInput] = useState({
         username: '',
         lastname: '',
         password: '',
@@ -16,13 +30,13 @@ export const Registration = () => {
       });
 
       const [telephoneN, setTel] = useState('');
-    
+
       const [error, setError] = useState({
         username: '',
         password: '',
         confirmPassword: ''
       })
-    
+
       const onInputChange = e => {
         const { name, value } = e.target;
         setInput(prev => ({
@@ -36,14 +50,14 @@ export const Registration = () => {
         let { name, value } = e.target;
         setError(prev => {
           const stateObj = { ...prev, [name]: "" };
-    
+
           switch (name) {
             case "username":
               if (!value) {
                 stateObj[name] = "Favor introducir su nombre.";
               }
               break;
-    
+
             case "password":
               if (!value) {
                 stateObj[name] = "Favor introducir contraseña.";
@@ -53,7 +67,7 @@ export const Registration = () => {
                 stateObj["confirmPassword"] = input.confirmPassword ? "" : error.confirmPassword;
               }
               break;
-    
+
             case "confirmPassword":
               if (!value) {
                 stateObj[name] = "Favor confirme su contraseña.";
@@ -73,7 +87,7 @@ export const Registration = () => {
       const handleSubmit = (e) => {
         e.preventDefault();
       };
-    
+
       return (
         <div className="registration-back">
             <div className='registration-form-div'>
@@ -84,7 +98,7 @@ export const Registration = () => {
                     <h1 className="registration-header-h1"> Formulario de Registro</h1>
                 </div>
             <form className='registration-form' onSubmit={handleSubmit}>
-        
+
                 <div className='input-divider'>
                     <label className='nombre-input-label' htmlFor='nombre'>introduzca su nombre:</label>
                     <input
@@ -147,6 +161,27 @@ export const Registration = () => {
                     required
                     onBlur={validateInput}></input>
                     {error.confirmPassword && <span className='err'>{error.confirmPassword}</span>}
+                </div>
+                <div className='input-divider select-div'>
+                    <label className='nombre-input-label' htmlFor='select'>seleccione su(s) envasadoras:</label>
+                    <Multiselect
+                    options={selectOptions}
+                    displayValue="envasadoraNombre"
+                    style={{
+                        chips: {
+                          background: 'green'
+                        },
+                        multiselectContainer: {
+                          color: 'orange',
+                          'width': '100%'
+                        },
+                        searchBox: {
+                          border: '1px solid green',
+                          'border-radius': '5px',
+                          'width': '100%'
+                        }
+                      }}
+                    />
                 </div>
                 {input.password === input.confirmPassword ? <button  className='registration-btn'>enviar</button> : <button  className='registration-btn no' disabled>enviar</button>}
             </form>

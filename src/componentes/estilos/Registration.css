@@ -40,6 +40,10 @@
     height: 68px;
 }
 
+.select-div {
+    width: 100%;
+}
+
 .nombre-input-label {
     padding-left: 0.2em;
 }
