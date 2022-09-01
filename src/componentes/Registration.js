@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // mover hacia el folder principal.
 import './estilos/Registration.css';
@@ -11,13 +11,21 @@ import * as logoImg from './estilos/logo.png';
 export const Registration = () => {
 
     const [selectOptions, setSelect] = useState([]);
+    const [envSelected, setEnvselected] = useState([]);
+    const multiselectRef = useRef();
+
+    const getItems = () => {
+       const items = multiselectRef.current.getSelectedItems();
+       setEnvselected(items);
+       console.log(items);
+    };
+    
     /**Uso posible del efecto fetch abajo para traer información del API */
     useEffect( ()=> {
         const fetchApi = async () => {
         const envaPull = await fetch("http://10.1.105.205:8080/webapp.metrogas/envasadora/all");
         const envResp = await envaPull.json();
         setSelect(envResp);
-        console.log(envResp[0]);
         }
         fetchApi();
     }, []);
@@ -167,6 +175,9 @@ export const Registration = () => {
                     <Multiselect
                     options={selectOptions}
                     displayValue="envasadoraNombre"
+                    ref={multiselectRef}
+                    onSelect={getItems}
+                    onRemove={getItems}
                     style={{
                         chips: {
                           background: 'green'
@@ -177,7 +188,7 @@ export const Registration = () => {
                         },
                         searchBox: {
                           border: '1px solid green',
-                          'border-radius': '5px',
+                          'borderRadius': '5px',
                           'width': '100%'
                         }
                       }}
