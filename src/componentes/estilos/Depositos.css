@@ -17,6 +17,7 @@
     width: 50%;
     height: 90%;
     background-color: white;
+    overflow: scroll ;
 }
 
 .popup-inner .close-btn {
@@ -25,6 +26,27 @@
     right: 16px;
 }
 
-.popup-form-div input {
-    width: 15%;
+.popup-inner .crear-field-btn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.td-cuadro-input {
+    border: none;
+}
+
+.deposito-input {
+    width: 100%;
+    border: none;
+}
+
+.popup-form-div {
+    padding-bottom: 20px;
+}
+
+.crear-field-btn {
+    border: none;
+    background: none;
 }
