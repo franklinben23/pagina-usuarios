@@ -60,13 +60,24 @@ table, tr, td, th {
     border: dashed black 2px;
 }
 
-.anotaciones-y-cuadro {
+.anotaciones-y-depositos {
     padding-bottom: 50px;
     margin-bottom: -30px;
 }
 
+.anotaciones, .depositos {
+    width: 40%;
+}
+
 .anotacion-div {
-    width: 50%;
     display: flex;
     justify-content: space-between;
+}
+
+.td-cuadro-input {
+    width: 100%
+}
+
+.tabla-cuadro {
+    width: 100%;
 }

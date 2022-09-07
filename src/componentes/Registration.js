@@ -9,26 +9,22 @@ import 'react-phone-input-2/lib/style.css';
 import * as logoImg from './estilos/logo.png';
 
 export const Registration = () => {
-
-    const [selectOptions, setSelect] = useState([]);
-    const [envSelected, setEnvselected] = useState([]);
-    const multiselectRef = useRef();
-
-    const getItems = () => {
-       const items = multiselectRef.current.getSelectedItems();
-       setEnvselected(items);
-       console.log(items);
-    };
     
     /**Uso posible del efecto fetch abajo para traer información del API */
     useEffect( ()=> {
         const fetchApi = async () => {
         const envaPull = await fetch("http://10.1.105.205:8080/webapp.metrogas/envasadora/all");
         const envResp = await envaPull.json();
-        setSelect(envResp);
+        const respStat = envaPull.status
+        setEnvasadorasPulled(envResp);
+        console.log(respStat)
         }
         fetchApi();
     }, []);
+
+        const [envasadorasPulled, setEnvasadorasPulled] = useState([]);
+        const [envSelected, setEnvselected] = useState([]);
+        const multiselectRef = useRef();
 
       const [input, setInput] = useState({
         username: '',
@@ -95,6 +91,12 @@ export const Registration = () => {
       const handleSubmit = (e) => {
         e.preventDefault();
       };
+
+      const getItems = () => {
+        const items = multiselectRef.current.getSelectedItems();
+        setEnvselected(items);
+        console.log(items);
+     };
 
       return (
         <div className="registration-back">
@@ -173,7 +175,7 @@ export const Registration = () => {
                 <div className='input-divider select-div'>
                     <label className='nombre-input-label' htmlFor='select'>seleccione su(s) envasadoras:</label>
                     <Multiselect
-                    options={selectOptions}
+                    options={envasadorasPulled}
                     displayValue="envasadoraNombre"
                     ref={multiselectRef}
                     onSelect={getItems}

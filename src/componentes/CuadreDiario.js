@@ -1,8 +1,116 @@
-import React from "react";
-import "./estilos/cuadre.css"
+import React,  { useState } from "react";
+import { Depositos } from "./Depositos";
+import "./estilos/cuadre.css";
 import * as logoImg from './estilos/logo.png';
 
 export const CuadreDiario = () => {
+    const [metros, setMetros] = useState({
+        contadorInicialMetroI: 0,
+        contadorInicialMetroII: 0,
+        contadorInicialMetroIII: 0,
+        contadorInicialMetroIV: 0,
+        contadorInicialMetroV: 0,
+        contadorInicialMetroVI: 0,
+        contadorInicialMetroVII: 0,
+        contadorInicialMetroVIII: 0,
+        contadorInicialMetroIX: 0,
+        contadorInicialMetroX: 0,
+        contadorInicialMetroDIST: 0,
+        contadorFinalMetroI: 0,
+        contadorFinalMetroII: 0,
+        contadorFinalMetroIII: 0,
+        contadorFinalMetroIV: 0,
+        contadorFinalMetroV: 0,
+        contadorFinalMetroVI: 0,
+        contadorFinalMetroVII: 0,
+        contadorFinalMetroVIII: 0,
+        contadorFinalMetroIX: 0,
+        contadorFinalMetroX: 0,
+        contadorFinalMetroDIST: 0,
+        galonesMetroI: 0,
+        galonesMetroII: 0,
+        galonesMetroIII: 0,
+        galonesMetroIV: 0,
+        galonesMetroV: 0,
+        galonesMetroVI: 0,
+        galonesMetroVII: 0,
+        galonesMetroVIII: 0,
+        galonesMetroIX: 0,
+        galonesMetroX: 0,
+        galonesMetroDIST: 0,
+        calibracionMetroI: 0,
+        calibracionMetroII: 0,
+        calibracionMetroIII: 0,
+        calibracionMetroIV: 0,
+        calibracionMetroV: 0,
+        calibracionMetroVI: 0,
+        calibracionMetroVII: 0,
+        calibracionMetroVIII: 0,
+        calibracionMetroIX: 0,
+        calibracionMetroX: 0,
+        calibracionMetroDIST: 0,
+        glsVendidoMetroI: 0,
+        glsVendidoMetroII: 0,
+        glsVendidoMetroIII: 0,
+        glsVendidoMetroIV: 0,
+        glsVendidoMetroV: 0,
+        glsVendidoMetroVI: 0,
+        glsVendidoMetroVII: 0,
+        glsVendidoMetroVIII: 0,
+        glsVendidoMetroIX: 0,
+        glsVendidoMetroX: 0,
+        glsVendidoMetroDIST: 0,
+        totalVendidoMetroI: 0,
+        totalVendidoMetroII: 0,
+        totalVendidoMetroIII: 0,
+        totalVendidoMetroIV: 0,
+        totalVendidoMetroV: 0,
+        totalVendidoMetroVI: 0,
+        totalVendidoMetroVII: 0,
+        totalVendidoMetroVIII: 0,
+        totalVendidoMetroIX: 0,
+        totalVendidoMetroX: 0,
+        totalVendidoMetroDIST: 0,
+    });
+    /*Arreglo temporal para tener bancos. antes de tomar del API */
+    const [bancos, setBancos] = useState([
+        {
+            id:0,
+            nombre: 'BHD',
+            cuenta: 12364,
+            ejecutivo: 'Marlon Brando',
+            responsable: 'Rafael Peña',
+            fecha_creacion: '14-05-2002',
+            estado: true
+        },
+        {
+            id: 1,
+            nombre: 'Banreservas',
+            cuenta: 12357,
+            ejecutivo: 'Marlon Brando',
+            responsable: 'Maicol jose',
+            fecha_creacion: '14-05-2004',
+            estado: true
+        },
+        {
+            id: 2,
+            nombre: 'Asociación Cibao',
+            cuenta: 12389,
+            ejecutivo: 'Marlon Brando',
+            responsable: 'emilio frias',
+            fecha_creacion: '14-05-2008',
+            estado: true
+        },
+    ]);
+
+    const onInputChange = e => {
+        const { name, value } = e.target;
+        setMetros(prev => ({
+          ...prev,
+          [name]: value
+        }));
+      }
+
     return (
         <div className="cuadre-cont">
             <div className="cuadre-page">
@@ -81,87 +189,87 @@ export const CuadreDiario = () => {
                             </tr>
                             <tr>
                                 <td className="td-h">Contador Incial</td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorInicialMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroI" value={metros.contadorInicialMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroII" value={metros.contadorInicialMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroIII" value={metros.contadorInicialMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroIV" value={metros.contadorInicialMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroV" value={metros.contadorInicialMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroVI" value={metros.contadorInicialMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroVII" value={metros.contadorInicialMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroVIII" value={metros.contadorInicialMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroIX" value={metros.contadorInicialMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroX" value={metros.contadorInicialMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorInicialMetroDIST" value={metros.contadorInicialMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
                             <tr>
                                 <td className="td-h">Contador Final</td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="contadorFinalMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroI" value={metros.contadorFinalMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroII" value={metros.contadorFinalMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroIII" value={metros.contadorFinalMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroIV" value={metros.contadorFinalMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroV" value={metros.contadorFinalMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroVI" value={metros.contadorFinalMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroVII" value={metros.contadorFinalMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroVIII" value={metros.contadorFinalMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroIX" value={metros.contadorFinalMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroX" value={metros.contadorFinalMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="contadorFinalMetroDIST" value={metros.contadorFinalMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
                             <tr>
                                 <td className="td-h">Galones</td>
-                                <td><input className="td-cuadre-input" name="galonesMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="galonesMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroI" value={metros.galonesMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroII" value={metros.galonesMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroIII" value={metros.galonesMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroIV" value={metros.galonesMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroV" value={metros.galonesMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroVI" value={metros.galonesMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroVII" value={metros.galonesMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroVIII" value={metros.galonesMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroIX" value={metros.galonesMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroX" value={metros.galonesMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="galonesMetroDIST" value={metros.galonesMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
                             <tr>
                                 <td className="td-h">Calibración GLS</td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="calibracionMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroI" value={metros.calibracionMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroII" value={metros.calibracionMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroIII" value={metros.calibracionMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroIV" value={metros.calibracionMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroV" value={metros.calibracionMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroVI" value={metros.calibracionMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroVII" value={metros.calibracionMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroVIII" value={metros.calibracionMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroIX" value={metros.calibracionMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroX" value={metros.calibracionMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="calibracionMetroDIST" value={metros.calibracionMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
                             <tr>
                                 <td className="td-h">GLS vendido</td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="glsVendidoMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroI" value={metros.glsVendidoMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroII" value={metros.glsVendidoMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroIII" value={metros.glsVendidoMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroIV" value={metros.glsVendidoMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroV" value={metros.glsVendidoMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroVI" value={metros.glsVendidoMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroVII" value={metros.glsVendidoMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroVIII" value={metros.glsVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroIX" value={metros.glsVendidoMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroX" value={metros.glsVendidoMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="glsVendidoMetroDIST" value={metros.glsVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
                             <tr>
                                 <td className="td-h">Total RD$</td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroIV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroV" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroVI" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroVII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroVIII" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroIX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroX" type="number"/></td>
-                                <td><input className="td-cuadre-input" name="totalVendidoMetroDIST" type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroI" value={metros.totalVendidoMetroI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroII" value={metros.totalVendidoMetroII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroIII" value={metros.totalVendidoMetroIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroIV" value={metros.totalVendidoMetroIV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroV" value={metros.totalVendidoMetroV} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroVI" value={metros.totalVendidoMetroVI} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroVII" value={metros.totalVendidoMetroVII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroVIII" value={metros.totalVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroIX" value={metros.totalVendidoMetroIX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroX" value={metros.totalVendidoMetroX} onChange={onInputChange} type="number"/></td>
+                                <td><input className="td-cuadre-input" name="totalVendidoMetroDIST" value={metros.totalVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
                             </tr>
 
                         </tbody>
@@ -171,7 +279,7 @@ export const CuadreDiario = () => {
                     <div className="totales-total">Total GLS: <input className="input-totales" name="input-total" type="number"/></div>
                     <div className="totales-total">Total RD$: <input className="input-totales" name="input-pesos" type="number"/></div>
                 </div>
-                <div className="anotaciones-y-cuadro seccion">
+                <div className="anotaciones-y-depositos d-flex justify-content-around seccion">
                     <div className="anotaciones">
                         <div className="anotacion-div">
                             <label>Sobrante GLS:</label>
@@ -215,10 +323,11 @@ export const CuadreDiario = () => {
                         </div>
 
                     </div>
-                    {/* <div className="cuadro">
-                        <table className="tabla-cuadro">
+                    <div className="depositos">
+                        <table className="tabla-cuadro justify-self-right">
                             <thead className="tabla-cuadro-header">
                                 <tr>
+                                    <th>Bancos</th>
                                     <th>Depósitos</th>
                                     <th>Lote Tarjeta</th>
                                     <th>Monto Tarjeta</th>
@@ -227,16 +336,10 @@ export const CuadreDiario = () => {
                                 </tr>
                             </thead>
                             <tbody className="tabla-cuadro-body">
-                                <tr>
-                                    <td><input className="td-cuadro-input" name="depositosI" type="text"/></td>
-                                    <td><input className="td-cuadro-input" name="loteTarjetaI" type="text"/></td>
-                                    <td><input className="td-cuadro-input" name="montoTarjetaI" type="text"/></td>
-                                    <td><input className="td-cuadro-input" name="loteBonogasI" type="text"/></td>
-                                    <td><input className="td-cuadro-input" name="montoBonogasI" type="text"/></td>
-                                </tr>
+                                { bancos.map((banco) => (<Depositos bancoName={banco.nombre} key={banco.id}/>)) }
                             </tbody>
                         </table>
-                    </div> */}
+                    </div>
                 </div>
             </div>
         </div>

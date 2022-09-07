@@ -37,7 +37,7 @@ export const Login = () => {
                         <input className='email-input input-field' type='password' value={password} onChange={(e)=> setPassword(e.target.value)} required/>
                     </div>
                     <button type='submit' className='registration-btn'>Login</button>
-        
+
                 </form>
 
                 <div className="form-register">
