@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 200;
 }
 
 .popup-inner {
@@ -26,9 +27,9 @@
     right: 16px;
 }
 
-.popup-inner .crear-field-btn {
+.total-depositos {
     position: fixed;
-    bottom: 40px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -46,7 +47,20 @@
     padding-bottom: 20px;
 }
 
-.crear-field-btn {
+.td-d {
+    width: 20%;
+}
+
+.tt {
+    width: 80%;
+}
+
+.crear-field-btn, .close-btn, .delete-field-btn  {
     border: none;
     background: none;
+}
+
+.delete-field-btn {
+    aspect-ratio: 1;
+    size: 1px;
 }

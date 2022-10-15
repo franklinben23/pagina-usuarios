@@ -65,8 +65,12 @@ table, tr, td, th {
     margin-bottom: -30px;
 }
 
-.anotaciones, .depositos {
-    width: 40%;
+.anotaciones {
+   width: 35%;
+}
+
+.depositos {
+    width: 60%;
 }
 
 .anotacion-div {

@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 // mover hacia el folder principal.
 import './estilos/Registration.css';
 // ^
-import * as logoImg from './estilos/logo.png';
+import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Login = () => {
+
+    {/**La validacion funcionara con un usestate que enviara una request para validar los keys del correo antes de que cargue la forma, se chequeara con el body del response, y se llenara el field de email con lo que contenga el body*/}
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');

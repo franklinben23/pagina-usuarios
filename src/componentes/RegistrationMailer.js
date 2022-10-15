@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 // mover hacia el folder principal.
 import './estilos/Registration.css';
-import * as logoImg from './estilos/logo.png';
+import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const RegistrationMailer = () => {
 
@@ -14,7 +14,30 @@ export const RegistrationMailer = () => {
    useEffect(() => {
     const okMail = EMAIL_REGEX.test(mail);
     setValidMail(okMail);
+    // eslint-disable-next-line
    }, [mail]);
+
+   const sendMail = async (e) => {
+        e.preventDefault();
+        console.log('It has been sent');
+        const getMail = await fetch('http://10.1.105.205:8080/webapp.metrogas/sendmail', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                recipient: mail,//checkear el resto de fields en el swagger
+            })
+        });
+        const getMailParsed = await getMail.json();
+        const requestStatus = getMail.status;
+        if (requestStatus === 200) {
+            console.log('It has succesfully been received');
+            console.log(getMailParsed)
+        }
+
+   };
+
 
 return (
     <div className='registration-back'>
@@ -27,7 +50,7 @@ return (
                     <label className='nombre-input-label' htmlFor='e-mail'>introduzca su email de la empresa para comenzar el registro:</label>
                     <input className='email-input input-field' type='email' placeholder='ejemplo123@metrogas.com.do' onChange={(e)=> setMail(e.target.value)} required/>
                 </div>
-                {validMail ? <button type='submit' className='registration-btn'>enviar al correo</button> : <span  className='registration-btn-no'> por favor inserte un correo de la empresa y válido</span>}
+                {validMail ? <button type='submit' className='registration-btn' onClick={sendMail}>enviar al correo</button> : <span  className='registration-btn-no'> por favor inserte un correo de la empresa y válido</span>}
     
             </form>
         </div>

@@ -1,0 +1,17 @@
+.td-capacidad-input {
+    width: 100%;
+    border: none;
+}
+
+.tabla-capacidad {
+    width: 100%;
+}
+
+.cuadre-mobile-logo {
+    width: 100%;
+}
+
+.cuadre-principal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

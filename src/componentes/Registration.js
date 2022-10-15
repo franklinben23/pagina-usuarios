@@ -6,7 +6,7 @@ import './estilos/Registration.css';
 import Multiselect from 'multiselect-react-dropdown';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import * as logoImg from './estilos/logo.png';
+import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Registration = () => {
     
@@ -145,7 +145,7 @@ export const Registration = () => {
                     />
 
                 </div>
-        
+
                 <div className='input-divider'>
                     <label className='nombre-input-label' htmlFor='password'>introduzca su contraseña:</label>
                     <input
