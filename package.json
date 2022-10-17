@@ -1,7 +1,7 @@
 {
   "name": "pagina-usuarios",
   "version": "0.1.0",
-  "homepage": "PaginaCuadre",
+  "homepage": "http://localhost:8080/PaginaCuadre",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.7",
