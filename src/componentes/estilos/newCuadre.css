@@ -176,6 +176,7 @@
     background-color: transparent;
     border: 2px dashed #ff965a;
     border-radius: 10px;
+    width: 150px;
 }
 
 .totales {
@@ -183,11 +184,11 @@
 }
 
 .totales-total {
-    width: 360px;
+    width: 300px;
     display: flex;
     justify-content: space-between;
     font-weight: 700;
-    margin-right: 10px;
+    margin-right: 20px;
     /* margin-top: 20px; */
 }
 

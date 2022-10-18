@@ -1,3 +1,4 @@
+/*eslint-disable react-hooks/exhaustive-deps*/
 import React, {useState, useEffect} from "react";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
@@ -149,8 +150,10 @@ export const NewCuadre = () => {
       // eslint-disable-next-line
     const [depositos, setDepositos] = useState([]);
 
+    //Seccion lotes
+    const [loteActive, setLoteActive] = useState(false);
+    const [lotesGuardar, setLotesGuardar] = useState([]); // se va a usar tmbn para el request al enviar.
     const [lotes, setLotes] = useState([]);
-
     const addLote = () => {// este no va a se funcional hasta proximamente, solo show por ahora.
         if (lotes.length < 5) {
             const newLote = {
@@ -159,23 +162,88 @@ export const NewCuadre = () => {
                 monto: 0,
                 descripcion: "string",
                 fecha: "2022-10-13T21:07:30.888Z",
-                estado: true
+                estado: true,
+                activo: true
             }
             setLotes(prev => [
                 ...prev,
                 newLote
             ])
+            setLoteActive(true)
         }
+    };
+    const saveLote = async () => {
+        const lastLote = lotes[lotes.length -1];
+        try {
+            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/lote/save', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: 0,
+                    codigo: lastLote.codigo,
+                    monto: lastLote.monto,
+                    descripcion: lastLote.descripcion,
+                    fecha: "2022-10-17T16:10:56.839Z",
+                    estado: true
+                })
+            });
+            if (request.ok) {
+                const json = await request.json();
+                console.log(json)// retirar cuando funcional
+                setLoteActive(false);
+                setLotesGuardar(prev => [...prev, json]);
+                setLotes(prev =>
+                    prev.map((element) => element.codigo === lastLote.codigo ? {...element, activo: false} : element)// Aqui chequeo si estoy recibiendo el elemento correcto, luego en el ternany operator devuelvo el elemento con el activo cambiado si si, o el elemento de turno si no.
+                );
+            } else {
+                throw 'there Has been an error'
+            }
+            
+        } catch (error) {
+            alert(error);
+        }
+    };
+    const removeLote = async (index) => {
+        const loteToDlt = lotes[index];
+        if (loteToDlt.activo === true) {
+            setLoteActive(false);
+            setLotes(prev =>
+                prev.filter((obj, id)=> {
+                    return prev[id] !== prev[index];//investigar
+                })
+            );
+        } if (loteToDlt.activo === false) {
+            const loteToErase = lotesGuardar.find((lote) => lote.codigo === loteToDlt.codigo);
+            try {
+                const request = await fetch(`http://10.1.105.205:8080/webapp.metrogas/lote/delete/${loteToErase.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                });
+                if (!request.ok) {
+                    alert('Hubo un problema con su conexion, favor revise y vuelva a intentar')
+                }
+            } catch (error) {
+                console.log(error)
+            }
+            setLotes(prev =>
+                prev.filter((obj, id)=> {
+                    return prev[id] !== prev[index];
+                })
+            );
+        }
+    };
+    const handleLoteChange = (index, event) => {
+        let data = [...lotes];
+        data[index][event.target.name] = event.target.value;
+        setLotes(data);
     }
 
-    const removeLote = (index) => {
-        setLotes(prev =>
-            prev.filter((obj, id)=> {
-                return prev[id] !== prev[index];
-            })
-        );
-    };
 
+    //Seccion montos
     const [MontosB, setMontosB] = useState([]);
     const addMontoB = () => {// este no va a se funcional hasta proximamente, solo show por ahora.
         if (MontosB.length < 5) {
@@ -791,13 +859,13 @@ export const NewCuadre = () => {
                             </div>
                             <div className="lotes depositos">
                                 <h5 className="deposito-header"> Tarjetas</h5>
-                                {lotes.map((obj, index) => <form key={index} className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
-                                    <input className="lote-input un" type="text"/>
-                                    <input className="lote-input deux" type="text"/>
+                                {lotes.map((obj, index) => <form key={index} className="lote-cont d-flex">
+                                    <input className="lote-input un" type="text" name="codigo" placeholder="codigo" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
+                                    <input className="lote-input deux" type="text" name="monto" placeholder="monto" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
                                     <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete size={23} color="red"/></button>
                                 </form>
                                 )}
-                                <button type="button" className="lote-btn btn-td-btn" onClick={addLote}> Añadir Lote</button>
+                                {loteActive ? <button type="button" className="lote-btn btn-td-btn" onClick={saveLote}> Guardar Lote</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addLote}> Añadir Lote</button>}
                             </div>
                             <div className="lotes depositos">
                                 <h5 className="deposito-header"> Bonogas</h5>
