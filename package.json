@@ -1,7 +1,7 @@
 {
   "name": "pagina-usuarios",
   "version": "0.1.0",
-  "homepage": "http://localhost:8080/PaginaCuadre",
+  "homepage": "PaginaCuadre/",
   "private": true,
   "stack": "heroku-20",
   "dependencies": {

@@ -166,7 +166,7 @@ export const NewCuadre = () => {
     const saveLote = async () => {
         const lastLote = lotes[lotes.length -1];
         try {
-            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/lote/save', {
+            const request = await fetch('https://cuadre-diario-planta.herokuapp.com/lote/save', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -207,7 +207,7 @@ export const NewCuadre = () => {
         } if (loteToDlt.activo === false) {
             const loteToErase = lotesGuardar.find((lote) => lote.codigo === loteToDlt.codigo);
             try {
-                const request = await fetch(`http://10.1.105.205:8080/webapp.metrogas/lote/delete/${loteToErase.id}`, {
+                const request = await fetch(`https://cuadre-diario-planta.herokuapp.com/lote/delete/${loteToErase.id}`, {
                     method: 'DELETE',
                     headers: {
                         'content-type': 'application/json'
@@ -264,7 +264,7 @@ export const NewCuadre = () => {
     const saveMonto = async () => {
         const LastMonto = MontosB[MontosB.length -1];
         try {
-            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/bonogas/save', {
+            const request = await fetch('https://cuadre-diario-planta.herokuapp.com/bonogas/save', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -305,7 +305,7 @@ export const NewCuadre = () => {
         } if (montoToDlt.activo === false) {
             const montoToErase = montosGuardar.find((monto) => monto.codigo === montoToDlt.codigo);
             try {
-                const request = await fetch(`http://10.1.105.205:8080/webapp.metrogas/bonogas/delete/${montoToErase.id}`, {
+                const request = await fetch(`https://cuadre-diario-planta.herokuapp.com/bonogas/delete/${montoToErase.id}`, {
                     method: 'DELETE',
                     headers: {
                         'content-type': 'application/json'
@@ -795,7 +795,7 @@ export const NewCuadre = () => {
           estado: true
         };
         try {
-            const cuadreRequest = await fetch('http://10.1.105.205:8080/webapp.metrogas/cuadre/save', {
+            const cuadreRequest = await fetch('https://cuadre-diario-planta.herokuapp.com/cuadre/save', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

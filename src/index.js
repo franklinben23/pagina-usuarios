@@ -26,7 +26,7 @@ root.render(
               <Routes>
                 <Route path='/Registration:email' element={<Registration /> } />
                 <Route path='/Login' element={<Login /> } />
-                <Route path='/PaginaCuadre' index element={<NewCuadre /> } />
+                <Route path='/PaginaCuadre' element={<NewCuadre /> } />
                 <Route path='/Mailer' element={<RegistrationMailer /> } />
               </Routes>
               </Provider>
