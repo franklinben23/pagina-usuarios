@@ -29,12 +29,12 @@ export const NewCuadre = () => {
 
     const envName = envasadora.envasadoraNombre; // intentar decunstructing
 
-    const [authenticated, setAuthenticated] = useState(null);
+    // const [authenticated, setAuthenticated] = useState(null);
     const navigate = useNavigate();
     useEffect(()=> {
-        const loggedInUser = localStorage.getItem("Authenticated");
-        if (loggedInUser) {
-            setAuthenticated(loggedInUser);
+        const loggedInUser = localStorage.getItem('Authenticated') || null;
+        if (!loggedInUser) {
+            navigate('/login');
         }
     }, []);
 
@@ -813,10 +813,6 @@ export const NewCuadre = () => {
             alert(error);
         }
     };
-
-    if (!authenticated){
-        navigate('/Login')
-    } else {
         return (
             <div className="cuadre-cont">
                 <div className="cuadre-inner-cont">
@@ -1193,5 +1189,5 @@ export const NewCuadre = () => {
                 </div>
             </div>
         );
-    }
+    
 };
