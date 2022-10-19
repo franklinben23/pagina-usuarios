@@ -25,6 +25,10 @@
     background: transparent;
 }
 
+.name-logo-section {
+    position: relative;
+}
+
 .envasadora-span {
     margin-top: -10px;
     font-size: 35px;
@@ -118,13 +122,13 @@
     padding-left: 40px;
 }
 
-.ilustrations {
+/* .ilustrations {
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-}
+} */
 
 .tanque-tag {
     position: absolute;
@@ -134,22 +138,40 @@
 }
 
 .tank-graphic {
-    position: relative;
-    width: 400px;
+    border: black solid 3px;
+    border-radius: 40px 20px;
+    padding-left: -20px;
+    padding-top: 15px;
+    padding-right: 50px;
+    padding-bottom: 30px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-70%, -50%);
+    width: 500px;
+}
+
+.tank-graphic-labels {
+    position: absolute;
+}
+
+.tank-graphic-labels p {
+    padding: 0;
+    margin: 0;
 }
 
 .tank-img-graphic {
-    width: 100%;
+    width: 60%;
 }
 
-.tank-tag {
+/* .tank-tag {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -30%);
-    font-size: 30px;
+    font-size: 17px;
     font-weight: 700;
-}
+} */
 
 /* seccion cuadre abajo */
 
@@ -233,6 +255,20 @@
     border: #ff965a 1px solid;
 }
 
+.totales-1 {
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+    justify-content: space-between ;
+}
+
+.totales-depositos-input {
+    width: 50%;
+    background-color: transparent;
+    border: dashed #E35400 2px;
+    border-radius: 10px;
+}
+
 /* Seccion Lotes*/
 
 .lotes {
@@ -271,39 +307,48 @@
     border: none;
 }
 
+/* Seccion de anotaciones*/
+
 .anotaciones {
     width: 90%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     margin-top: 60px;
+    position: relative;
+    height: 90%;
+}
+
+.cuadre-submit-btn {
+    position: absolute;
+    bottom: -30px;
+    right: 0;
 }
 
 .division-uno {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.division-uno label {
-    margin-right: 20px;
 }
 
 .division-dos {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
 }
 
-
-
 .division-uno, .division-dos {
-   width: 50%;
+   width: 40%;
 }
 
 .anotacion-div {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     margin: 10px 0;
     font-size: 22px;
+}
+
+.anotaciones-input {
+    background-color: transparent;
+    border: #E35400 solid 2px;
+    border-radius: 10px;
 }

@@ -1,5 +1,7 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useMemo} from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
@@ -13,9 +15,30 @@ import { AiOutlineDelete } from 'react-icons/ai';
 
 export const NewCuadre = () => {
 
-    const [tank2, setTank2] = useState(tanque1);
-    const [tank1, setTank1] = useState(tanque1)
+    const userBlock = useSelector((state) => state.userInfo);
 
+    const envasadora = userBlock.envasadoraEntity[0];
+    const capacidadTanque = envasadora.capacidadTanque;
+    const capacidadMinima = envasadora.capacidadMinimaTanque;
+    const capacidadMaxima = envasadora.capacidadMaximaTanque;
+    const capacidadIntermedia = envasadora.capacidadIntermediaTanque;
+
+    const envasadoraId = envasadora.envasadoraId;
+    const userId = userBlock.userId;
+    const bancoId = envasadora.bancoEntity.id;
+
+    const envName = envasadora.envasadoraNombre; // intentar decunstructing
+
+    const [authenticated, setAuthenticated] = useState(null);
+    const navigate = useNavigate();
+    useEffect(()=> {
+        const loggedInUser = localStorage.getItem("Authenticated");
+        if (loggedInUser) {
+            setAuthenticated(loggedInUser);
+        }
+    }, []);
+
+    const [tank1, setTank1] = useState(tanque1)
     const [active, setActive] = useState(1);
 
     const [capacidadRegistro, setCapacidadRegistro] = useState({
@@ -97,35 +120,7 @@ export const NewCuadre = () => {
     });
 
     // eslint-disable-next-line
-    const [bancos, setBancos] = useState([
-        {
-            id:0,
-            nombre: 'BHD',
-            cuenta: 12364,
-            ejecutivo: 'Marlon Brando',
-            responsable: 'Rafael Peña',
-            fecha_creacion: '14-05-2002',
-            estado: true
-        },
-        {
-            id: 1,
-            nombre: 'Banreservas',
-            cuenta: 12357,
-            ejecutivo: 'Marlon Brando',
-            responsable: 'Maicol jose',
-            fecha_creacion: '14-05-2004',
-            estado: true
-        },
-        {
-            id: 2,
-            nombre: 'Asociación Cibao',
-            cuenta: 12389,
-            ejecutivo: 'Marlon Brando',
-            responsable: 'emilio frias',
-            fecha_creacion: '14-05-2008',
-            estado: true
-        },
-    ]);
+    const bancos = ([envasadora.bancoEntity]);
 
     const [anotaciones, setAnotaciones] = useState({
         sobranteGalones: 0,
@@ -138,7 +133,6 @@ export const NewCuadre = () => {
         total: 0,
         deposito: 0
     });
-
     const onChangeAnotaciones= e => {
         const { name, value } = e.target;
         setAnotaciones(prev => ({
@@ -146,9 +140,6 @@ export const NewCuadre = () => {
           [name]: parseInt(value)
         }));
       };
-
-      // eslint-disable-next-line
-    const [depositos, setDepositos] = useState([]);
 
     //Seccion lotes
     const [loteActive, setLoteActive] = useState(false);
@@ -191,7 +182,6 @@ export const NewCuadre = () => {
             });
             if (request.ok) {
                 const json = await request.json();
-                console.log(json)// retirar cuando funcional
                 setLoteActive(false);
                 setLotesGuardar(prev => [...prev, json]);
                 setLotes(prev =>
@@ -234,6 +224,12 @@ export const NewCuadre = () => {
                     return prev[id] !== prev[index];
                 })
             );
+            setLotesGuardar(prev =>
+                prev.filter((obj) => {
+                    return obj.codigo !== loteToErase.codigo;
+                }
+                )
+            );
         }
     };
     const handleLoteChange = (index, event) => {
@@ -244,7 +240,9 @@ export const NewCuadre = () => {
 
 
     //Seccion montos
+    const [montoActive, setMontoActive] = useState(false);
     const [MontosB, setMontosB] = useState([]);
+    const [montosGuardar, setMontosGuardar] = useState([]);
     const addMontoB = () => {// este no va a se funcional hasta proximamente, solo show por ahora.
         if (MontosB.length < 5) {
             const newMonto = {
@@ -253,19 +251,115 @@ export const NewCuadre = () => {
                 monto: 0,
                 descripcion: "string",
                 fecha: "2022-10-13T21:07:30.888Z",
+                activo: true,
                 estado: true
             }
             setMontosB(prev => [
                 ...prev,
                 newMonto
-            ])
+            ]);
+            setMontoActive(true);
         }
     };
-    const removeMonto = (index) => {
-        const data = [...MontosB];
-        data.splice(index, 1);
+    const saveMonto = async () => {
+        const LastMonto = MontosB[MontosB.length -1];
+        try {
+            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/bonogas/save', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: 0,
+                    codigo: LastMonto.codigo,
+                    monto: LastMonto.monto,
+                    descripcion: LastMonto.descripcion,
+                    fecha: "2022-10-17T16:10:56.839Z",
+                    estado: true
+                })
+            });
+            if (request.ok) {
+                const json = await request.json();
+                setMontoActive(false);
+                setMontosGuardar(prev => [...prev, json]);
+                setMontosB(prev =>
+                    prev.map((element) => element.codigo === LastMonto.codigo ? {...element, activo: false} : element)// Aqui chequeo si estoy recibiendo el elemento correcto, luego en el ternany operator devuelvo el elemento con el activo cambiado si si, o el elemento de turno si no.
+                );
+            } else {
+                throw 'there Has been an error'
+            }
+            
+        } catch (error) {
+            alert(error);
+        }
+    };
+    const removeMonto = async (index) => {
+        const montoToDlt = MontosB[index];
+        if (montoToDlt.activo === true) {
+            setMontoActive(false);
+            setMontosB(prev =>
+                prev.filter((obj, id)=> {
+                    return prev[id] !== prev[index];//investigar
+                })
+            );
+        } if (montoToDlt.activo === false) {
+            const montoToErase = montosGuardar.find((monto) => monto.codigo === montoToDlt.codigo);
+            try {
+                const request = await fetch(`http://10.1.105.205:8080/webapp.metrogas/bonogas/delete/${montoToErase.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                });
+                if (!request.ok) {
+                    alert('Hubo un problema con su conexion, favor revise y vuelva a intentar')
+                }
+            } catch (error) {
+                console.log(error)
+            }
+            setMontosB(prev =>
+                prev.filter((obj, id)=> {
+                    return prev[id] !== prev[index];
+                })
+            );
+            setMontosGuardar(prev =>
+                prev.filter((obj) => {
+                    return obj.codigo !== montoToErase.codigo;
+                }
+                )
+            );
+        }
+    };
+    const handleMontoChange = (index, event) => {
+        let data = [...MontosB];
+        data[index][event.target.name] = event.target.value;
         setMontosB(data);
     };
+
+          // eslint-disable-next-line
+          const [depositos, setDepositos] = useState([]);
+          const depositosFunction = () => depositos.reduce((r, a ) => r + a.monto, 0);//hacer de esto un one-liner.
+          const totalDepPre = useMemo(()=> {
+              const actDepositos = depositosFunction();
+              return actDepositos
+          }, [depositos]);
+          const depositosFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalDepPre);
+      
+          const lotesFunction = () => lotesGuardar.reduce((r, a ) => r + a.monto, 0);
+          const totalLotePre = useMemo(() => {
+              const actlotes = lotesFunction();
+              return actlotes
+          }, [lotesGuardar]);
+          const lotesFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalLotePre);
+      
+          const montosFunction = () => montosGuardar.reduce((r, a ) => r + a.monto, 0);
+          const totalMontoPre = useMemo(() => {
+              const actMontos = montosFunction();
+              return actMontos
+          }, [montosGuardar]);
+          const MontosFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalMontoPre);
+
+
     // prueba para formula de tabla
     useEffect(()=> {
             const galonesMI = metros.contadorFinalMetroI - metros.contadorInicialMetroI;
@@ -415,8 +509,6 @@ export const NewCuadre = () => {
 
         }))
     }, [metros.galonesMetroVIII, metros.calibracionMetroVIII])
-
-    
     useEffect(()=> {
         const galonesMI = metros.contadorFinalMetroIX - metros.contadorInicialMetroIX;
         setMetros(prev => ({
@@ -435,7 +527,6 @@ export const NewCuadre = () => {
         }))
     }, [metros.galonesMetroIX, metros.calibracionMetroIX])
 
-    
     useEffect(()=> {
         const galonesMI = metros.contadorFinalMetroX - metros.contadorInicialMetroX;
         setMetros(prev => ({
@@ -453,8 +544,6 @@ export const NewCuadre = () => {
 
         }))
     }, [metros.galonesMetroX, metros.calibracionMetroX])
-
-    
     useEffect(()=> {
         const galonesMI = metros.contadorFinalMetroDIST - metros.contadorInicialMetroDIST;
         setMetros(prev => ({
@@ -486,43 +575,6 @@ export const NewCuadre = () => {
         }));
       };
 
-    const onInputChangeCapacidad = (e) => {
-        const { name, value } = e.target;
-            setCapacidadRegistro(prev => ({
-              ...prev,
-              [name]: parseFloat(value)
-            }));
-    };
-
-    const onInputChangeCapacidad2 = (e) => {// cambiar a rangos por la etiqueta de input, remover if statement a futuro.
-        const { name, value } = e.target;
-        if (value >= 35 && value <= 85) {
-            setCapacidadRegistro(prev => ({
-              ...prev,
-              [name]: parseFloat(value)
-            }));
-        } else {
-
-        }
-    };
-
-    useEffect(() => {
-        if (capacidadRegistro.existenciaFinalVolumen <= 35) {
-            setTank2(tanque1)
-        } if (capacidadRegistro.existenciaFinalVolumen >= 45) {
-            setTank2(tanque2)
-        } if (capacidadRegistro.existenciaFinalVolumen >= 50) {
-            setTank2(tanque3)
-        } if (capacidadRegistro.existenciaFinalVolumen >= 65) {
-            setTank2(tanque4)
-        } if (capacidadRegistro.existenciaFinalVolumen >= 75) {
-            setTank2(tanque5)
-        } if (capacidadRegistro.existenciaFinalVolumen >= 80) {
-            setTank2(tanque6)
-        }
-
-    }, [capacidadRegistro.existenciaFinalVolumen]);
-
     useEffect(() => {
         if (capacidadRegistro.existenciaInicialVolumen <= 35) {
             setTank1(tanque1)
@@ -538,7 +590,7 @@ export const NewCuadre = () => {
             setTank1(tanque6)
         }
 
-    }, [capacidadRegistro.existenciaInicialVolumen]);
+    }, [capacidadRegistro.existenciaInicialVolumen]); //Esto va a cambiar a porcentaje Glp
 
     const changeTotalGalones = () => {
         const totalGalones = metros.glsVendidoMetroI + metros.glsVendidoMetroII + metros.glsVendidoMetroIII +  metros.glsVendidoMetroIV + metros.glsVendidoMetroV + metros.glsVendidoMetroVI + metros.glsVendidoMetroVII + metros.glsVendidoMetroVIII + metros.glsVendidoMetroIX + metros.glsVendidoMetroX + metros.glsVendidoMetroDIST;
@@ -561,363 +613,578 @@ export const NewCuadre = () => {
     const galonesBrutos = totalGlsBrutos();
     const galonesCalibracion = totalCalibracion();
 
-
     const totalPre = parseFloat(galonesVendidos * precio);
     const totalDinero = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPre);
 
-    return (
-        <div className="cuadre-cont">
-            <div className="cuadre-inner-cont">
-                <div className="name-logo-section d-flex justify-content-between">
-                    <div className="logo">
-                        <img alt="ig-logo" src={logoImg.default} className="cuadre-mobile-logo"/>
+    const TotalesCalc = () => {
+        const counter = anotaciones.creditoCliente + totalDepPre + totalMontoPre + anotaciones.bonoPrepago + anotaciones.cheque;
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(counter);
+    }
+    const totalTotal = TotalesCalc();
+
+    const cuadreSubmitF = async (e) => {
+        e.preventDefault();
+       const bloque = {
+        cuadreId: 0,
+        envasadoraIdEnvasadora: {
+          envasadoraId: envasadoraId, //props
+          empresaEntity: {
+            empresaId: 0,
+            nombre: "string",
+            estado: true
+          },
+          bancoEntity: {
+            id: 0,
+            nombre: "string",
+            cuenta: "string",
+            ejecutivo: "string",
+            responsable: "string",
+            fecha_creacion: "2022-10-19T16:09:17.067Z",
+            estado: true
+          },
+          envasadoraNombre: "string",
+          cantidadDeTanque: 0,
+          capacidadTanqueUno: 0,
+          capacidadMaximaTanqueUno: 0,
+          apacidadIntermediaTanqueUno: 0,
+          capacidadMinimaTanqueUno: 0,
+          capacidadTanqueDos: 0,
+          capacidadMaximaTanqueDos: 0,
+          capacidadIntermediaTanqueDos: 0,
+          capacidadMinimaTanqueDos: 0,
+          total_disponible: 0,
+          metroCantidad: 0,
+          longitud: "string",
+          latitud: "string",
+          direccion: "string",
+          telefono: "string",
+          fechaCreacion: "2022-10-19T16:09:17.067Z",
+          estatus: true
+        },
+        ...capacidadRegistro,
+        conduceNumero: 0,
+        cantiGalonesRecibidos: 0,
+        precioActual: precio,
+        contadorInicialMetroUno: metros.contadorInicialMetroI,
+        contadorFinalMetroUno: metros.contadorFinalMetroI,
+        galonesMetroUno: metros.galonesMetroI,
+        calibracionGlpMetroUno: metros.calibracionMetroI,
+        galonesVendidoMetroUno: metros.glsVendidoMetroI,
+        totalMetroUno: metros.totalVendidoMetroI,
+        contadorInicialMetroDos: metros.contadorInicialMetroII,
+        contadorFinalMetroDos: metros.contadorFinalMetroII,
+        galonesMetroDos: metros.galonesMetroII,
+        calibracionGlpMetroDos: metros.calibracionMetroII,
+        galonesVendidoMetroDos: metros.glsVendidoMetroII,
+        totalMetroDos: metros.totalVendidoMetroII,
+        contadorInicialMetroTres: metros.contadorInicialMetroIII,
+        contadorFinalMetroTres: metros.contadorFinalMetroIII,
+        galonesMetroTres: metros.galonesMetroIII,
+        calibracionGlpMetroTres: metros.calibracionMetroIII,
+        galonesVendidoMetroTres: metros.glsVendidoMetroIII,
+        totalMetroTres: metros.totalVendidoMetroIII,
+        contadorInicialMetroCuatro: metros.contadorInicialMetroIV,
+        contadorFinalMetroCuatro: metros.contadorFinalMetroIV,
+        galonesMetroCuatro: metros.galonesMetroIV,
+        calibracionGlpMetroCuatro: metros.calibracionMetroIV,
+        galonesVendidoMetroCuatro: metros.glsVendidoMetroIV,
+        totalMetroCuatro: metros.totalVendidoMetroIV,
+        contadorInicialMetroCinco: metros.contadorInicialMetroV,
+        contadorFinalMetroCinco: metros.contadorFinalMetroV,
+        galonesMetroCinco: metros.galonesMetroV,
+        calibracionGlpMetroCinco: metros.calibracionMetroV,
+        galonesVendidoMetroCinco: metros.glsVendidoMetroV,
+        totalMetroCinco: metros.totalVendidoMetroV,
+        contadorInicialMetroSeis: metros.contadorInicialMetroVI,
+        contadorFinalMetroSeis: metros.contadorFinalMetroVI,
+        galonesMetroSeis: metros.galonesMetroVI,
+        calibracionGlpMetroSeis: metros.calibracionMetroVI,
+        galonesVendidoMetroSeis: metros.glsVendidoMetroVI,
+        totalMetroSeis: metros.totalVendidoMetroVI,
+        contadorInicialMetroSiete: metros.contadorInicialMetroVII,
+        contadorFinalMetroSiete: metros.contadorFinalMetroVII,
+        galonesMetroSiete: metros.galonesMetroVII,
+        calibracionGlpMetroSiete: metros.calibracionMetroVII,
+        galonesVendidoMetroSiete: metros.glsVendidoMetroVII,
+        totalMetroSiete: metros.totalVendidoMetroVII,
+        contadorInicialMetroOcho: metros.contadorInicialMetroVIII,
+        contadorFinalMetroOcho: metros.contadorFinalMetroVIII,
+        galonesMetroOcho: metros.galonesMetroVIII,
+        calibracionGlpMetroOcho: metros.calibracionMetroVIII,
+        galonesVendidoMetroOcho: metros.glsVendidoMetroVIII,
+        totalMetroOcho: metros.totalVendidoMetroVIII,
+        contadorInicialMetroNueve: metros.contadorInicialMetroIX,
+        contadorFinalMetroNueve: metros.contadorFinalMetroIX,
+        galonesMetroNueve: metros.galonesMetroIX,
+        calibracionGlpMetroNueve: metros.calibracionMetroIX,
+        galonesVendidoMetroNueve: metros.glsVendidoMetroIX,
+        totalMetroNueve: metros.totalVendidoMetroIX,
+        contadorInicialMetroDiez: metros.contadorInicialMetroX,
+        contadorFinalMetroDiez: metros.contadorFinalMetroX,
+        galonesMetroDiez: metros.galonesMetroX,
+        calibracionGlpMetroDiez: metros.calibracionMetroX,
+        galonesVendidoMetroDiez: metros.glsVendidoMetroX,
+        totalMetroDiez: metros.totalVendidoMetroX,
+        contadorInicialMetroDistribucion: metros.contadorInicialMetroDIST,
+        contadorFinalMetroDistribucion: metros.contadorInicialMetroDIST,
+        galonesMetroDistribucion: metros.galonesMetroDIST,
+        calibracionGlpMetroDistribucion: metros.calibracionMetroDIST,
+        galonesVendidoMetroDistribucion: metros.glsVendidoMetroDIST,
+        totalMetroDistribucion: metros.totalVendidoMetroDIST,
+        totalGalonesVendidos: galonesBrutos,
+        totalDineroVendido: totalPre,
+        sobranteGalones: anotaciones.sobranteGalones,
+        ventaEfectivo: totalDepPre,
+        creditoCliente: anotaciones.creditoCliente,
+        creditoTarjeta: totalLotePre,
+        tarjetaSolidaridad: totalMontoPre,
+        bonoPrepago: anotaciones.bonoPrepago,
+        cheque: anotaciones.cheque,
+        total: totalTotal,
+        deposito: totalDepPre,
+        depositoEntity: depositos,
+        loteEntity: lotesGuardar,
+        bonogasEntity: montosGuardar,
+        usuarioEntity: {
+            userId: userId, //viene del props
+            nombre: "string",
+            apellido: "string",
+            email: "string",
+            password: "string",
+            envasadoraEntity: [
+              {
+                envasadoraId: 0,
+                empresaEntity: {
+                  empresaId: 0,
+                  nombre: "string",
+                  estado: true
+                },
+                bancoEntity: {
+                    id: 0,
+                    nombre: "string",
+                    cuenta: "string",
+                    ejecutivo: "string",
+                    responsable: "string",
+                    fecha_creacion: "2022-10-19T16:09:17.067Z",
+                    estado: true
+                  },
+                  envasadoraNombre: "string",
+                  cantidadDeTanque: 0,
+                  capacidadTanqueUno: 0,
+                  capacidadMaximaTanqueUno: 0,
+                  apacidadIntermediaTanqueUno: 0,
+                  capacidadMinimaTanqueUno: 0,
+                  capacidadTanqueDos: 0,
+                  capacidadMaximaTanqueDos: 0,
+                  capacidadIntermediaTanqueDos: 0,
+                  capacidadMinimaTanqueDos: 0,
+                  total_disponible: 0,
+                  metroCantidad: 0,
+                  longitud: "string",
+                  latitud: "string",
+                  direccion: "string",
+                  telefono: "string",
+                  fechaCreacion: "2022-10-19T16:09:17.067Z",
+                  estatus: true
+                }
+            ],
+            estado: true
+          },
+          fechaCierre: "2022-09-28T18:43:47.337Z",
+          horaCierre: "2022-09-28T18:43:47.337Z",
+          estado: true
+        };
+        try {
+            const cuadreRequest = await fetch('http://10.1.105.205:8080/webapp.metrogas/cuadre/save', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(bloque)
+            });
+            if (cuadreRequest.ok) {
+                const json = await cuadreRequest.json();
+                console.log(json)
+            } else {
+                const json = await cuadreRequest.json();
+                console.log(json)
+            }
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    if (!authenticated){
+        navigate('/Login')
+    } else {
+        return (
+            <div className="cuadre-cont">
+                <div className="cuadre-inner-cont">
+                    <div className="name-logo-section d-flex justify-content-between">
+                        <div className="logo">
+                            <img alt="ig-logo" src={logoImg.default} className="cuadre-mobile-logo"/>
+                        </div>
+                        <div className="initial-ilustration ilustration">
+                            <div className="tank-graphic">
+                                <img src={tank1.default} alt="img-1" className="tank-img-graphic"/>
+                            </div>
+                            <div className="tank-graphic-labels">
+                                <p>C. Tanque: {capacidadTanque}</p>
+                                <p>C. Maxima: {capacidadMaxima}</p>
+                                <p>C. Minima: {capacidadMinima}</p>
+                                <p>C. Inter.: {capacidadIntermedia}</p>
+                                <p>GLP:</p>
+                                <p>GLP%:</p>
+                            </div>
+                        </div>
+                        <div className="names-section d-flex flex-column">
+                            <div className="page-name">
+                                <h1 className="cuadre-mobile-page-h1">Cuadre Diario de Planta</h1>
+                            </div>
+                            <div className="envasadora d-flex justify-content-between">
+                                <p className="envasadora-tag"></p>
+                                <span className="envasadora-span">{envName} </span>
+                            </div>
+                            <div className="daily-price d-flex justify-content-between w-35 align-self-end">
+                                <p className="price-tag">Precio:</p>
+                                <span className="price-span">{precioFormatado}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="names-section d-flex flex-column">
-                        <div className="page-name">
-                            <h1 className="cuadre-mobile-page-h1">Cuadre Diario de Planta</h1>
+                    <div className="main-section">
+                        <div className="nav-tabs w-100 d-flex">
+                            <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
+                                Estado del Tanque
+                            </div>
+                            <div className={active === 2 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(2)}}>
+                                Relacion de Metros
+                            </div>
+                            <div className={active === 3 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(3)}}>
+                                Depositos
+                            </div>
+                            <div className={active === 4 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(4)}}>
+                                Cuadre de Planta
+                            </div>
                         </div>
-                        <div className="envasadora d-flex justify-content-between">
-                            <p className="envasadora-tag"></p>
-                            <span className="envasadora-span">{/* aqui va el nombre de la envasadora tal */}Quebrada Honda </span>
-                        </div>
-                        <div className="daily-price d-flex justify-content-between w-35 align-self-end">
-                            <p className="price-tag">Precio:</p>
-                            <span className="price-span">{precioFormatado}</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="main-section">
-                    <div className="nav-tabs w-100 d-flex">
-                        <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
-                            Estado del Tanque
-                        </div>
-                        <div className={active === 2 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(2)}}>
-                            Relacion de Metros
-                        </div>
-                        <div className={active === 3 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(3)}}>
-                            Depositos
-                        </div>
-                        <div className={active === 4 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(4)}}>
-                            Cuadre de Planta
-                        </div>
-                    </div>
-                    <div className="cuadre-contents">
-                        <div className={active === 1 ? "cuadre-section estado-tanque main-active" : "cuadre-section estado-tanque"}>
-                            <div className="existencia-inicial estado-tanque-section">
-                                <p className="estado-tanque-label">Existencia inicial</p>
-                                <div className="input-list">
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Volumen</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaInicialVolumen}
-                                        name="existenciaInicialVolumen"
-                                        onChange={onInputChangeCapacidad2}/>
-                                    </div>
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Galones</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaInicialGalones}
-                                        name="existenciaInicialGalones"
-                                        onChange={onInputChangeCapacidad}/>
-                                    </div>
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Temperatura</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaInicialTemperatura}
-                                        name="existenciaInicialTemperatura"
-                                        onChange={onInputChangeCapacidad}/>
+                        <div className="cuadre-contents">
+                            {/* <div className={active === 1 ? "cuadre-section estado-tanque main-active" : "cuadre-section estado-tanque"}>
+                                <div className="existencia-inicial estado-tanque-section">
+                                    <p className="estado-tanque-label">Existencia inicial</p>
+                                    <div className="input-list">
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Volumen</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaInicialVolumen}
+                                            name="existenciaInicialVolumen"
+                                            onChange={onInputChangeCapacidad2}/>
+                                        </div>
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Galones</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaInicialGalones}
+                                            name="existenciaInicialGalones"
+                                            onChange={onInputChangeCapacidad}/>
+                                        </div>
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Temperatura</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaInicialTemperatura}
+                                            name="existenciaInicialTemperatura"
+                                            onChange={onInputChangeCapacidad}/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+    
+                                <div className="existencia-final estado-tanque-section">
+                                    <p className="estado-tanque-label">Existencia Final</p>
+                                    <div className="input-list">
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Volumen</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaFinalVolumen}
+                                            name="existenciaFinalVolumen"
+                                            onChange={onInputChangeCapacidad2}/>
+                                        </div>
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Galones</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaFinalGalones}
+                                            name="existenciaFinalGalones"
+                                            onChange={onInputChangeCapacidad}/>
+                                        </div>
+                                        <div className="input-group">
+                                            <span className="input-group-tag">Temp.</span>
+                                            <input
+                                            className="volumen-inicial-input" 
+                                            type="number"
+                                            value={capacidadRegistro.existenciaFinalTemperatura}
+                                            name="existenciaFinalTemperatura"
+                                            onChange={onInputChangeCapacidad}/>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+    
+                                <div className="ilustrations estado-tanque-section">
 
-                            <div className="existencia-final estado-tanque-section">
-                                <p className="estado-tanque-label">Existencia Final</p>
-                                <div className="input-list">
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Volumen</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaFinalVolumen}
-                                        name="existenciaFinalVolumen"
-                                        onChange={onInputChangeCapacidad2}/>
-                                    </div>
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Galones</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaFinalGalones}
-                                        name="existenciaFinalGalones"
-                                        onChange={onInputChangeCapacidad}/>
-                                    </div>
-                                    <div className="input-group">
-                                        <span className="input-group-tag">Temp.</span>
-                                        <input
-                                        className="volumen-inicial-input" 
-                                        type="number"
-                                        value={capacidadRegistro.existenciaFinalTemperatura}
-                                        name="existenciaFinalTemperatura"
-                                        onChange={onInputChangeCapacidad}/>
-                                    </div>
                                 </div>
-                                
-                            </div>
-
-                            <div className="ilustrations estado-tanque-section">
-                                <div className="initial-ilustration ilustration">
-
-                                    <div className="tank-graphic">
-                                        <p className="tanque-tag"> Existencia Inicial</p>
-                                        <p className="tank-tag">{capacidadRegistro.existenciaInicialVolumen}%</p>
-                                        <img src={tank1.default} alt="img-1" className="tank-img-graphic"/>
-                                    </div>
+                                {/* <div className="existencia-final estado-section">
+                                    <p className="estado-tanque-label d-block">Existencia Final</p>
                                 </div>
-                                <div className="final-ilustration ilustration">
-                                    <div className="tank-graphic">
-                                        <p className="tanque-tag"> Existencia Final</p>
-                                        <p className="tank-tag">{capacidadRegistro.existenciaFinalVolumen}%</p>
-                                        <img src={tank2.default} alt="img-1" className="tank-img-graphic"/>
-                                    </div>
+                                <div className="ilustrations estado-section">
+    
+                                </div> */}
+    
+                            {/* </div> */}
+                            <div className={active === 2 ? "cuadre-section relacion-metros main-active flex-column" : "cuadre-section relacion-metros"}>
+                                <div className="cuadre-principal seccion">
+                                    <table className="tabla-cuadre-principal">
+                                        <thead className="tabla-cuadre-principal-header">
+                                            <tr>
+                                                <th>TIPO</th>
+                                                <th>METRO I</th>
+                                                <th>METRO II</th>
+                                                <th>METRO III</th>
+                                                <th>METRO IV</th>
+                                                <th>METRO V</th>
+                                                <th>METRO VI</th>
+                                                <th>METRO VII</th>
+                                                <th>METRO VIII</th>
+                                                <th>METRO IX</th>
+                                                <th>METRO X</th>
+                                                <th>METRO DISTRIBUCION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="tabla-cuadre-principal-body">
+                                            <tr>
+                                                <td className="td-h">Contador Incial</td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroI" min="0" value={metros.contadorInicialMetroI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroII" min="0" value={metros.contadorInicialMetroII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroIII" min="0" value={metros.contadorInicialMetroIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroIV" min="0" value={metros.contadorInicialMetroIV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroV" min="0" value={metros.contadorInicialMetroV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroVI" min="0" value={metros.contadorInicialMetroVI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroVII" min="0" value={metros.contadorInicialMetroVII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroVIII" min="0" value={metros.contadorInicialMetroVIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroIX" min="0" value={metros.contadorInicialMetroIX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroX" min="0" value={metros.contadorInicialMetroX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorInicialMetroDIST" min="0" value={metros.contadorInicialMetroDIST} onChange={onInputChange} type="number"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="td-h">Contador Final</td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroI" min="0" value={metros.contadorFinalMetroI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroII" min="0" value={metros.contadorFinalMetroII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroIII" min="0" value={metros.contadorFinalMetroIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroIV" min="0" value={metros.contadorFinalMetroIV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroV" min="0" value={metros.contadorFinalMetroV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroVI" min="0" value={metros.contadorFinalMetroVI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroVII" min="0" value={metros.contadorFinalMetroVII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroVIII" min="0" value={metros.contadorFinalMetroVIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroIX" min="0" value={metros.contadorFinalMetroIX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroX" min="0" value={metros.contadorFinalMetroX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="contadorFinalMetroDIST" min="0" value={metros.contadorFinalMetroDIST} onChange={onInputChange} type="number"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="td-h">Galones</td>
+                                                <td><input className="td-cuadre-input" min="0" name="galonesMetroI" disabled value={metros.galonesMetroI}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroII" min="0" disabled value={metros.galonesMetroII}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroIII" min="0" disabled value={metros.galonesMetroIII}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroIV" min="0" disabled value={metros.galonesMetroIV}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroV" min="0" disabled value={metros.galonesMetroV}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroVI" min="0" disabled value={metros.galonesMetroVI}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroVII" min="0" disabled value={metros.galonesMetroVII}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroVIII" min="0" disabled value={metros.galonesMetroVIII}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroIX" min="0" disabled value={metros.galonesMetroIX}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroX" min="0" disabled value={metros.galonesMetroX}  onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="galonesMetroDIST" min="0" disabled value={metros.galonesMetroDIST}  onChange={onInputChange} type="number"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="td-h">Calibración GLS</td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroI" min="0" value={metros.calibracionMetroI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroII" min="0" value={metros.calibracionMetroII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroIII" min="0" value={metros.calibracionMetroIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroIV" min="0" value={metros.calibracionMetroIV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroV" min="0" value={metros.calibracionMetroV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroVI" min="0" value={metros.calibracionMetroVI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroVII" min="0" value={metros.calibracionMetroVII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroVIII" min="0" value={metros.calibracionMetroVIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroIX" min="0" value={metros.calibracionMetroIX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroX" min="0" value={metros.calibracionMetroX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="calibracionMetroDIST" min="0" value={metros.calibracionMetroDIST} onChange={onInputChange} type="number"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="td-h">GLS vendido</td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroI" min="0" disabled value={metros.glsVendidoMetroI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroII" min="0" disabled value={metros.glsVendidoMetroII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroIII" min="0" disabled value={metros.glsVendidoMetroIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroIV" min="0" disabled value={metros.glsVendidoMetroIV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroV" min="0" disabled value={metros.glsVendidoMetroV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroVI" min="0" disabled value={metros.glsVendidoMetroVI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroVII" min="0" disabled value={metros.glsVendidoMetroVII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroVIII" min="0" disabled value={metros.glsVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroIX" min="0" disabled value={metros.glsVendidoMetroIX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroX" min="0" disabled value={metros.glsVendidoMetroX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="glsVendidoMetroDIST" min="0" disabled value={metros.glsVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td className="td-h">Total RD$</td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroI" disabled value={metros.totalVendidoMetroI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroII" disabled value={metros.totalVendidoMetroII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroIII" disabled value={metros.totalVendidoMetroIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroIV" disabled value={metros.totalVendidoMetroIV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroV" disabled value={metros.totalVendidoMetroV} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroVI" disabled value={metros.totalVendidoMetroVI} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroVII" disabled value={metros.totalVendidoMetroVII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroVIII" disabled value={metros.totalVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroIX" disabled value={metros.totalVendidoMetroIX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroX" disabled value={metros.totalVendidoMetroX} onChange={onInputChange} type="number"/></td>
+                                                <td><input className="td-cuadre-input" name="totalVendidoMetroDIST" disabled value={metros.totalVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
+                                            </tr>
+    
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            {/* <div className="existencia-final estado-section">
-                                <p className="estado-tanque-label d-block">Existencia Final</p>
-                            </div>
-                            <div className="ilustrations estado-section">
-
-                            </div> */}
-
-                        </div>
-                        <div className={active === 2 ? "cuadre-section relacion-metros main-active flex-column" : "cuadre-section relacion-metros"}>
-                            <div className="cuadre-principal seccion">
-                                <table className="tabla-cuadre-principal">
-                                    <thead className="tabla-cuadre-principal-header">
-                                        <tr>
-                                            <th>TIPO</th>
-                                            <th>METRO I</th>
-                                            <th>METRO II</th>
-                                            <th>METRO III</th>
-                                            <th>METRO IV</th>
-                                            <th>METRO V</th>
-                                            <th>METRO VI</th>
-                                            <th>METRO VII</th>
-                                            <th>METRO VIII</th>
-                                            <th>METRO IX</th>
-                                            <th>METRO X</th>
-                                            <th>METRO DISTRIBUCION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="tabla-cuadre-principal-body">
-                                        <tr>
-                                            <td className="td-h">Contador Incial</td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroI" min="0" value={metros.contadorInicialMetroI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroII" min="0" value={metros.contadorInicialMetroII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroIII" min="0" value={metros.contadorInicialMetroIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroIV" min="0" value={metros.contadorInicialMetroIV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroV" min="0" value={metros.contadorInicialMetroV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroVI" min="0" value={metros.contadorInicialMetroVI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroVII" min="0" value={metros.contadorInicialMetroVII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroVIII" min="0" value={metros.contadorInicialMetroVIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroIX" min="0" value={metros.contadorInicialMetroIX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroX" min="0" value={metros.contadorInicialMetroX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorInicialMetroDIST" min="0" value={metros.contadorInicialMetroDIST} onChange={onInputChange} type="number"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="td-h">Contador Final</td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroI" min="0" value={metros.contadorFinalMetroI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroII" min="0" value={metros.contadorFinalMetroII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroIII" min="0" value={metros.contadorFinalMetroIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroIV" min="0" value={metros.contadorFinalMetroIV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroV" min="0" value={metros.contadorFinalMetroV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroVI" min="0" value={metros.contadorFinalMetroVI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroVII" min="0" value={metros.contadorFinalMetroVII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroVIII" min="0" value={metros.contadorFinalMetroVIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroIX" min="0" value={metros.contadorFinalMetroIX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroX" min="0" value={metros.contadorFinalMetroX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="contadorFinalMetroDIST" min="0" value={metros.contadorFinalMetroDIST} onChange={onInputChange} type="number"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="td-h">Galones</td>
-                                            <td><input className="td-cuadre-input" min="0" name="galonesMetroI" disabled value={metros.galonesMetroI}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroII" min="0" disabled value={metros.galonesMetroII}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroIII" min="0" disabled value={metros.galonesMetroIII}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroIV" min="0" disabled value={metros.galonesMetroIV}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroV" min="0" disabled value={metros.galonesMetroV}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroVI" min="0" disabled value={metros.galonesMetroVI}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroVII" min="0" disabled value={metros.galonesMetroVII}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroVIII" min="0" disabled value={metros.galonesMetroVIII}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroIX" min="0" disabled value={metros.galonesMetroIX}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroX" min="0" disabled value={metros.galonesMetroX}  onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="galonesMetroDIST" min="0" disabled value={metros.galonesMetroDIST}  onChange={onInputChange} type="number"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="td-h">Calibración GLS</td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroI" min="0" value={metros.calibracionMetroI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroII" min="0" value={metros.calibracionMetroII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroIII" min="0" value={metros.calibracionMetroIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroIV" min="0" value={metros.calibracionMetroIV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroV" min="0" value={metros.calibracionMetroV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroVI" min="0" value={metros.calibracionMetroVI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroVII" min="0" value={metros.calibracionMetroVII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroVIII" min="0" value={metros.calibracionMetroVIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroIX" min="0" value={metros.calibracionMetroIX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroX" min="0" value={metros.calibracionMetroX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="calibracionMetroDIST" min="0" value={metros.calibracionMetroDIST} onChange={onInputChange} type="number"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="td-h">GLS vendido</td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroI" min="0" disabled value={metros.glsVendidoMetroI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroII" min="0" disabled value={metros.glsVendidoMetroII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroIII" min="0" disabled value={metros.glsVendidoMetroIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroIV" min="0" disabled value={metros.glsVendidoMetroIV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroV" min="0" disabled value={metros.glsVendidoMetroV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroVI" min="0" disabled value={metros.glsVendidoMetroVI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroVII" min="0" disabled value={metros.glsVendidoMetroVII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroVIII" min="0" disabled value={metros.glsVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroIX" min="0" disabled value={metros.glsVendidoMetroIX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroX" min="0" disabled value={metros.glsVendidoMetroX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="glsVendidoMetroDIST" min="0" disabled value={metros.glsVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td className="td-h">Total RD$</td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroI" disabled value={metros.totalVendidoMetroI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroII" disabled value={metros.totalVendidoMetroII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroIII" disabled value={metros.totalVendidoMetroIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroIV" disabled value={metros.totalVendidoMetroIV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroV" disabled value={metros.totalVendidoMetroV} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroVI" disabled value={metros.totalVendidoMetroVI} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroVII" disabled value={metros.totalVendidoMetroVII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroVIII" disabled value={metros.totalVendidoMetroVIII} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroIX" disabled value={metros.totalVendidoMetroIX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroX" disabled value={metros.totalVendidoMetroX} onChange={onInputChange} type="number"/></td>
-                                            <td><input className="td-cuadre-input" name="totalVendidoMetroDIST" disabled value={metros.totalVendidoMetroDIST} onChange={onInputChange} type="number"/></td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="totales seccion d-flex">
-                                <div className="totales-side side-1">
-                                    <div className="totales-total">Total Galones: 
-                                        <input 
-                                        className="input-totales" 
-                                        name=" totalGalonesVendidos" 
-                                        type="number"
-                                        disabled
-                                        value={galonesBrutos}/>
+                                <div className="totales seccion d-flex">
+                                    <div className="totales-side side-1">
+                                        <div className="totales-total">Total Galones: 
+                                            <input 
+                                            className="input-totales" 
+                                            name=" totalGalonesVendidos" 
+                                            type="number"
+                                            disabled
+                                            value={galonesBrutos}/>
+                                        </div>
+                                        <div className="totales-total abajo">Total Calibración: 
+                                            <input
+                                            className="input-totales" 
+                                            name="totalDineroVendido"
+                                            value={galonesCalibracion}
+                                            disabled
+                                            type="text"/>
+                                        </div>
                                     </div>
-                                    <div className="totales-total abajo">Total Calibración: 
-                                        <input
-                                        className="input-totales" 
-                                        name="totalDineroVendido"
-                                        value={galonesCalibracion}
-                                        disabled
-                                        type="text"/>
-                                    </div>
-                                </div>
-                                <div className="totales-side side-2">
-                                    <div className="totales-total">GLS Vendido: 
-                                        <input 
-                                        className="input-totales" 
-                                        name=" totalGalonesVendidos" 
-                                        type="number"
-                                        disabled
-                                        value={galonesVendidos}/>
-                                    </div>
-                                    <div className="totales-total abajo">Total RD$: 
-                                        <input
-                                        className="input-totales" 
-                                        name="totalDineroVendido"
-                                        value={totalDinero}
-                                        disabled
-                                        type="text"/>
+                                    <div className="totales-side side-2">
+                                        <div className="totales-total">GLS Vendido: 
+                                            <input 
+                                            className="input-totales" 
+                                            name=" totalGalonesVendidos" 
+                                            type="number"
+                                            disabled
+                                            value={galonesVendidos}/>
+                                        </div>
+                                        <div className="totales-total abajo">Total RD$: 
+                                            <input
+                                            className="input-totales" 
+                                            name="totalDineroVendido"
+                                            value={totalDinero}
+                                            disabled
+                                            type="text"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={active === 3 ? "cuadre-section depositos-cont main-active" : "cuadre-section depositos-cont"}>
-                            <div className="depositos">
-                                <h5 className="deposito-header"> Depositos</h5>
-                                <table className="tabla-cuadro justify-self-right">
-                                    <thead className="tabla-cuadro-header">
-                                        <tr>
-                                            <th>Bancos</th>
-                                            <th>Depósitos</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="tabla-cuadro-body">
-                                        { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} key={banco.nombre}/>)) }
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div className="lotes depositos">
-                                <h5 className="deposito-header"> Tarjetas</h5>
-                                {lotes.map((obj, index) => <form key={index} className="lote-cont d-flex">
-                                    <input className="lote-input un" type="text" name="codigo" placeholder="codigo" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
-                                    <input className="lote-input deux" type="text" name="monto" placeholder="monto" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
-                                    <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete size={23} color="red"/></button>
-                                </form>
-                                )}
-                                {loteActive ? <button type="button" className="lote-btn btn-td-btn" onClick={saveLote}> Guardar Lote</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addLote}> Añadir Lote</button>}
-                            </div>
-                            <div className="lotes depositos">
-                                <h5 className="deposito-header"> Bonogas</h5>
-                                {MontosB.map((obj, index) => <form key={index} className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
-                                    <input className="lote-input un" type="text"/>
-                                    <input className="lote-input deux" type="text"/>
-                                    <button type="button" className="btn-lote-delete" onClick={()=>{removeMonto(index)}}> <AiOutlineDelete size={23} color="red"/></button>
-                                </form>
-                                )}
-                                <button type="button" className="lote-btn btn-td-btn" onClick={addMontoB}> Añadir Monto Bonogas</button>
-                            </div>
-                        </div>
-                        <div className={active === 4 ? "cuadre-section cuadre-cuadre main-active" : "cuadre-section cuadre-cuadre"}>
-                            <div className="anotaciones d-flex">
-                                <div className="division-uno">
-                                    <div className="anotacion-div">
-                                        <label>Sobrante GLS:</label>
-                                        <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.sobranteGalones} onChange={onChangeAnotaciones} type="number" />
-                                    </div>
-                                    <div className="anotacion-div">
-                                        <label>Venta Efectivo:</label>
-                                        <input className="anotaciones-input" name="ventaEfectivo" value={anotaciones.ventaEfectivo} onChange={onChangeAnotaciones} type="number" />
-                                    </div>
-                                    <div className="anotacion-div">
-                                        <label>Crédito Cliente:</label>
-                                        <input className="anotaciones-input" name="creditoCliente" value={anotaciones.creditoCliente} onChange={onChangeAnotaciones} type="number" />
-                                    </div>
-                                    <div className="anotacion-div">
-                                        <label>Crédito Tarjeta:</label>
-                                        <input className="anotaciones-input" name="creditoTarjeta" value={anotaciones.creditoTarjeta} onChange={onChangeAnotaciones} type="number" />
-                                    </div>
-                                    <div className="anotacion-div">
-                                        <label>Tarjeta Solidaridad:</label>
-                                        <input className="anotaciones-input" name="tarjetaSolidaridad" value={anotaciones.tarjetaSolidaridad} onChange={onChangeAnotaciones} type="number" />
+                            <div className={active === 3 ? "cuadre-section depositos-cont main-active" : "cuadre-section depositos-cont"}>
+                                <div className="depositos">
+                                    <h5 className="deposito-header"> Depositos</h5>
+                                    <table className="tabla-cuadro justify-self-right">
+                                        <thead className="tabla-cuadro-header">
+                                            <tr>
+                                                <th>Bancos</th>
+                                                <th>Depósitos</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="tabla-cuadro-body">
+                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={bancoId}/>)) }
+                                        </tbody>
+                                    </table>
+                                    <div className="total-depositos-1 totales-1 d-flex">
+                                        <label className="totales-depositos-label">Total Depositos:</label>
+                                        <input type="text" disabled value={depositosFormatado} className="totales-depositos-input"/>
                                     </div>
                                 </div>
-                                <div className="division-dos">
-                                    <div className="anotacion-div">
-                                        <label>Bonos Prepago:</label>
-                                        <input className="anotaciones-input" name="bonoPrepago" value={anotaciones.bonoPrepago} onChange={onChangeAnotaciones} type="number" />
+                                <div className="lotes depositos">
+                                    <h5 className="deposito-header"> Tarjetas</h5>
+                                    {lotes.map((obj, index) => <form key={index} className="lote-cont d-flex">
+                                        <input className="lote-input un" type="text" name="codigo" placeholder="codigo" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
+                                        <input className="lote-input deux" type="text" name="monto" placeholder="monto" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
+                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete size={23} color="red"/></button>
+                                    </form>
+                                    )}
+                                    {loteActive ? <button type="button" className="lote-btn btn-td-btn btn-add" onClick={saveLote}> Guardar Lote</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addLote}> Añadir Lote</button>}
+                                    <div className="total-depositos-1 totales-1 d-flex">
+                                        <label className="totales-depositos-label">Total Tarjetas:</label>
+                                        <input type="text" disabled value={lotesFormatado} className="totales-depositos-input"/>
                                     </div>
-                                    <div className="anotacion-div">
-                                        <label>Cheques:</label>
-                                        <input className="anotaciones-input" name="cheque" value={anotaciones.cheque} onChange={onChangeAnotaciones} type="number" />
+                                </div>
+                                <div className="lotes depositos">
+                                    <h5 className="deposito-header"> Bonogas</h5>
+                                    {MontosB.map((obj, index) => <form key={index} className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
+                                        <input className="lote-input un" name="codigo" type="text" placeholder="codigo Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
+                                        <input className="lote-input deux" name="monto" type="text" placeholder="monto Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
+                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeMonto(index)}}> <AiOutlineDelete size={23} color="red"/></button>
+                                    </form>
+                                    )}
+                                    {montoActive ? <button type="button" className="lote-btn btn-td-btn btn-add" onClick={saveMonto}> Guardar Monto</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addMontoB}> Añadir Monto</button>}
+                                    <div className="total-depositos-1 totales-1 d-flex">
+                                        <label className="totales-depositos-label">Total Bonogas:</label>
+                                        <input type="text" disabled value={MontosFormatado} className="totales-depositos-input"/>
                                     </div>
-                                    <div className="anotacion-div">
-                                        <label>Total:</label>
-                                        <input className="anotaciones-input" name="total" value={anotaciones.total} onChange={onChangeAnotaciones} type="number" />
+                                </div>
+                            </div>
+                            <div className={active === 4 ? "cuadre-section cuadre-cuadre main-active" : "cuadre-section cuadre-cuadre"}>
+                                <div className="anotaciones">
+                                    <div className="division-uno">
+                                        <div className="anotacion-div">
+                                            <label>Sobrante GLS:</label>
+                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.sobranteGalones} onChange={onChangeAnotaciones} type="number" />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Venta Efectivo:</label>
+                                            <input className="anotaciones-input" name="ventaEfectivo" value={depositosFormatado} type="text" disabled />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Crédito Cliente:</label>
+                                            <input className="anotaciones-input" name="creditoCliente" value={anotaciones.creditoCliente} onChange={onChangeAnotaciones} type="number" />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Crédito Tarjeta:</label>
+                                            <input className="anotaciones-input" name="creditoTarjeta" disabled value={lotesFormatado} type="text" />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Tarjeta Solidaridad:</label>
+                                            <input className="anotaciones-input" name="tarjetaSolidaridad" disabled value={MontosFormatado} type="text" />
+                                        </div>
                                     </div>
-                                    <div className="anotacion-div anotacion-deposito">
-                                        <label>Depósito RD$:</label>
-                                        <input className="anotaciones-input deposito" name="deposito" value={anotaciones.deposito} onChange={onChangeAnotaciones} type="number" />
+                                    <div className="division-dos">
+                                        <div className="anotacion-div">
+                                            <label>Bonos Prepago:</label>
+                                            <input className="anotaciones-input" name="bonoPrepago" value={anotaciones.bonoPrepago} onChange={onChangeAnotaciones} type="number" />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Cheques:</label>
+                                            <input className="anotaciones-input" name="cheque" value={anotaciones.cheque} onChange={onChangeAnotaciones} type="number" />
+                                        </div>
+                                        <div className="anotacion-div">
+                                            <label>Total:</label>
+                                            <input className="anotaciones-input" name="total" value={totalTotal} disabled  type="text" />
+                                        </div>
+                                        <div className="anotacion-div anotacion-deposito">
+                                            <label>Depósito RD$:</label>
+                                            <input className="anotaciones-input deposito" name="deposito" value={depositosFormatado} type="text" disabled />
+                                        </div>
+                                    </div>
+                                    <div className="cuadre-submit-btn">
+                                        <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>
                                     </div>
                                 </div>
                             </div>
@@ -925,6 +1192,6 @@ export const NewCuadre = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 };

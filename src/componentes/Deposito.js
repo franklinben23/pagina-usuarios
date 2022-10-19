@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 // eslint-disable-next-line
-import { FaMinus } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 

@@ -5,7 +5,7 @@ import { CgCloseO } from 'react-icons/cg';
 import { BsPlusLg } from 'react-icons/bs';
 
 export const Depositos = (props) => {
-    const { bancoName, functionSet } = props;
+    const { bancoName, functionSet, idEnvasadora, idBanco, idUser } = props;
 
     const [ trigger, setTrigger] = useState(false);
     const [depositosGuardados, setdepositosGuardados] = useState([]);
@@ -244,7 +244,7 @@ export const Depositos = (props) => {
             monto: depositoGuardar.monto,
             descripcion: depositoGuardar.descripcion,
             envasadoraEntity: {
-              envasadoraId: 12, //props
+              envasadoraId: idEnvasadora, //props
               empresaEntity: {
                 empresaId: 0,
                 nombre: "string",
@@ -263,7 +263,7 @@ export const Depositos = (props) => {
               estatus: true
             },
             bancoEntity: {
-              id: 3, // props
+              id: idBanco, // props
               nombre: "string",
               cuenta: "string",
               ejecutivo: "string",
@@ -272,7 +272,7 @@ export const Depositos = (props) => {
               estado: true
             },
             usuarioEntity: {
-              userId: 7, //props
+              userId: idUser, //props
               nombre: "string",
               apellido: "string",
               email: "string",
@@ -355,7 +355,6 @@ export const Depositos = (props) => {
                         <div className="anadir-deposito-seccion">
                             <form className="depositos-form">
                                     <div className="popup-form-div d-flex flex-column">
-
                                         <table className="tt"> {/*Investigar como manejar el ancho del tabla */}
                                             <thead>
                                                 <tr>
@@ -372,10 +371,6 @@ export const Depositos = (props) => {
                                                 </tr>
                                             </tbody>
                                         </table>
-                                            {/* Estos fields de abajo se llenaran con info proveniente de los props */}
-                                            {/* <input name="fk_envasadora" className="deposito-input" hidden value={fk_env}/>
-                                            <input name="fk_banco" className="deposito-input" hidden value={fk_bank}/>
-                                            <input name="fk_usuario" className="deposito-input" hidden value={fk_user}/> */}
                                             <div className="input-btn-cont d-flex">
                                               <button type="button" className="crear-field-btn" onClick={newHandleForm}><BsPlusLg size={25} color="green" /></button>
                                             </div>
@@ -392,5 +387,4 @@ export const Depositos = (props) => {
                 </td>
             </tr>
     )
-
 };

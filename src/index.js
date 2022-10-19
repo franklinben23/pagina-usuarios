@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { store, persistor } from './redux/configureStore';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegistrationMailer } from './componentes/RegistrationMailer';
-// import { Login } from './componentes/Login';
-// import { Registration } from './componentes/Registration';
+import { Login } from './componentes/Login';
+import { Registration } from './componentes/Registration';
 // import App from './App';
 // import { CuadreDiario } from './componentes/CuadreDiario';
 import { NewCuadre } from './componentes/NewCuadre';
@@ -16,14 +19,20 @@ import { NewCuadre } from './componentes/NewCuadre';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
     <React.StrictMode>
-      <Routes>
-        <Route path='/PaginaCuadre' element={<NewCuadre /> } />
-        <Route path='/Mailer' element={<RegistrationMailer /> } />
-      </Routes>
+      <BrowserRouter>
+          <PersistGate loading={null} persistor={persistor}>
+            <Provider store={store}>
+              <Routes>
+                <Route path='/Registration:email' element={<Registration /> } />
+                <Route path='/Login' element={<Login /> } />
+                <Route path='/PaginaCuadre' index element={<NewCuadre /> } />
+                <Route path='/Mailer' element={<RegistrationMailer /> } />
+              </Routes>
+              </Provider>
+            </PersistGate>
+      </BrowserRouter>
     </React.StrictMode>
-  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

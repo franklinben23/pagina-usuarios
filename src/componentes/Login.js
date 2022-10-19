@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logUser } from '../redux/user/userInfo.js'
 
 // mover hacia el folder principal.
 import './estilos/Registration.css';
@@ -8,14 +11,38 @@ import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Login = () => {
 
-    {/**La validacion funcionara con un usestate que enviara una request para validar los keys del correo antes de que cargue la forma, se chequeara con el body del response, y se llenara el field de email con lo que contenga el body*/}
-
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    const handleSubmit = (e) => {
-        //aquí es que se conectaría con el API
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/usuario/login', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    usuario: email,
+                    clave: password
+                })
+            });
+            if(request.ok) {
+                localStorage.setItem('Authenticated', true)
+                const json = await request.json();
+                console.log(json);// aqui se va a conectar con la tienda.
+                dispatch(logUser(json));
+                navigate('/PaginaCuadre');
+
+            }
+
+        } catch (error) {
+            
+        }
+
         setPassword('');
         setEmail('');
     };
