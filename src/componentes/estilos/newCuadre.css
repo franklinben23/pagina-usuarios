@@ -41,6 +41,10 @@
     font-size: 2.2vw;
 }
 
+.daily-price {
+    width: 11vw;
+}
+
 .price-tag {
     padding-top: 15px;
     padding-right: 5px;
@@ -49,6 +53,7 @@
 }
 
 .price-span {
+    padding-top: 8px;
     font-size: 1.8vw;
     color: green;
     font-weight: 500;
@@ -56,6 +61,27 @@
 
 .cuadre-mobile-logo {
     width: 18vw;
+}
+
+.logout-refresh-btns {
+    background-color: transparent;
+    font-size: 0.89vw;
+    transition: all 0.5s ease-in;
+}
+
+.refresh {
+    border-radius: 10px 0 0 10px;
+    transition: all 0.12s ease-in;
+}
+
+.log-out {
+    border-radius: 0 10px 10px 0;
+    transition: all 0.12s ease-in;
+}
+
+.refresh:hover, .log-out:hover {
+    background-color: black;
+    color: white;
 }
 
 .main-section {
@@ -362,4 +388,16 @@
     width: 15vw;
     height: 2.4vw;
     font-size: 1.3vw;
+}
+
+.btn-add {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+}
+
+.btn-add:hover {
+    background-color: #007332;
+    color: white;
 }

@@ -64,3 +64,16 @@
     aspect-ratio: 1;
     size: 1px;
 }
+
+.cargando-span {
+    font-size: 1.3vw;
+    font-weight: 700;
+}
+
+.banco-label {
+    font-size: 1.2vw;
+}
+
+.deposito-input-label, .deposito-input {
+    font-size: 1vw;
+}

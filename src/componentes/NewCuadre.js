@@ -1,9 +1,10 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, {useState, useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
+import { logOut } from "../redux/user/userInfo";
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 import * as tanque1 from './estilos/imagenes/tanques/tnaque_sn35.png';
 import * as tanque2 from './estilos/imagenes/tanques/tnaque_sn45.png';
@@ -13,7 +14,6 @@ import * as tanque5 from './estilos/imagenes/tanques/tnaque_sn75.png';
 import * as tanque6 from './estilos/imagenes/tanques/tnaque_sn85.png';
 // import {IoEllipsisVertical} from 'react-icons/io';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { object } from "yup";
 
 export const NewCuadre = () => {
 
@@ -36,6 +36,7 @@ export const NewCuadre = () => {
 
     // const [authenticated, setAuthenticated] = useState(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
@@ -339,7 +340,7 @@ export const NewCuadre = () => {
             setMontoActive(false);
             setMontosB(prev =>
                 prev.filter((obj, id)=> {
-                    return prev[id] !== prev[index];//investigar
+                    return prev[id] !== prev[index];
                 })
             );
         } if (montoToDlt.activo === false) {
@@ -983,6 +984,13 @@ export const NewCuadre = () => {
         inventarioPut();
         saveInventario();
     };
+
+    const logout = () => {
+        localStorage.removeItem('Authenticated');
+        dispatch(logOut());
+        navigate('/Login');
+
+    };
         return (
             <div className="cuadre-cont">
                 <div className="cuadre-inner-cont">
@@ -1012,9 +1020,13 @@ export const NewCuadre = () => {
                                 <p className="envasadora-tag"></p>
                                 <span className="envasadora-span">{envName} </span>
                             </div>
-                            <div className="daily-price d-flex justify-content-between w-35 align-self-end">
+                            <div className="daily-price d-flex justify-content-between align-self-end">
                                 <p className="price-tag">Precio:</p>
                                 <span className="price-span">{precioFormatado}</span>
+                            </div>
+                            <div className="logout-refresh-btns align-self-end">
+                                <button type="button" className="nav-btns refresh" onClick={()=>{window.location.reload()}}>Refrescar</button>
+                                <button type="button" className="nav-btns log-out" onClick={logout}>logout</button>
                             </div>
                         </div>
                     </div>

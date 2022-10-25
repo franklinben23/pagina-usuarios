@@ -19,217 +19,7 @@ export const Depositos = (props) => {
     });
     const [totalDepBanco, setTotalBanco] = useState(0);
 
-    // useEffect(()=> {
-    //     const testFor = JSON.parse({
-    //     "cuadreId": 0,
-    //     "envasadoraIdEnvasadora": {
-    //       "envasadoraId": 0,
-    //       "empresaEntity": {
-    //         "empresaId": 0,
-    //         "nombre": "string",
-    //         "estado": true
-    //       },
-    //       "envasadoraNombre": "string",
-    //       "capacidadTanque": 0,
-    //       "capacidadMaximaTanque": 0,
-    //       "capacidadIntermediaTanque": 0,
-    //       "capacidadMinimaTanque": 0,
-    //       "longitud": "string",
-    //       "latitud": "string",
-    //       "direccion": "string",
-    //       "telefono": "string",
-    //       "fechaCreacion": "2022-09-26T14:36:21.522Z",
-    //       "estatus": true
-    //     },
-    //     "existenciaInicialVolumen": 0,
-    //     "existenciaInicialGalones": 0,
-    //     "existenciaInicialTemperatura": 0,
-    //     "existenciaFinalVolumen": 0,
-    //     "existenciaFinalGalones": 0,
-    //     "existenciaFinalTemperatura": 0,
-    //     "conduceNumero": 0,
-    //     "cantiGalonesRecibidos": 0,
-    //     "precioActual": 0,
-    //     "contadorInicialMetroUno": 0,
-    //     "contadorFinalMetroUno": 0,
-    //     "galonesMetroUno": 0,
-    //     "calibracionGlpMetroUno": 0,
-    //     "galonesVendidoMetroUno": 0,
-    //     "totalMetroUno": 0,
-    //     "contadorInicialMetroDos": 0,
-    //     "contadorFinalMetroDos": 0,
-    //     "galonesMetroDos": 0,
-    //     "calibracionGlpMetroDos": 0,
-    //     "galonesVendidoMetroDos": 0,
-    //     "totalMetroDos": 0,
-    //     "contadorInicialMetroTres": 0,
-    //     "contadorFinalMetroTres": 0,
-    //     "galonesMetroTres": 0,
-    //     "calibracionGlpMetroTres": 0,
-    //     "galonesVendidoMetroTres": 0,
-    //     "totalMetroTres": 0,
-    //     "contadorInicialMetroCuatro": 0,
-    //     "contadorFinalMetroCuatro": 0,
-    //     "galonesMetroCuatro": 0,
-    //     "calibracionGlpMetroCuatro": 0,
-    //     "galonesVendidoMetroCuatro": 0,
-    //     "totalMetroCuatro": 0,
-    //     "contadorInicialMetroCinco": 0,
-    //     "contadorFinalMetroCinco": 0,
-    //     "galonesMetroCinco": 0,
-    //     "calibracionGlpMetroCinco": 0,
-    //     "galonesVendidoMetroCinco": 0,
-    //     "totalMetroCinco": 0,
-    //     "contadorInicialMetroSeis": 0,
-    //     "contadorFinalMetroSeis": 0,
-    //     "galonesMetroSeis": 0,
-    //     "calibracionGlpMetroSeis": 0,
-    //     "galonesVendidoMetroSeis": 0,
-    //     "totalMetroSeis": 0,
-    //     "contadorInicialMetroSiete": 0,
-    //     "contadorFinalMetroSiete": 0,
-    //     "galonesMetroSiete": 0,
-    //     "calibracionGlpMetroSiete": 0,
-    //     "galonesVendidoMetroSiete": 0,
-    //     "totalMetroSiete": 0,
-    //     "contadorInicialMetroOcho": 0,
-    //     "contadorFinalMetroOcho": 0,
-    //     "galonesMetroOcho": 0,
-    //     "calibracionGlpMetroOcho": 0,
-    //     "galonesVendidoMetroOcho": 0,
-    //     "totalMetroOcho": 0,
-    //     "contadorInicialMetroNueve": 0,
-    //     "contadorFinalMetroNueve": 0,
-    //     "galonesMetroNueve": 0,
-    //     "calibracionGlpMetroNueve": 0,
-    //     "galonesVendidoMetroNueve": 0,
-    //     "totalMetroNueve": 0,
-    //     "contadorInicialMetroDiez": 0,
-    //     "contadorFinalMetroDiez": 0,
-    //     "galonesMetroDiez": 0,
-    //     "calibracionGlpMetroDiez": 0,
-    //     "galonesVendidoMetroDiez": 0,
-    //     "totalMetroDiez": 0,
-    //     "contadorInicialMetroDistribucion": 0,
-    //     "contadorFinalMetroDistribucion": 0,
-    //     "galonesMetroDistribucion": 0,
-    //     "calibracionGlpMetroDistribucion": 0,
-    //     "galonesVendidoMetroDistribucion": 0,
-    //     "totalMetroDistribucion": 0,
-    //     "totalGalonesVendidos": 0,
-    //     "totalDineroVendido": 0,
-    //     "sobranteGalones": 0,
-    //     "ventaEfectivo": 0,
-    //     "creditoCliente": 0,
-    //     "creditoTarjeta": 0,
-    //     "tarjetaSolidaridad": 0,
-    //     "bonoPrepago": 0,
-    //     "cheque": 0,
-    //     "total": 0,
-    //     "deposito": 0,
-    //     "depositoEntity": [
-    //       {
-    //         "depositoId": 0,
-    //         "codigo": "string",
-    //         "monto": 0,
-    //         "descripcion": "string",
-    //         "envasadoraEntity": {
-    //           "envasadoraId": 0,
-    //           "empresaEntity": {
-    //             "empresaId": 0,
-    //             "nombre": "string",
-    //             "estado": true
-    //           },
-    //           "envasadoraNombre": "string",
-    //           "capacidadTanque": 0,
-    //           "capacidadMaximaTanque": 0,
-    //           "capacidadIntermediaTanque": 0,
-    //           "capacidadMinimaTanque": 0,
-    //           "longitud": "string",
-    //           "latitud": "string",
-    //           "direccion": "string",
-    //           "telefono": "string",
-    //           "fechaCreacion": "2022-09-26T14:36:21.522Z",
-    //           "estatus": true
-    //         },
-    //         "bancoEntity": {
-    //           "id": 0,
-    //           "nombre": "string",
-    //           "cuenta": "string",
-    //           "ejecutivo": "string",
-    //           "responsable": "string",
-    //           "fecha_creacion": "2022-09-26T14:36:21.522Z",
-    //           "estado": true
-    //         },
-    //         "usuarioEntity": {
-    //           "userId": 0,
-    //           "nombre": "string",
-    //           "apellido": "string",
-    //           "email": "string",
-    //           "password": "string",
-    //           "envasadoraEntity": [
-    //             {
-    //               "envasadoraId": 0,
-    //               "empresaEntity": {
-    //                 "empresaId": 0,
-    //                 "nombre": "string",
-    //                 "estado": true
-    //               },
-    //               "envasadoraNombre": "string",
-    //               "capacidadTanque": 0,
-    //               "capacidadMaximaTanque": 0,
-    //               "capacidadIntermediaTanque": 0,
-    //               "capacidadMinimaTanque": 0,
-    //               "longitud": "string",
-    //               "latitud": "string",
-    //               "direccion": "string",
-    //               "telefono": "string",
-    //               "fechaCreacion": "2022-09-26T14:36:21.522Z",
-    //               "estatus": true
-    //             }
-    //           ],
-    //           "estado": true
-    //         },
-    //         "fecha": "2022-09-26T14:36:21.522Z",
-    //         "hora": "2022-09-26T14:36:21.522Z",
-    //         "estado": true
-    //       }
-    //     ],
-    //     "usuarioEntity": {
-    //       "userId": 0,
-    //       "nombre": "string",
-    //       "apellido": "string",
-    //       "email": "string",
-    //       "password": "string",
-    //       "envasadoraEntity": [
-    //         {
-    //           "envasadoraId": 0,
-    //           "empresaEntity": {
-    //             "empresaId": 0,
-    //             "nombre": "string",
-    //             "estado": true
-    //           },
-    //           "envasadoraNombre": "string",
-    //           "capacidadTanque": 0,
-    //           "capacidadMaximaTanque": 0,
-    //           "capacidadIntermediaTanque": 0,
-    //           "capacidadMinimaTanque": 0,
-    //           "longitud": "string",
-    //           "latitud": "string",
-    //           "direccion": "string",
-    //           "telefono": "string",
-    //           "fechaCreacion": "2022-09-26T14:36:21.522Z",
-    //           "estatus": true
-    //         }
-    //       ],
-    //       "estado": true
-    //     },
-    //     "fechaCierre": "2022-09-26T14:36:21.522Z",
-    //     "horaCierre": "2022-09-26T14:36:21.522Z",
-    //     "estado": true
-    // });
-    //     console.log(testFor);
-    // }, [])
+    const [cargando, setCargando] = useState(false);
 
      const handleFormChangeSave = (event) => {
         const {name, value} = event.target;
@@ -240,7 +30,7 @@ export const Depositos = (props) => {
      };
 
      const newHandleForm = async () => {
-        console.log('is this responding');
+        setCargando(true);
         const newField = {
             depositoId: 0,
             codigo: depositoGuardar.codigo,
@@ -317,7 +107,7 @@ export const Depositos = (props) => {
         });
         if (request.status === 201) {
             const json = await request.json();
-            console.log(json);
+            setCargando(false);
             setdepositosGuardados(prev => ([
                 ...prev,
                 json
@@ -363,7 +153,7 @@ export const Depositos = (props) => {
                 <td>
                 {trigger ? <div className="popup-cont">
                     <div className="popup-inner">
-                        <label>{bancoName}</label>
+                        <label  className="banco-label">{bancoName}</label>
                         <div className="anadir-deposito-seccion">
                             <form className="depositos-form">
                                     <div className="popup-form-div d-flex flex-column">
@@ -381,6 +171,7 @@ export const Depositos = (props) => {
                                                     <td className="td-d"> <input name="monto" type="number" value={depositoGuardar.monto} onChange={handleFormChangeSave} className="deposito-input"/> </td>
                                                     <td className="td-d"> <input name="descripcion" type="text" value={depositoGuardar.descripcion} onChange={handleFormChangeSave} className="deposito-input"/> </td>
                                                 </tr>
+                                                {cargando ? <tr className="cargando-span">Cargando...</tr> : ''}
                                             </tbody>
                                         </table>
                                             <div className="input-btn-cont d-flex">
