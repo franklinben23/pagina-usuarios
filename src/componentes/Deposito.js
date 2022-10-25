@@ -5,6 +5,9 @@ import { RiDeleteBin2Line } from 'react-icons/ri';
 
 export const Deposito = (props) => {
 
+  const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+  const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+
     const {depositoB, indexB, depositosGuardadosB, setdepositosGuardadosB} = props;
 
     const [isDisabled, setIsDisabled] = useState(true);
@@ -18,7 +21,7 @@ export const Deposito = (props) => {
     const removeFields = async (index) => {
         let data = [...depositosGuardadosB];
             const idDelete = data[index].depositoId;
-            await fetch(`http://10.1.105.205:8080/webapp.metrogas/deposito/delete/${idDelete}`, {
+            await fetch(`${pathLocal}deposito/delete/${idDelete}`, {
                 method: 'DELETE'
             });
             data.splice(index, 1)
@@ -31,7 +34,7 @@ export const Deposito = (props) => {
         const fieldToPatchId = fieldToPatch.depositoId;
         if (!isDisabled) {
             try {
-                const pachtRequest = await fetch(`http://10.1.105.205:8080/webapp.metrogas/deposito/update/${fieldToPatchId}`, {
+                const pachtRequest = await fetch(`${pathLocal}deposito/update/${fieldToPatchId}`, {
                   method: 'PUT',
                   headers: {
                     'content-type': 'application/json'

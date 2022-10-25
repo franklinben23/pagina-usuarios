@@ -11,17 +11,22 @@ import * as tanque3 from './estilos/imagenes/tanques/tnaque_sn50.png';
 import * as tanque4 from './estilos/imagenes/tanques/tnaque_sn65.png';
 import * as tanque5 from './estilos/imagenes/tanques/tnaque_sn75.png';
 import * as tanque6 from './estilos/imagenes/tanques/tnaque_sn85.png';
+// import {IoEllipsisVertical} from 'react-icons/io';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { object } from "yup";
 
 export const NewCuadre = () => {
+
+    // const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = 'https://cuadre-diario-planta.herokuapp.com/';
 
     const userBlock = useSelector((state) => state.userInfo);
 
     const envasadora = userBlock.envasadoraEntity[0];
-    const capacidadTanque = envasadora.capacidadTanque;
-    const capacidadMinima = envasadora.capacidadMinimaTanque;
-    const capacidadMaxima = envasadora.capacidadMaximaTanque;
-    const capacidadIntermedia = envasadora.capacidadIntermediaTanque;
+    const capacidadTanque = envasadora.capacidadTanqueUno;
+    const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
+    const capacidadMaxima = envasadora.capacidadMaximaTanqueUno;
+    const capacidadIntermedia = envasadora.capacidadIntermediaTanqueUno;
 
     const envasadoraId = envasadora.envasadoraId;
     const userId = userBlock.userId;
@@ -31,24 +36,58 @@ export const NewCuadre = () => {
 
     // const [authenticated, setAuthenticated] = useState(null);
     const navigate = useNavigate();
-    useEffect(()=> {
+
+    const [precio, setPrecio] = useState(0);
+    const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
+    const  [glpPercentage, setGlpPercentage] = useState('');
+    const  [glpEx, setGlpEx] = useState('');
+
+    const [inventarioId, setInventarioId] = useState('');
+
+    useEffect(() => {
         const loggedInUser = localStorage.getItem('Authenticated') || null;
         if (!loggedInUser) {
             navigate('/login');
         }
-    }, []);
+        const getApiInfo = async () => {
+           try {
+               const precioRequest = await fetch(`${pathLocal}precio/getglp`); //hablar para cambiar endpoints
+               if (precioRequest.ok) {
+                const json = await precioRequest.json();
+                const un = json[0];
+                const precio = un.precio;
+                setPrecio(precio);
+               }
+               else {
+                   throw 'no se pudo realizar la conexion, revise la conexion o contacte soporte'
+               }
+           } catch (error) {
+               alert(error) //investigar styling de alerts
+           }
+       }
+       const getInventario = async () => {
+        try {
+            const request = await fetch(`${pathLocal}/inventario/altual`);
+            const json = await request.json();
+            if(request.ok) {
+                const obj = json.findLast(el => el.envasadoraEntity.envasadoraId === envasadoraId);
+                setGlpPercentage(obj.porcentajeGLP);
+                setGlpEx(obj.existenciaGLP)
+                setInventarioId(obj.inventarioId);
+            }if(!request.ok) {
+                alert('inventario end point ha tenido problemas')
+            }
+        } catch (error) {
+            
+        }
+       }
+       getInventario();
+       getApiInfo();
+       
+   }, [])
 
     const [tank1, setTank1] = useState(tanque1)
-    const [active, setActive] = useState(1);
-
-    const [capacidadRegistro, setCapacidadRegistro] = useState({
-        existenciaInicialVolumen: 35,
-        existenciaInicialGalones: 0,
-        existenciaInicialTemperatura: 0,
-        existenciaFinalVolumen: 35,
-        existenciaFinalGalones: 0,
-        existenciaFinalTemperatura: 0
-    });
+    const [active, setActive] = useState(2);
 
     const [metros, setMetros] = useState({
         contadorInicialMetroI: 0,
@@ -119,6 +158,7 @@ export const NewCuadre = () => {
         totalVendidoMetroDIST: 0,
     });
 
+   
     // eslint-disable-next-line
     const bancos = ([envasadora.bancoEntity]);
 
@@ -166,7 +206,7 @@ export const NewCuadre = () => {
     const saveLote = async () => {
         const lastLote = lotes[lotes.length -1];
         try {
-            const request = await fetch('https://cuadre-diario-planta.herokuapp.com/lote/save', {
+            const request = await fetch(`${pathLocal}lote/save`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -207,7 +247,7 @@ export const NewCuadre = () => {
         } if (loteToDlt.activo === false) {
             const loteToErase = lotesGuardar.find((lote) => lote.codigo === loteToDlt.codigo);
             try {
-                const request = await fetch(`https://cuadre-diario-planta.herokuapp.com/lote/delete/${loteToErase.id}`, {
+                const request = await fetch(`${pathLocal}lote/delete/${loteToErase.id}`, {
                     method: 'DELETE',
                     headers: {
                         'content-type': 'application/json'
@@ -264,7 +304,7 @@ export const NewCuadre = () => {
     const saveMonto = async () => {
         const LastMonto = MontosB[MontosB.length -1];
         try {
-            const request = await fetch('https://cuadre-diario-planta.herokuapp.com/bonogas/save', {
+            const request = await fetch(`${pathLocal}bonogas/save`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -305,7 +345,7 @@ export const NewCuadre = () => {
         } if (montoToDlt.activo === false) {
             const montoToErase = montosGuardar.find((monto) => monto.codigo === montoToDlt.codigo);
             try {
-                const request = await fetch(`https://cuadre-diario-planta.herokuapp.com/bonogas/delete/${montoToErase.id}`, {
+                const request = await fetch(`${pathLocal}bonogas/delete/${montoToErase.id}`, {
                     method: 'DELETE',
                     headers: {
                         'content-type': 'application/json'
@@ -338,12 +378,15 @@ export const NewCuadre = () => {
 
           // eslint-disable-next-line
           const [depositos, setDepositos] = useState([]);
-          const depositosFunction = () => depositos.reduce((r, a ) => r + a.monto, 0);//hacer de esto un one-liner.
-          const totalDepPre = useMemo(()=> {
-              const actDepositos = depositosFunction();
-              return actDepositos
-          }, [depositos]);
-          const depositosFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalDepPre);
+          const [depositoAdentro, setDepositoAdentro] = useState(0);
+        //   const depositosFunction = () => depositos.reduce((r, a ) => r + a.monto, 0);//hacer de esto un one-liner.
+        //   const totalDepPre = useMemo(()=> {
+        //     let total = 0;
+        //     const totalDep = depositos.map((deposito) => (total += parseFloat(deposito.monto)));
+        //     const value = totalDep[totalDep.length -1];
+        //     return value
+        //   }, [depositos]);
+          const depositosFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(depositoAdentro);
       
           const lotesFunction = () => lotesGuardar.reduce((r, a ) => r + a.monto, 0);
           const totalLotePre = useMemo(() => {
@@ -564,8 +607,6 @@ export const NewCuadre = () => {
     // cierre de prueba
 
     // eslint-disable-next-line
-    const [precio, setPrecio] = useState(147.60);
-    const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
 
     const onInputChange = e => {
         const { name, value } = e.target;
@@ -576,21 +617,21 @@ export const NewCuadre = () => {
       };
 
     useEffect(() => {
-        if (capacidadRegistro.existenciaInicialVolumen <= 35) {
+        if (glpPercentage <= 35) {
             setTank1(tanque1)
-        } if (capacidadRegistro.existenciaInicialVolumen >= 45) {
+        } if (glpPercentage >= 45) {
             setTank1(tanque2)
-        } if (capacidadRegistro.existenciaInicialVolumen >= 50) {
+        } if (glpPercentage >= 50) {
             setTank1(tanque3)
-        } if (capacidadRegistro.existenciaInicialVolumen >= 65) {
+        } if (glpPercentage >= 65) {
             setTank1(tanque4)
-        } if (capacidadRegistro.existenciaInicialVolumen >= 75) {
+        } if (glpPercentage >= 75) {
             setTank1(tanque5)
-        } if (capacidadRegistro.existenciaInicialVolumen >= 80) {
+        } if (glpPercentage >= 80) {
             setTank1(tanque6)
         }
 
-    }, [capacidadRegistro.existenciaInicialVolumen]); //Esto va a cambiar a porcentaje Glp
+    }, [glpPercentage]);
 
     const changeTotalGalones = () => {
         const totalGalones = metros.glsVendidoMetroI + metros.glsVendidoMetroII + metros.glsVendidoMetroIII +  metros.glsVendidoMetroIV + metros.glsVendidoMetroV + metros.glsVendidoMetroVI + metros.glsVendidoMetroVII + metros.glsVendidoMetroVIII + metros.glsVendidoMetroIX + metros.glsVendidoMetroX + metros.glsVendidoMetroDIST;
@@ -616,202 +657,331 @@ export const NewCuadre = () => {
     const totalPre = parseFloat(galonesVendidos * precio);
     const totalDinero = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPre);
 
-    const TotalesCalc = () => {
-        const counter = anotaciones.creditoCliente + totalDepPre + totalMontoPre + anotaciones.bonoPrepago + anotaciones.cheque;
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(counter);
-    }
-    const totalTotal = TotalesCalc();
+    // const TotalesCalc = () => {
+    //     const counter = anotaciones.creditoCliente + depositoAdentro + totalMontoPre + anotaciones.bonoPrepago + anotaciones.cheque;
+    //     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(counter);
+    // }
+    // const totalTotal = TotalesCalc();
 
-    const cuadreSubmitF = async (e) => {
-        e.preventDefault();
-       const bloque = {
-        cuadreId: 0,
-        envasadoraIdEnvasadora: {
-          envasadoraId: envasadoraId, //props
-          empresaEntity: {
-            empresaId: 0,
-            nombre: "string",
-            estado: true
-          },
-          bancoEntity: {
-            id: 0,
-            nombre: "string",
-            cuenta: "string",
-            ejecutivo: "string",
-            responsable: "string",
-            fecha_creacion: "2022-10-19T16:09:17.067Z",
-            estado: true
-          },
-          envasadoraNombre: "string",
-          cantidadDeTanque: 0,
-          capacidadTanqueUno: 0,
-          capacidadMaximaTanqueUno: 0,
-          apacidadIntermediaTanqueUno: 0,
-          capacidadMinimaTanqueUno: 0,
-          capacidadTanqueDos: 0,
-          capacidadMaximaTanqueDos: 0,
-          capacidadIntermediaTanqueDos: 0,
-          capacidadMinimaTanqueDos: 0,
-          total_disponible: 0,
-          metroCantidad: 0,
-          longitud: "string",
-          latitud: "string",
-          direccion: "string",
-          telefono: "string",
-          fechaCreacion: "2022-10-19T16:09:17.067Z",
-          estatus: true
-        },
-        ...capacidadRegistro,
-        conduceNumero: 0,
-        cantiGalonesRecibidos: 0,
-        precioActual: precio,
-        contadorInicialMetroUno: metros.contadorInicialMetroI,
-        contadorFinalMetroUno: metros.contadorFinalMetroI,
-        galonesMetroUno: metros.galonesMetroI,
-        calibracionGlpMetroUno: metros.calibracionMetroI,
-        galonesVendidoMetroUno: metros.glsVendidoMetroI,
-        totalMetroUno: metros.totalVendidoMetroI,
-        contadorInicialMetroDos: metros.contadorInicialMetroII,
-        contadorFinalMetroDos: metros.contadorFinalMetroII,
-        galonesMetroDos: metros.galonesMetroII,
-        calibracionGlpMetroDos: metros.calibracionMetroII,
-        galonesVendidoMetroDos: metros.glsVendidoMetroII,
-        totalMetroDos: metros.totalVendidoMetroII,
-        contadorInicialMetroTres: metros.contadorInicialMetroIII,
-        contadorFinalMetroTres: metros.contadorFinalMetroIII,
-        galonesMetroTres: metros.galonesMetroIII,
-        calibracionGlpMetroTres: metros.calibracionMetroIII,
-        galonesVendidoMetroTres: metros.glsVendidoMetroIII,
-        totalMetroTres: metros.totalVendidoMetroIII,
-        contadorInicialMetroCuatro: metros.contadorInicialMetroIV,
-        contadorFinalMetroCuatro: metros.contadorFinalMetroIV,
-        galonesMetroCuatro: metros.galonesMetroIV,
-        calibracionGlpMetroCuatro: metros.calibracionMetroIV,
-        galonesVendidoMetroCuatro: metros.glsVendidoMetroIV,
-        totalMetroCuatro: metros.totalVendidoMetroIV,
-        contadorInicialMetroCinco: metros.contadorInicialMetroV,
-        contadorFinalMetroCinco: metros.contadorFinalMetroV,
-        galonesMetroCinco: metros.galonesMetroV,
-        calibracionGlpMetroCinco: metros.calibracionMetroV,
-        galonesVendidoMetroCinco: metros.glsVendidoMetroV,
-        totalMetroCinco: metros.totalVendidoMetroV,
-        contadorInicialMetroSeis: metros.contadorInicialMetroVI,
-        contadorFinalMetroSeis: metros.contadorFinalMetroVI,
-        galonesMetroSeis: metros.galonesMetroVI,
-        calibracionGlpMetroSeis: metros.calibracionMetroVI,
-        galonesVendidoMetroSeis: metros.glsVendidoMetroVI,
-        totalMetroSeis: metros.totalVendidoMetroVI,
-        contadorInicialMetroSiete: metros.contadorInicialMetroVII,
-        contadorFinalMetroSiete: metros.contadorFinalMetroVII,
-        galonesMetroSiete: metros.galonesMetroVII,
-        calibracionGlpMetroSiete: metros.calibracionMetroVII,
-        galonesVendidoMetroSiete: metros.glsVendidoMetroVII,
-        totalMetroSiete: metros.totalVendidoMetroVII,
-        contadorInicialMetroOcho: metros.contadorInicialMetroVIII,
-        contadorFinalMetroOcho: metros.contadorFinalMetroVIII,
-        galonesMetroOcho: metros.galonesMetroVIII,
-        calibracionGlpMetroOcho: metros.calibracionMetroVIII,
-        galonesVendidoMetroOcho: metros.glsVendidoMetroVIII,
-        totalMetroOcho: metros.totalVendidoMetroVIII,
-        contadorInicialMetroNueve: metros.contadorInicialMetroIX,
-        contadorFinalMetroNueve: metros.contadorFinalMetroIX,
-        galonesMetroNueve: metros.galonesMetroIX,
-        calibracionGlpMetroNueve: metros.calibracionMetroIX,
-        galonesVendidoMetroNueve: metros.glsVendidoMetroIX,
-        totalMetroNueve: metros.totalVendidoMetroIX,
-        contadorInicialMetroDiez: metros.contadorInicialMetroX,
-        contadorFinalMetroDiez: metros.contadorFinalMetroX,
-        galonesMetroDiez: metros.galonesMetroX,
-        calibracionGlpMetroDiez: metros.calibracionMetroX,
-        galonesVendidoMetroDiez: metros.glsVendidoMetroX,
-        totalMetroDiez: metros.totalVendidoMetroX,
-        contadorInicialMetroDistribucion: metros.contadorInicialMetroDIST,
-        contadorFinalMetroDistribucion: metros.contadorInicialMetroDIST,
-        galonesMetroDistribucion: metros.galonesMetroDIST,
-        calibracionGlpMetroDistribucion: metros.calibracionMetroDIST,
-        galonesVendidoMetroDistribucion: metros.glsVendidoMetroDIST,
-        totalMetroDistribucion: metros.totalVendidoMetroDIST,
-        totalGalonesVendidos: galonesBrutos,
-        totalDineroVendido: totalPre,
-        sobranteGalones: anotaciones.sobranteGalones,
-        ventaEfectivo: totalDepPre,
-        creditoCliente: anotaciones.creditoCliente,
-        creditoTarjeta: totalLotePre,
-        tarjetaSolidaridad: totalMontoPre,
-        bonoPrepago: anotaciones.bonoPrepago,
-        cheque: anotaciones.cheque,
-        total: totalTotal,
-        deposito: totalDepPre,
-        depositoEntity: depositos,
-        loteEntity: lotesGuardar,
-        bonogasEntity: montosGuardar,
-        usuarioEntity: {
-            userId: userId, //viene del props
-            nombre: "string",
-            apellido: "string",
-            email: "string",
-            password: "string",
-            envasadoraEntity: [
-              {
-                envasadoraId: 0,
-                empresaEntity: {
-                  empresaId: 0,
-                  nombre: "string",
-                  estado: true
-                },
-                bancoEntity: {
-                    id: 0,
-                    nombre: "string",
-                    cuenta: "string",
-                    ejecutivo: "string",
-                    responsable: "string",
-                    fecha_creacion: "2022-10-19T16:09:17.067Z",
-                    estado: true
-                  },
-                  envasadoraNombre: "string",
-                  cantidadDeTanque: 0,
-                  capacidadTanqueUno: 0,
-                  capacidadMaximaTanqueUno: 0,
-                  apacidadIntermediaTanqueUno: 0,
-                  capacidadMinimaTanqueUno: 0,
-                  capacidadTanqueDos: 0,
-                  capacidadMaximaTanqueDos: 0,
-                  capacidadIntermediaTanqueDos: 0,
-                  capacidadMinimaTanqueDos: 0,
-                  total_disponible: 0,
-                  metroCantidad: 0,
-                  longitud: "string",
-                  latitud: "string",
-                  direccion: "string",
-                  telefono: "string",
-                  fechaCreacion: "2022-10-19T16:09:17.067Z",
-                  estatus: true
-                }
-            ],
-            estado: true
-          },
-          fechaCierre: "2022-09-28T18:43:47.337Z",
-          horaCierre: "2022-09-28T18:43:47.337Z",
-          estado: true
-        };
+
+    // const [requestSent, setRequestSent] = useState();
+    const saveInventario = async () => {
+
+        const glsActual = parseInt(glpEx) - galonesVendidos;
+        const porcentajeGlp = glsActual / parseInt(capacidadMaxima) * 100;
+
+        const block = {
+            "inventarioId": 0,
+            "envasadoraEntity": {
+              "envasadoraId": envasadoraId,
+              "empresaEntity": {
+                "empresaId": 0,
+                "nombre": "string",
+                "estado": true
+              },
+              "bancoEntity": {
+                "id": 0,
+                "nombre": "string",
+                "cuenta": "string",
+                "ejecutivo": "string",
+                "responsable": "string",
+                "fecha_creacion": "2022-10-24T13:08:24.363Z",
+                "estado": true
+              },
+              "envasadoraNombre": "string",
+              "cantidadDeTanque": 0,
+              "capacidadTanqueUno": 0,
+              "capacidadMaximaTanqueUno": 0,
+              "capacidadIntermediaTanqueUno": 0,
+              "capacidadMinimaTanqueUno": 0,
+              "total_disponible": 0,
+              "metroCantidad": 0,
+              "longitud": "string",
+              "latitud": "string",
+              "direccion": "string",
+              "telefono": "string",
+              "fechaCreacion": "2022-10-24T13:08:24.363Z",
+              "estatus": true
+            },
+            "existenciaGLP":  glsActual,
+            "porcentajeGLP": porcentajeGlp,
+            "fechaInventario": "2022-10-24T13:08:24.363Z",
+            "horaInventario": "2022-10-24T13:08:24.363Z",
+            "actualmente": "string",
+            "status": true
+        }
+
         try {
-            const cuadreRequest = await fetch('https://cuadre-diario-planta.herokuapp.com/cuadre/save', {
+            const request = await fetch(`${pathLocal}inventario/save`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(bloque)
+                body: JSON.stringify(block)
             });
-            if (cuadreRequest.ok) {
-                const json = await cuadreRequest.json();
-                console.log(json)
+            if (!request.ok) {
+                alert('Algo anda mal con su conexion, favor revise antes de continuar')
             } else {
-                const json = await cuadreRequest.json();
-                console.log(json)
+                window.location.reload();
+            }
+        } catch (error) {
+            
+        }
+    };
+    const inventarioPut = async () => {
+        const block = {
+            "inventarioId": 0,
+            "envasadoraEntity": {
+              "envasadoraId": 0,
+              "empresaEntity": {
+                "empresaId": 0,
+                "nombre": "string",
+                "estado": true
+              },
+              "bancoEntity": {
+                "id": 0,
+                "nombre": "string",
+                "cuenta": "string",
+                "ejecutivo": "string",
+                "responsable": "string",
+                "fecha_creacion": "2022-10-24T12:34:16.999Z",
+                "estado": true
+              },
+              "envasadoraNombre": "string",
+              "cantidadDeTanque": 0,
+              "capacidadTanqueUno": 0,
+              "capacidadMaximaTanqueUno": 0,
+              "capacidadIntermediaTanqueUno": 0,
+              "capacidadMinimaTanqueUno": 0,
+              "total_disponible": 0,
+              "metroCantidad": 0,
+              "longitud": "string",
+              "latitud": "string",
+              "direccion": "string",
+              "telefono": "string",
+              "fechaCreacion": "2022-10-24T12:34:16.999Z",
+              "estatus": true
+            },
+            "existenciaGLP": 0,
+            "porcentajeGLP": 0,
+            "fechaInventario": "2022-10-24T12:34:16.999Z",
+            "horaInventario": "2022-10-24T12:34:16.999Z",
+            "actualmente": "string",
+            "status": true
+        }
+        try {
+            const request = await fetch(`${pathLocal}inventario/update/altual/${inventarioId}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(block)
+            });
+            if(!request.ok) {
+                alert('Algo anda mal con su conexion, favor revise antes de continuar')
+            }
+        } catch (error) {
+            
+        }
+    };
+    const cuadreSubmitF = async (e) => {
+        e.preventDefault();
+        let kms = false;
+        Object.entries(metros).forEach(([key, val]) => {
+            if (isNaN(val) || val < 0) {
+                alert('No puede introducir numeros negativos o dejar casillas vacias, favor revisar');
+                setActive(2);
+                kms = true
+            }
+        });
+        if (kms) return
+        const testBlock = {
+            "cuadreId": 0,
+            "envasadoraIdEnvasadora": {
+              "envasadoraId": envasadoraId,
+              "empresaEntity": {
+                "empresaId": 0,
+                "nombre": "string",
+                "estado": true
+              },
+              "bancoEntity": {
+                "id": 0,
+                "nombre": "string",
+                "cuenta": "string",
+                "ejecutivo": "string",
+                "responsable": "string",
+                "fecha_creacion": "2022-10-21T20:29:30.067Z",
+                "estado": true
+              },
+              "envasadoraNombre": "string",
+              "cantidadDeTanque": 0,
+              "capacidadTanqueUno": 0,
+              "capacidadMaximaTanqueUno": 0,
+              "capacidadIntermediaTanqueUno": 0,
+              "capacidadMinimaTanqueUno": 0,
+              "total_disponible": 0,
+              "metroCantidad": 0,
+              "longitud": "string",
+              "latitud": "string",
+              "direccion": "string",
+              "telefono": "string",
+              "fechaCreacion": "2022-10-21T20:29:30.067Z",
+              "estatus": true
+            },
+            "existenciaInicialVolumen": 0,
+            "existenciaInicialGalones": 0,
+            "existenciaInicialTemperatura": 0,
+            "existenciaFinalVolumen": 0,
+            "existenciaFinalGalones": 0,
+            "existenciaFinalTemperatura": 0,
+            "conduceNumero": 0,
+            "cantiGalonesRecibidos": 0,
+            "precioActual": precio,
+            "contadorInicialMetroUno": metros.contadorInicialMetroI,
+            "contadorFinalMetroUno": metros.contadorFinalMetroI,
+            "galonesMetroUno": metros.galonesMetroI,
+            "calibracionGlpMetroUno": metros.calibracionMetroI,
+            "galonesVendidoMetroUno": metros.glsVendidoMetroI,
+            "totalMetroUno": metros.totalVendidoMetroI,
+            "contadorInicialMetroDos": metros.contadorInicialMetroII,
+            "contadorFinalMetroDos":  metros.contadorFinalMetroII,
+            "galonesMetroDos":  metros.galonesMetroII,
+            "calibracionGlpMetroDos":  metros.calibracionMetroII,
+            "galonesVendidoMetroDos":  metros.glsVendidoMetroII,
+            "totalMetroDos":  metros.totalVendidoMetroII,
+            "contadorInicialMetroTres":  metros.contadorInicialMetroII,
+            "contadorFinalMetroTres":  metros.contadorFinalMetroIII,
+            "galonesMetroTres":  metros.galonesMetroIII,
+            "calibracionGlpMetroTres":  metros.calibracionMetroIII,
+            "galonesVendidoMetroTres":  metros.glsVendidoMetroIII,
+            "totalMetroTres":  metros.totalVendidoMetroIII,
+            "contadorInicialMetroCuatro":  metros.contadorInicialMetroIV,
+            "contadorFinalMetroCuatro":  metros.contadorFinalMetroIV,
+            "galonesMetroCuatro":  metros.galonesMetroIV,
+            "calibracionGlpMetroCuatro":  metros.calibracionMetroIV,
+            "galonesVendidoMetroCuatro":  metros.glsVendidoMetroIV,
+            "totalMetroCuatro":  metros.totalVendidoMetroIV,
+            "contadorInicialMetroCinco":  metros.contadorInicialMetroV,
+            "contadorFinalMetroCinco":  metros.contadorFinalMetroV,
+            "galonesMetroCinco":  metros.galonesMetroV,
+            "calibracionGlpMetroCinco": metros.calibracionMetroV,
+            "galonesVendidoMetroCinco": metros.glsVendidoMetroV,
+            "totalMetroCinco": metros.totalVendidoMetroV,
+            "contadorInicialMetroSeis": metros.contadorInicialMetroVI,
+            "contadorFinalMetroSeis": metros.contadorFinalMetroVI,
+            "galonesMetroSeis": metros.galonesMetroVI,
+            "calibracionGlpMetroSeis": metros.calibracionMetroVI,
+            "galonesVendidoMetroSeis": metros.glsVendidoMetroVI,
+            "totalMetroSeis": metros.totalVendidoMetroVI,
+            "contadorInicialMetroSiete": metros.contadorInicialMetroVII,
+            "contadorFinalMetroSiete": metros.contadorFinalMetroVII,
+            "galonesMetroSiete": metros.galonesMetroVII,
+            "calibracionGlpMetroSiete": metros.calibracionMetroVII,
+            "galonesVendidoMetroSiete": metros.glsVendidoMetroVII,
+            "totalMetroSiete": metros.totalVendidoMetroVII,
+            "contadorInicialMetroOcho": metros.contadorFinalMetroVIII,
+            "contadorFinalMetroOcho": metros.contadorFinalMetroVIII,
+            "galonesMetroOcho": metros.galonesMetroVIII,
+            "calibracionGlpMetroOcho": metros.calibracionMetroVIII,
+            "galonesVendidoMetroOcho": metros.glsVendidoMetroVIII,
+            "totalMetroOcho": metros.totalVendidoMetroVIII,
+            "contadorInicialMetroNueve": metros.contadorFinalMetroIX,
+            "contadorFinalMetroNueve": metros.contadorFinalMetroIX,
+            "galonesMetroNueve": metros.galonesMetroIX,
+            "calibracionGlpMetroNueve": metros.calibracionMetroIX,
+            "galonesVendidoMetroNueve": metros.glsVendidoMetroIX,
+            "totalMetroNueve": metros.totalVendidoMetroIX,
+            "contadorInicialMetroDiez": metros.contadorInicialMetroX,
+            "contadorFinalMetroDiez": metros.contadorFinalMetroX,
+            "galonesMetroDiez": metros.galonesMetroX,
+            "calibracionGlpMetroDiez": metros.calibracionMetroX,
+            "galonesVendidoMetroDiez": metros.glsVendidoMetroX,
+            "totalMetroDiez": metros.totalVendidoMetroX,
+            "contadorInicialMetroDistribucion": metros.contadorInicialMetroDIST,
+            "contadorFinalMetroDistribucion": metros.contadorFinalMetroDIST,
+            "galonesMetroDistribucion": metros.galonesMetroDIST,
+            "calibracionGlpMetroDistribucion": metros.calibracionMetroDIST,
+            "galonesVendidoMetroDistribucion": metros.glsVendidoMetroDIST,
+            "totalMetroDistribucion": metros.totalVendidoMetroDIST,
+            "totalGalonesVendidos": galonesVendidos,
+            "totalDineroVendido": totalPre,
+            "sobranteGalones": anotaciones.sobranteGalones,
+            "ventaEfectivo": anotaciones.ventaEfectivo,
+            "creditoCliente": anotaciones.creditoCliente,
+            "creditoTarjeta": anotaciones.creditoTarjeta,
+            "tarjetaSolidaridad": anotaciones.tarjetaSolidaridad,
+            "bonoPrepago": anotaciones.bonoPrepago,
+            "cheque": anotaciones.cheque,
+            "total": anotaciones.total,
+            "deposito": anotaciones.deposito,
+            "depositoEntity": depositos,
+            "loteEntity": lotesGuardar,
+            "bonogasEntity": montosGuardar,
+            "usuarioEntity": {
+              "userId": userId,
+              "nombre": "string",
+              "apellido": "string",
+              "email": "string",
+              "password": "string",
+              "envasadoraEntity": [
+                {
+                  "envasadoraId": 0,
+                  "empresaEntity": {
+                    "empresaId": 0,
+                    "nombre": "string",
+                    "estado": true
+                  },
+                  "bancoEntity": {
+                    "id": 0,
+                    "nombre": "string",
+                    "cuenta": "string",
+                    "ejecutivo": "string",
+                    "responsable": "string",
+                    "fecha_creacion": "2022-10-21T20:29:30.068Z",
+                    "estado": true
+                  },
+                  "envasadoraNombre": "string",
+                  "cantidadDeTanque": 0,
+                  "capacidadTanqueUno": 0,
+                  "capacidadMaximaTanqueUno": 0,
+                  "capacidadIntermediaTanqueUno": 0,
+                  "capacidadMinimaTanqueUno": 0,
+                  "total_disponible": 0,
+                  "metroCantidad": 0,
+                  "longitud": "string",
+                  "latitud": "string",
+                  "direccion": "string",
+                  "telefono": "string",
+                  "fechaCreacion": "2022-10-21T20:29:30.068Z",
+                  "estatus": true
+                }
+              ],
+              "estado": true
+            },
+            "fechaCierre": "2022-10-21T20:29:30.068Z",
+            "horaCierre": "2022-10-21T20:29:30.068Z",
+            "estado": true
+          }  
+        try {
+            const cuadreRequest = await fetch(`${pathLocal}cuadre/save`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(testBlock)
+            });
+            const jose = await cuadreRequest.json();
+            if(!cuadreRequest.ok) {
+                alert('Algo anda mal con su conexion, favor revise antes de continuar');
+                console.log(jose);
+            } else {
+                console.log(jose);
             }
         } catch (error) {
             alert(error);
         }
+        inventarioPut();
+        saveInventario();
     };
         return (
             <div className="cuadre-cont">
@@ -825,13 +995,14 @@ export const NewCuadre = () => {
                                 <img src={tank1.default} alt="img-1" className="tank-img-graphic"/>
                             </div>
                             <div className="tank-graphic-labels">
-                                <p>C. Tanque: {capacidadTanque}</p>
-                                <p>C. Maxima: {capacidadMaxima}</p>
-                                <p>C. Minima: {capacidadMinima}</p>
-                                <p>C. Inter.: {capacidadIntermedia}</p>
-                                <p>GLP:</p>
-                                <p>GLP%:</p>
+                                <p>C. Tanque: <span>{capacidadTanque}</span></p>
+                                <p>C. Maxima: <span>{capacidadMaxima}</span></p>
+                                <p>C. Minima: <span>{capacidadMinima}</span></p>
+                                <p>C. Inter.: <span>{capacidadIntermedia}</span></p>
+                                <p>GLP: <span>{glpEx}</span></p>
+                                <p>GLP%: <span>{Math.floor(glpPercentage)}</span></p>
                             </div>
+                            <div className="flying-tag">{Math.floor(glpPercentage)}%</div>
                         </div>
                         <div className="names-section d-flex flex-column">
                             <div className="page-name">
@@ -849,17 +1020,17 @@ export const NewCuadre = () => {
                     </div>
                     <div className="main-section">
                         <div className="nav-tabs w-100 d-flex">
-                            <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
-                                Estado del Tanque
-                            </div>
+                            {/* <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
+                            Estado del Tanque
+                            </div> */}
                             <div className={active === 2 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(2)}}>
-                                Relacion de Metros
+                            Relacion de Metros
                             </div>
                             <div className={active === 3 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(3)}}>
-                                Depositos
+                            Depositos
                             </div>
                             <div className={active === 4 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(4)}}>
-                                Cuadre de Planta
+                            Cuadre de Planta
                             </div>
                         </div>
                         <div className="cuadre-contents">
@@ -947,18 +1118,18 @@ export const NewCuadre = () => {
                                     <table className="tabla-cuadre-principal">
                                         <thead className="tabla-cuadre-principal-header">
                                             <tr>
-                                                <th>TIPO</th>
-                                                <th>METRO I</th>
-                                                <th>METRO II</th>
-                                                <th>METRO III</th>
-                                                <th>METRO IV</th>
-                                                <th>METRO V</th>
-                                                <th>METRO VI</th>
-                                                <th>METRO VII</th>
-                                                <th>METRO VIII</th>
-                                                <th>METRO IX</th>
-                                                <th>METRO X</th>
-                                                <th>METRO DISTRIBUCION</th>
+                                                <th className="th-th">TIPO</th>
+                                                <th className="th-th">METRO I</th>
+                                                <th className="th-th">METRO II</th>
+                                                <th className="th-th">METRO III</th>
+                                                <th className="th-th">METRO IV</th>
+                                                <th className="th-th">METRO V</th>
+                                                <th className="th-th">METRO VI</th>
+                                                <th className="th-th">METRO VII</th>
+                                                <th className="th-th">METRO VIII</th>
+                                                <th className="th-th">METRO IX</th>
+                                                <th className="th-th">METRO X</th>
+                                                <th className="th-th">METRO DISTRIBUCION</th>
                                             </tr>
                                         </thead>
                                         <tbody className="tabla-cuadre-principal-body">
@@ -1100,7 +1271,7 @@ export const NewCuadre = () => {
                                             </tr>
                                         </thead>
                                         <tbody className="tabla-cuadro-body">
-                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={bancoId}/>)) }
+                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} setBancoAfuera={setDepositoAdentro} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={bancoId}/>)) }
                                         </tbody>
                                     </table>
                                     <div className="total-depositos-1 totales-1 d-flex">
@@ -1110,7 +1281,7 @@ export const NewCuadre = () => {
                                 </div>
                                 <div className="lotes depositos">
                                     <h5 className="deposito-header"> Tarjetas</h5>
-                                    {lotes.map((obj, index) => <form key={index} className="lote-cont d-flex">
+                                    {lotes.map((obj, index) => <form className="lote-cont d-flex">
                                         <input className="lote-input un" type="text" name="codigo" placeholder="codigo" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
                                         <input className="lote-input deux" type="text" name="monto" placeholder="monto" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
                                         <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete size={23} color="red"/></button>
@@ -1124,7 +1295,7 @@ export const NewCuadre = () => {
                                 </div>
                                 <div className="lotes depositos">
                                     <h5 className="deposito-header"> Bonogas</h5>
-                                    {MontosB.map((obj, index) => <form key={index} className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
+                                    {MontosB.map((obj, index) => <form className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
                                         <input className="lote-input un" name="codigo" type="text" placeholder="codigo Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
                                         <input className="lote-input deux" name="monto" type="text" placeholder="monto Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
                                         <button type="button" className="btn-lote-delete" onClick={()=>{removeMonto(index)}}> <AiOutlineDelete size={23} color="red"/></button>
@@ -1172,7 +1343,7 @@ export const NewCuadre = () => {
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Total:</label>
-                                            <input className="anotaciones-input" name="total" value={totalTotal} disabled  type="text" />
+                                            <input className="anotaciones-input" name="total" value={totalDinero} disabled  type="text" />
                                         </div>
                                         <div className="anotacion-div anotacion-deposito">
                                             <label>Depósito RD$:</label>

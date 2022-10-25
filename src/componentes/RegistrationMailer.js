@@ -20,7 +20,7 @@ export const RegistrationMailer = () => {
    const sendMail = async (e) => {
         e.preventDefault();
         console.log('It has been sent');
-        const getMail = await fetch('http://10.1.105.205:8080/webapp.metrogas/sendmail', {
+        const getMail = await fetch('https://cuadre-diario-planta.herokuapp.com/webapp.metrogas/sendmail', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

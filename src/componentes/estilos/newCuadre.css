@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+/* @import '<FontAwesomeIcon icon="fa-solid fa-grip-lines-vertical" />'; */
 
 .cuadre-cont {
     position: fixed;
@@ -31,42 +32,48 @@
 
 .envasadora-span {
     margin-top: -10px;
-    font-size: 35px;
+    font-size: 2vw;
     font-weight: 600;
     justify-self: end 
+}
+
+.cuadre-mobile-page-h1 {
+    font-size: 2.2vw;
 }
 
 .price-tag {
     padding-top: 15px;
     padding-right: 5px;
-    font-size: 17px;
+    font-size: 1vw;
     font-weight: 600;
 }
 
 .price-span {
-    font-size: 30px;
+    font-size: 1.8vw;
     color: green;
     font-weight: 500;
 }
 
 .cuadre-mobile-logo {
-    width: 300px;
+    width: 18vw;
 }
 
 .main-section {
     width: 100%;
     background-color: #FFEEE1;
-    height: 77%;
+    height: 76%;
+    max-height: 520px;
 }
 
 .nav-tab {
-    width: 25%;
+    width: 33.33%;
     height: 2em;
     text-align: justify;
     padding-top: 5px;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.1vw;
     background-color: #ff965a;
+    padding-left: 10px;
 }
 
 .nav-tab:hover {
@@ -86,82 +93,50 @@
     display: flex;
 }
 
-.estado-tanque-section {
-    width: 28%;
-    padding-top: 20px;
-}
-
-.volumen-inicial-input {
-    border: none;
-}
-
-.input-group {
-    padding: 20px 0 20px 0;
-    font-size: 15px;
-}
-
-.existencia-inicial {
-    padding-left: 15px;
-}
-
-.existencia-inicial .input-group {
+.ilustration {
+    position: relative;
+    border: black solid 1px;
+    border-radius: 40px 20px;
     display: flex;
-    justify-content: space-between;
-}
-
-.existencia-final .input-group {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.existencia-final .input-group-tag {
-    padding-right: 10px;
-}
-
-.existencia-final .estado-tanque-label {
-    padding-left: 40px;
-}
-
-/* .ilustrations {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-} */
-
-.tanque-tag {
-    position: absolute;
-    left: 50%;
-    top: 10%;
-    transform: translateX(-50%);
+    height: 10vw;
+    width: 35vw;
 }
 
 .tank-graphic {
-    border: black solid 3px;
-    border-radius: 40px 20px;
-    padding-left: -20px;
-    padding-top: 15px;
-    padding-right: 50px;
-    padding-bottom: 30px;
-   position: absolute;
-   top: 50%;
-   left: 50%;
-   transform: translate(-70%, -50%);
-    width: 500px;
+  width: 50%;
+/* height: 25%; */
+}
+
+.tank-img-graphic {
+    width: 16vw;
+    position: absolute;
+    top: 45%;
+    transform: translateY(-55%);
+}
+
+.flying-tag {
+    position: absolute;
+    left: 17.2%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.2vw;
+    font-weight: 700;
 }
 
 .tank-graphic-labels {
-    position: absolute;
+   width: 50%;
+   font-size: 0.95vw;
+   margin-top: 0.7vw;
+}
+
+.tank-graphic-labels span {
+    font-weight: 700;
+    padding-left: 6px;
 }
 
 .tank-graphic-labels p {
     padding: 0;
     margin: 0;
-}
-
-.tank-img-graphic {
-    width: 60%;
 }
 
 /* .tank-tag {
@@ -184,12 +159,17 @@
     width: 100%;
     border: none;
     background-color: transparent;
-    height: 42px;
+    height: 2.4vw;
+    font-size: 1vw;
 }
 
 .td-h {
-    font-size: 1em;
+    font-size: 2vh;
     width: 15%;
+}
+
+.th-th {
+    font-size: 1vw;
 }
 
 /* seccion  de totales*/
@@ -198,7 +178,7 @@
     background-color: transparent;
     border: 2px dashed #ff965a;
     border-radius: 10px;
-    width: 150px;
+    width: 16vh;
 }
 
 .totales {
@@ -206,10 +186,11 @@
 }
 
 .totales-total {
-    width: 300px;
+    width: 20vw;
     display: flex;
     justify-content: space-between;
     font-weight: 700;
+    font-size: 0.9vw;
     margin-right: 20px;
     /* margin-top: 20px; */
 }
@@ -223,19 +204,25 @@
 .depositos {
     border: #ff965a dashed 3px;
     border-radius: 10px;
-    height: 250px;
-    width: 350px;
+    aspect-ratio: 4/2.8;
+    width: 22vw;
+    max-width: 365px;
     margin: 5% auto;
     position: relative;
 }
 
 .deposito-header {
     position: absolute;
-    top: -40px;
+    top: -3vw;
+    font-size: 1.2vw;
 }
 
 .tabla-cuadro {
     margin: 10px;
+}
+
+.tabla-cuadro-header {
+    font-size: 1.07vw;
 }
 
 .btn-td-btn {
@@ -243,6 +230,7 @@
     border-radius: 10px;
     background-color: transparent;
     transition: all 0.15s ease-in;
+    font-size: 0.905vw;
 }
 
 .btn-td-btn:hover {
@@ -253,6 +241,7 @@
 .td-cuadro-input {
     width: 50%;
     border: #ff965a 1px solid;
+    font-size: 1vw;
 }
 
 .totales-1 {
@@ -260,6 +249,7 @@
     left: 0;
     bottom: -50px;
     justify-content: space-between ;
+    font-size: 1vw;
 }
 
 .totales-depositos-input {
@@ -292,6 +282,7 @@
     width: 100%;
     background-color: transparent;
     border: #ff965a 1px solid;
+    font-size: 1vw;
 }
 
 .un {
@@ -311,18 +302,35 @@
 
 .anotaciones {
     width: 90%;
+    height: 90%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     margin-top: 60px;
     position: relative;
-    height: 90%;
+}
+
+.anotaciones label {
+    font-size: 1.33vw;
 }
 
 .cuadre-submit-btn {
     position: absolute;
     bottom: -30px;
     right: 0;
+}
+
+.cuadre-submit-btn button {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+    font-size: 0.905vw;
+}
+
+.cuadre-submit-btn button:hover {
+    background-color: #007332;
+    color: white;
 }
 
 .division-uno {
@@ -351,4 +359,7 @@
     background-color: transparent;
     border: #E35400 solid 2px;
     border-radius: 10px;
+    width: 15vw;
+    height: 2.4vw;
+    font-size: 1.3vw;
 }

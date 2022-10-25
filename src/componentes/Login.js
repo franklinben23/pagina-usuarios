@@ -11,6 +11,9 @@ import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Login = () => {
 
+    const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
@@ -20,7 +23,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/usuario/login', {
+            const request = await fetch(`${pathLocal}usuario/login`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -35,8 +38,10 @@ export const Login = () => {
                 const json = await request.json();
                 console.log(json);// aqui se va a conectar con la tienda.
                 dispatch(logUser(json));
-                navigate('/PaginaCuadre');
+                navigate('/');
 
+            } else {
+                alert('Contraseña o correo incorrecto, favor revisar credenciales')
             }
 
         } catch (error) {

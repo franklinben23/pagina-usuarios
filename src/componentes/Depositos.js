@@ -5,7 +5,10 @@ import { CgCloseO } from 'react-icons/cg';
 import { BsPlusLg } from 'react-icons/bs';
 
 export const Depositos = (props) => {
-    const { bancoName, functionSet, idEnvasadora, idBanco, idUser } = props;
+    const { bancoName, functionSet, idEnvasadora, idBanco, idUser, setBancoAfuera } = props;
+
+    const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
 
     const [ trigger, setTrigger] = useState(false);
     const [depositosGuardados, setdepositosGuardados] = useState([]);
@@ -305,7 +308,7 @@ export const Depositos = (props) => {
             estado: true
           };
 
-        const request = await fetch('http://10.1.105.205:8080/webapp.metrogas/deposito/save', {
+        const request = await fetch(`${pathLocal}deposito/save`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -329,15 +332,24 @@ export const Depositos = (props) => {
 
      const summarizeDepositos = () => {
         let datosDep = [...depositosGuardados];
-        let total = 0;
-        const totalDep = datosDep.map((deposito) => (total += parseFloat(deposito.monto)));
-        const value = totalDep[totalDep.length -1];
-        functionSet(prev => ([
-            ...prev,
-            ...depositosGuardados
-        ]))
-        setTotalBanco(value);
-        setTrigger(false);
+        if (datosDep.length === 0 && totalDepBanco === 0){
+          return
+        } if (datosDep.length >= 1) {
+            let total = 0;
+            const totalDep = datosDep.map((deposito) => (total += parseFloat(deposito.monto)));
+            const value = totalDep[totalDep.length -1];
+            functionSet(prev => ([
+                ...prev,
+                ...depositosGuardados
+            ]));
+            setBancoAfuera(value);
+            setTotalBanco(value);
+            setTrigger(false);
+        } if (datosDep.length === 0 && totalDepBanco !== 0) {
+          setBancoAfuera(0);
+          setTotalBanco(0);
+          setTrigger(false);
+        }
      };
 
      let curr1 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalDepBanco);

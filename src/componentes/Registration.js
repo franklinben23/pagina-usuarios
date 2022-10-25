@@ -9,11 +9,14 @@ import 'react-phone-input-2/lib/style.css';
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Registration = () => {
-    
+
+  const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+  const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+
     /**Uso posible del efecto fetch abajo para traer información del API */
     useEffect( ()=> {
         const fetchApi = async () => {
-        const envaPull = await fetch("http://10.1.105.205:8080/webapp.metrogas/envasadora/all");
+        const envaPull = await fetch(`${pathLocal}envasadora/all`);
         const envResp = await envaPull.json();
         const respStat = envaPull.status
         setEnvasadorasPulled(envResp);
