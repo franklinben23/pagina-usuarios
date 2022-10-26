@@ -2,6 +2,7 @@
 import React, {useState, useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { usePath } from "./PathContext.js";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
 import { logOut } from "../redux/user/userInfo";
@@ -17,8 +18,7 @@ import { AiOutlineDelete } from 'react-icons/ai';
 
 export const NewCuadre = () => {
 
-    // const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
-    const pathLocal = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = usePath();
 
     const userBlock = useSelector((state) => state.userInfo);
 
@@ -613,7 +613,7 @@ export const NewCuadre = () => {
         const { name, value } = e.target;
         setMetros(prev => ({
           ...prev,
-          [name]: parseInt(value)
+          [name]: parseFloat(value)
         }));
       };
 
@@ -669,7 +669,7 @@ export const NewCuadre = () => {
     const saveInventario = async () => {
 
         const glsActual = parseInt(glpEx) - galonesVendidos;
-        const porcentajeGlp = glsActual / parseInt(capacidadMaxima) * 100;
+        const porcentajeGlp = glsActual / parseInt(capacidadTanque) * 100;
 
         const block = {
             "inventarioId": 0,

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 // mover hacia el folder principal.
 import './estilos/Registration.css';
 // ^
+import { usePath } from "./PathContext";
 import Multiselect from 'multiselect-react-dropdown';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -10,8 +11,7 @@ import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 
 export const Registration = () => {
 
-  const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
-  const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+  const pathLocal = usePath();
 
     /**Uso posible del efecto fetch abajo para traer información del API */
     useEffect( ()=> {

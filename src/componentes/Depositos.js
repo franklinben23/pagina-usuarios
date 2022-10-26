@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { usePath } from "./PathContext";
 import './estilos/Depositos.css';
 import { Deposito } from './Deposito';
 import { CgCloseO } from 'react-icons/cg';
@@ -7,8 +8,8 @@ import { BsPlusLg } from 'react-icons/bs';
 export const Depositos = (props) => {
     const { bancoName, functionSet, idEnvasadora, idBanco, idUser, setBancoAfuera } = props;
 
-    const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
-    const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+    // const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = usePath();
 
     const [ trigger, setTrigger] = useState(false);
     const [depositosGuardados, setdepositosGuardados] = useState([]);

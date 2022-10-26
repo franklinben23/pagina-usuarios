@@ -8,11 +8,11 @@ import { logUser } from '../redux/user/userInfo.js'
 import './estilos/Registration.css';
 // ^
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
+import { usePath } from "./PathContext.js";
 
 export const Login = () => {
 
-    const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
-    const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+    const pathHeroku = usePath();
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -23,7 +23,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const request = await fetch(`${pathLocal}usuario/login`, {
+            const request = await fetch(`${pathHeroku}usuario/login`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

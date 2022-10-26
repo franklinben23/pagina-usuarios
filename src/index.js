@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { store, persistor } from './redux/configureStore';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { PathProvider } from './componentes/PathContext';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegistrationMailer } from './componentes/RegistrationMailer';
@@ -21,6 +22,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
       <BrowserRouter>
+        <PathProvider>
           <PersistGate loading={null} persistor={persistor}>
             <Provider store={store}>
               <Routes>
@@ -31,6 +33,7 @@ root.render(
               </Routes>
               </Provider>
             </PersistGate>
+          </PathProvider>
       </BrowserRouter>
     </React.StrictMode>
 );

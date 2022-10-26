@@ -1,12 +1,12 @@
 import React, { useState } from "react";
+import { usePath } from "./PathContext";
 // eslint-disable-next-line
 import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 
 export const Deposito = (props) => {
 
-  const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
-  const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+  const pathLocal = usePath();
 
     const {depositoB, indexB, depositosGuardadosB, setdepositosGuardadosB} = props;
 

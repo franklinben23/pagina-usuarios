@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 // mover hacia el folder principal.
 import './estilos/Registration.css';
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
+import { usePath } from './PathContext';
 
 export const RegistrationMailer = () => {
 
@@ -10,6 +11,8 @@ export const RegistrationMailer = () => {
    const [validMail, setValidMail] = useState(false);
 
    const EMAIL_REGEX = 	 /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(metrogas|rilix)+(?:\.[a-zA-Z0-9-]+)*$/;
+
+   const path = usePath();
 
    useEffect(() => {
     const okMail = EMAIL_REGEX.test(mail);
@@ -20,7 +23,7 @@ export const RegistrationMailer = () => {
    const sendMail = async (e) => {
         e.preventDefault();
         console.log('It has been sent');
-        const getMail = await fetch('https://cuadre-diario-planta.herokuapp.com/webapp.metrogas/sendmail', {
+        const getMail = await fetch(`${path}sendmail`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
