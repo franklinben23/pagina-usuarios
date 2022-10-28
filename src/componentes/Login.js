@@ -75,7 +75,7 @@ export const Login = () => {
                 </form>
 
                 <div className="form-register">
-                    <Link to='Mailer' className="registration-link"> No está registrad@? Comienze el registro aquí. </Link>
+                    <Link to='/Mailer' className="registration-link"> No está registrad@? Comienze el registro aquí. </Link>
                 </div>
             </div>
         </div>

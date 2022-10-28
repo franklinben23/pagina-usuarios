@@ -20,9 +20,10 @@
     width: 90%;
     height: 90%;
     max-width: 1440px;
+    
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     background: transparent;
 }
 
@@ -342,7 +343,7 @@
 
 .cuadre-submit-btn {
     position: absolute;
-    bottom: -30px;
+    bottom: -45px;
     right: 0;
 }
 

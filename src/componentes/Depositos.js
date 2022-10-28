@@ -106,13 +106,16 @@ export const Depositos = (props) => {
             },
             body: JSON.stringify(newField)
         });
-        if (request.status === 201) {
+        if (request.ok) {
             const json = await request.json();
             setCargando(false);
             setdepositosGuardados(prev => ([
-                ...prev,
-                json
+                json,
+                ...prev
             ]));
+        } if (!request.ok) {
+          setCargando(false);
+          alert('Hay un problema con la conexion, favor revisar accesos a internet o contactar soporte')
         }
         setdepositoGuardar({
           codigo: 0,
@@ -120,6 +123,12 @@ export const Depositos = (props) => {
           descripcion: ''
         })
      };
+
+     const handleKeyPress = (event) => {
+      if(event.key === 'Enter'){
+        newHandleForm();
+      }
+    }
 
      const summarizeDepositos = () => {
         let datosDep = [...depositosGuardados];
@@ -145,8 +154,6 @@ export const Depositos = (props) => {
 
      let curr1 = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalDepBanco);
 
-
-
     return (
             <tr>
                 <td><button className="btn-td-btn w-100" onClick={()=> setTrigger(true)}> {bancoName}</button></td>
@@ -168,9 +175,9 @@ export const Depositos = (props) => {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td className="td-d"> <input name="codigo" type="number" value={depositoGuardar.codigo} onChange={handleFormChangeSave} className="deposito-input"/> </td>
-                                                    <td className="td-d"> <input name="monto" type="number" value={depositoGuardar.monto} onChange={handleFormChangeSave} className="deposito-input"/> </td>
-                                                    <td className="td-d"> <input name="descripcion" type="text" value={depositoGuardar.descripcion} onChange={handleFormChangeSave} className="deposito-input"/> </td>
+                                                    <td className="td-d"> <input name="codigo" type="number" value={depositoGuardar.codigo} onChange={handleFormChangeSave} onKeyPress={handleKeyPress}  className="deposito-input"/> </td>
+                                                    <td className="td-d"> <input name="monto" type="number" value={depositoGuardar.monto} onChange={handleFormChangeSave} onKeyPress={handleKeyPress}  className="deposito-input"/> </td>
+                                                    <td className="td-d"> <input name="descripcion" type="text" value={depositoGuardar.descripcion} onKeyPress={handleKeyPress} onChange={handleFormChangeSave} className="deposito-input"/> </td>
                                                 </tr>
                                                 {cargando ? <tr className="cargando-span">Cargando...</tr> : ''}
                                             </tbody>

@@ -18,37 +18,13 @@ import { AiOutlineDelete } from 'react-icons/ai';
 
 export const NewCuadre = () => {
 
-    const pathLocal = usePath();
-
-    const userBlock = useSelector((state) => state.userInfo);
-
-    const envasadora = userBlock.envasadoraEntity[0];
-    const capacidadTanque = envasadora.capacidadTanqueUno;
-    const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
-    const capacidadMaxima = envasadora.capacidadMaximaTanqueUno;
-    const capacidadIntermedia = envasadora.capacidadIntermediaTanqueUno;
-
-    const envasadoraId = envasadora.envasadoraId;
-    const userId = userBlock.userId;
-    const bancoId = envasadora.bancoEntity.id;
-
-    const envName = envasadora.envasadoraNombre; // intentar decunstructing
-
-    // const [authenticated, setAuthenticated] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [precio, setPrecio] = useState(0);
-    const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
-    const  [glpPercentage, setGlpPercentage] = useState('');
-    const  [glpEx, setGlpEx] = useState('');
-
-    const [inventarioId, setInventarioId] = useState('');
-
     useEffect(() => {
-        const loggedInUser = localStorage.getItem('Authenticated') || null;
+        const loggedInUser = JSON.parse(localStorage.getItem('Authenticated')) || false;
         if (!loggedInUser) {
-            navigate('/login');
+            navigate('/');
         }
         const getApiInfo = async () => {
            try {
@@ -75,6 +51,31 @@ export const NewCuadre = () => {
                 setGlpPercentage(obj.porcentajeGLP);
                 setGlpEx(obj.existenciaGLP)
                 setInventarioId(obj.inventarioId);
+                setMetros(prev => ({
+                    ...prev,
+                    contadorInicialMetroI: obj.nuevoContadorInicialMetroUno,
+                    contadorInicialMetroII: obj.nuevoContadorInicioMetroDos,
+                    contadorInicialMetroIII: obj.nuevoContadorInicioMetroTres,
+                    contadorInicialMetroIV: obj.nuevoContadorInicioMetroCuatro,
+                    contadorInicialMetroV: obj.nuevoContadorInicioMetroCinco,
+                    contadorInicialMetroVI: obj.nuevoContadorInicioMetroSeis,
+                    contadorInicialMetroVII: obj.nuevoContadorInicioMetroSiete,
+                    contadorInicialMetroVIII: obj.nuevoContadorInicioMetroOcho,
+                    contadorInicialMetroIX: obj.nuevoContadorInicioMetroNueve,
+                    contadorInicialMetroX: obj.nuevoContadorInicioMetroDiez,
+                    contadorInicialMetroDIST: obj.nuevoContadorInicioMetroDistribucion,
+                    contadorFinalMetroI: obj.nuevoContadorInicialMetroUno,
+                    contadorFinalMetroII: obj.nuevoContadorInicioMetroDos,
+                    contadorFinalMetroIII: obj.nuevoContadorInicioMetroTres,
+                    contadorFinalMetroIV: obj.nuevoContadorInicioMetroCuatro,
+                    contadorFinalMetroV: obj.nuevoContadorInicioMetroCinco,
+                    contadorFinalMetroVI: obj.nuevoContadorInicioMetroSeis,
+                    contadorFinalMetroVII: obj.nuevoContadorInicioMetroSiete,
+                    contadorFinalMetroVIII: obj.nuevoContadorInicioMetroOcho,
+                    contadorFinalMetroIX: obj.nuevoContadorInicioMetroNueve,
+                    contadorFinalMetroX: obj.nuevoContadorInicioMetroDiez,
+                    contadorFinalMetroDIST: obj.nuevoContadorInicioMetroDistribucion,
+                }))
             }if(!request.ok) {
                 alert('inventario end point ha tenido problemas')
             }
@@ -82,13 +83,33 @@ export const NewCuadre = () => {
             
         }
        }
-       getInventario();
        getApiInfo();
+       getInventario();
        
    }, [])
 
-    const [tank1, setTank1] = useState(tanque1)
-    const [active, setActive] = useState(2);
+    const pathLocal = usePath();
+
+    const userBlock = useSelector((state) => state.userInfo);
+
+    const envasadora = userBlock.envasadoraEntity[0];
+    const capacidadTanque = envasadora.capacidadTanqueUno;
+    const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
+    const capacidadMaxima = envasadora.capacidadMaximaTanqueUno;
+    const capacidadIntermedia = envasadora.capacidadIntermediaTanqueUno;
+
+    const envasadoraId = envasadora.envasadoraId;
+    const userId = userBlock.userId;
+    const bancoId = envasadora.bancoEntity.id;
+
+    const envName = envasadora.envasadoraNombre; // intentar decunstructing
+
+    const [precio, setPrecio] = useState(0);
+    const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
+    const  [glpPercentage, setGlpPercentage] = useState('');
+    const  [glpEx, setGlpEx] = useState('');
+
+    const [inventarioId, setInventarioId] = useState('');
 
     const [metros, setMetros] = useState({
         contadorInicialMetroI: 0,
@@ -159,7 +180,9 @@ export const NewCuadre = () => {
         totalVendidoMetroDIST: 0,
     });
 
-   
+    const [tank1, setTank1] = useState(tanque1)
+    const [active, setActive] = useState(2);
+
     // eslint-disable-next-line
     const bancos = ([envasadora.bancoEntity]);
 
@@ -172,7 +195,9 @@ export const NewCuadre = () => {
         bonoPrepago: 0,
         cheque: 0,
         total: 0,
-        deposito: 0
+        deposito: 0,
+        otros: 0,
+        existenciaFinal: 0
     });
     const onChangeAnotaciones= e => {
         const { name, value } = e.target;
@@ -284,7 +309,7 @@ export const NewCuadre = () => {
     const [montoActive, setMontoActive] = useState(false);
     const [MontosB, setMontosB] = useState([]);
     const [montosGuardar, setMontosGuardar] = useState([]);
-    const addMontoB = () => {// este no va a se funcional hasta proximamente, solo show por ahora.
+    const addMontoB = () => {
         if (MontosB.length < 5) {
             const newMonto = {
                 id: 0,
@@ -380,13 +405,6 @@ export const NewCuadre = () => {
           // eslint-disable-next-line
           const [depositos, setDepositos] = useState([]);
           const [depositoAdentro, setDepositoAdentro] = useState(0);
-        //   const depositosFunction = () => depositos.reduce((r, a ) => r + a.monto, 0);//hacer de esto un one-liner.
-        //   const totalDepPre = useMemo(()=> {
-        //     let total = 0;
-        //     const totalDep = depositos.map((deposito) => (total += parseFloat(deposito.monto)));
-        //     const value = totalDep[totalDep.length -1];
-        //     return value
-        //   }, [depositos]);
           const depositosFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(depositoAdentro);
       
           const lotesFunction = () => lotesGuardar.reduce((r, a ) => r + a.monto, 0);
@@ -664,11 +682,11 @@ export const NewCuadre = () => {
     // }
     // const totalTotal = TotalesCalc();
 
+    // const [cuadreNuevo, setCuadreNuevo] = useState(false);
 
     // const [requestSent, setRequestSent] = useState();
     const saveInventario = async () => {
-
-        const glsActual = parseInt(glpEx) - galonesVendidos;
+        const glsActual = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
         const porcentajeGlp = glsActual / parseInt(capacidadTanque) * 100;
 
         const block = {
@@ -709,6 +727,17 @@ export const NewCuadre = () => {
             "fechaInventario": "2022-10-24T13:08:24.363Z",
             "horaInventario": "2022-10-24T13:08:24.363Z",
             "actualmente": "string",
+            "nuevoContadorInicialMetroUno": metros.contadorFinalMetroI,
+            "nuevoContadorInicioMetroDos": metros.contadorFinalMetroII,
+            "nuevoContadorInicioMetroTres": metros.contadorFinalMetroIII,
+            "nuevoContadorInicioMetroCuatro": metros.contadorFinalMetroIV,
+            "nuevoContadorInicioMetroCinco": metros.contadorFinalMetroV,
+            "nuevoContadorInicioMetroSeis": metros.contadorFinalMetroVI,
+            "nuevoContadorInicioMetroSiete": metros.contadorFinalMetroVII,
+            "nuevoContadorInicioMetroOcho": metros.contadorFinalMetroVIII,
+            "nuevoContadorInicioMetroNueve": metros.contadorFinalMetroIX,
+            "nuevoContadorInicioMetroDiez": metros.contadorFinalMetroX,
+            "nuevoContadorInicioMetroDistribucion": metros.contadorFinalMetroDIST,
             "status": true
         }
 
@@ -729,6 +758,7 @@ export const NewCuadre = () => {
             
         }
     };
+
     const inventarioPut = async () => {
         const block = {
             "inventarioId": 0,
@@ -768,6 +798,17 @@ export const NewCuadre = () => {
             "fechaInventario": "2022-10-24T12:34:16.999Z",
             "horaInventario": "2022-10-24T12:34:16.999Z",
             "actualmente": "string",
+            "nuevoContadorInicialMetroUno": 0,
+            "nuevoContadorInicioMetroDos": 0,
+            "nuevoContadorInicioMetroTres": 0,
+            "nuevoContadorInicioMetroCuatro": 0,
+            "nuevoContadorInicioMetroCinco": 0,
+            "nuevoContadorInicioMetroSeis": 0,
+            "nuevoContadorInicioMetroSiete": 0,
+            "nuevoContadorInicioMetroOcho": 0,
+            "nuevoContadorInicioMetroNueve": 0,
+            "nuevoContadorInicioMetroDiez": 0,
+            "nuevoContadorInicioMetroDistribucion": 0,
             "status": true
         }
         try {
@@ -779,14 +820,22 @@ export const NewCuadre = () => {
                 body: JSON.stringify(block)
             });
             if(!request.ok) {
-                alert('Algo anda mal con su conexion, favor revise antes de continuar')
+                alert('Algo anda mal con su conexion, favor revise antes de continuar (inventario put)')
             }
         } catch (error) {
             
         }
     };
+
+    const inventarioRequest = () => {
+        inventarioPut();
+        saveInventario();
+    };
+
+    const galsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;// Ver si glpEx se puede cambiar a 0.
     const cuadreSubmitF = async (e) => {
         e.preventDefault();
+        const glsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
         let kms = false;
         Object.entries(metros).forEach(([key, val]) => {
             if (isNaN(val) || val < 0) {
@@ -796,7 +845,7 @@ export const NewCuadre = () => {
             }
         });
         if (kms) return
-        const testBlock = {
+        const block = {
             "cuadreId": 0,
             "envasadoraIdEnvasadora": {
               "envasadoraId": envasadoraId,
@@ -830,10 +879,10 @@ export const NewCuadre = () => {
               "estatus": true
             },
             "existenciaInicialVolumen": 0,
-            "existenciaInicialGalones": 0,
+            "existenciaInicialGalones": parseInt(glpEx),
             "existenciaInicialTemperatura": 0,
             "existenciaFinalVolumen": 0,
-            "existenciaFinalGalones": 0,
+            "existenciaFinalGalones": anotaciones.existenciaFinal,
             "existenciaFinalTemperatura": 0,
             "conduceNumero": 0,
             "cantiGalonesRecibidos": 0,
@@ -850,7 +899,7 @@ export const NewCuadre = () => {
             "calibracionGlpMetroDos":  metros.calibracionMetroII,
             "galonesVendidoMetroDos":  metros.glsVendidoMetroII,
             "totalMetroDos":  metros.totalVendidoMetroII,
-            "contadorInicialMetroTres":  metros.contadorInicialMetroII,
+            "contadorInicialMetroTres":  metros.contadorInicialMetroIII,
             "contadorFinalMetroTres":  metros.contadorFinalMetroIII,
             "galonesMetroTres":  metros.galonesMetroIII,
             "calibracionGlpMetroTres":  metros.calibracionMetroIII,
@@ -906,7 +955,7 @@ export const NewCuadre = () => {
             "totalMetroDistribucion": metros.totalVendidoMetroDIST,
             "totalGalonesVendidos": galonesVendidos,
             "totalDineroVendido": totalPre,
-            "sobranteGalones": anotaciones.sobranteGalones,
+            "sobranteGalones": anotaciones.existenciaFinal - glsRest,
             "ventaEfectivo": anotaciones.ventaEfectivo,
             "creditoCliente": anotaciones.creditoCliente,
             "creditoTarjeta": anotaciones.creditoTarjeta,
@@ -961,7 +1010,10 @@ export const NewCuadre = () => {
             },
             "fechaCierre": "2022-10-21T20:29:30.068Z",
             "horaCierre": "2022-10-21T20:29:30.068Z",
-            "estado": true
+            "estado": true,
+            "galonesRestante": glsRest,
+            "otroTotalGalonesVendidos": anotaciones.otros,
+            "resultadoOperacional": "string"
           }  
         try {
             const cuadreRequest = await fetch(`${pathLocal}cuadre/save`, {
@@ -969,27 +1021,97 @@ export const NewCuadre = () => {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(testBlock)
+                body: JSON.stringify(block)
             });
-            const jose = await cuadreRequest.json();
+            // const json = await cuadreRequest.json();
             if(!cuadreRequest.ok) {
                 alert('Algo anda mal con su conexion, favor revise antes de continuar');
-                console.log(jose);
             } else {
-                console.log(jose);
+                // console.log(json)
+                // setCuadreNuevo(true);
+                // setMetros({
+                //     contadorInicialMetroI: json.contadorInicialMetroUno,
+                //     contadorInicialMetroII: json.contadorInicialMetroDos,
+                //     contadorInicialMetroIII: json.contadorInicialMetroTres,
+                //     contadorInicialMetroIV: json.contadorInicialMetroCuatro,
+                //     contadorInicialMetroV: json.contadorInicialMetroCinco,
+                //     contadorInicialMetroVI: json.contadorInicialMetroSeis,
+                //     contadorInicialMetroVII: json.contadorInicialMetroSiete,
+                //     contadorInicialMetroVIII: json.contadorInicialMetroOcho,
+                //     contadorInicialMetroIX: json.contadorInicialMetroNueve,
+                //     contadorInicialMetroX: json.contadorInicialMetroDiez,
+                //     contadorInicialMetroDIST: json.contadorInicialMetroDistribucion,
+                //     contadorFinalMetroI: json.contadorFinalMetroUno,
+                //     contadorFinalMetroII: json.contadorFinalMetroDos,
+                //     contadorFinalMetroIII: json.contadorFinalMetroTres,
+                //     contadorFinalMetroIV: json.contadorFinalMetroCuatro,
+                //     contadorFinalMetroV: json.contadorFinalMetroCinco,
+                //     contadorFinalMetroVI: json.contadorFinalMetroSeis,
+                //     contadorFinalMetroVII: json.contadorFinalMetroSiete,
+                //     contadorFinalMetroVIII: json.contadorFinalMetroOcho,
+                //     contadorFinalMetroIX: json.contadorFinalMetroNueve,
+                //     contadorFinalMetroX: json.contadorFinalMetroDiez,
+                //     contadorFinalMetroDIST: json.contadorFinalMetroDistribucion,
+                //     galonesMetroI: json.galonesMetroUno,
+                //     galonesMetroII: json.galonesMetroDos,
+                //     galonesMetroIII: json.galonesMetroTres,
+                //     galonesMetroIV: json.galonesMetroCuatro,
+                //     galonesMetroV: json.galonesMetroCinco,
+                //     galonesMetroVI: json.galonesMetroSeis,
+                //     galonesMetroVII: json.galonesMetroSiete,
+                //     galonesMetroVIII: json.galonesMetroOcho,
+                //     galonesMetroIX: json.galonesMetroNueve,
+                //     galonesMetroX: json.galonesMetroDiez,
+                //     galonesMetroDIST: json.galonesMetroDistribucion,
+                //     calibracionMetroI: json.calibracionGlpMetroUno,
+                //     calibracionMetroII: json.calibracionGlpMetroDos,
+                //     calibracionMetroIII: json.calibracionGlpMetroTres,
+                //     calibracionMetroIV: json.calibracionGlpMetroCuatro,
+                //     calibracionMetroV: json.calibracionGlpMetroCinco,
+                //     calibracionMetroVI: json.calibracionGlpMetroSeis,
+                //     calibracionMetroVII: json.calibracionGlpMetroSiete,
+                //     calibracionMetroVIII: json.calibracionGlpMetroOcho,
+                //     calibracionMetroIX: json.calibracionGlpMetroNueve,
+                //     calibracionMetroX: json.calibracionGlpMetroDiez,
+                //     calibracionMetroDIST: json.calibracionGlpMetroDistribucion,
+                //     glsVendidoMetroI: json.galonesVendidoMetroUno,
+                //     glsVendidoMetroII: json.galonesVendidoMetroDos,
+                //     glsVendidoMetroIII: json.galonesVendidoMetroTres,
+                //     glsVendidoMetroIV: json.galonesVendidoMetroCuatro,
+                //     glsVendidoMetroV: json.galonesVendidoMetroCinco,
+                //     glsVendidoMetroVI: json.galonesVendidoMetroSeis,
+                //     glsVendidoMetroVII: json.galonesVendidoMetroSiete,
+                //     glsVendidoMetroVIII: json.galonesVendidoMetroOcho,
+                //     glsVendidoMetroIX: json.galonesVendidoMetroNueve,
+                //     glsVendidoMetroX: json.galonesVendidoMetroDiez,
+                //     glsVendidoMetroDIST: json.galonesVendidoMetroDist,
+                //     totalVendidoMetroI: json.totalMetroUno,
+                //     totalVendidoMetroII: json.totalMetroDos,
+                //     totalVendidoMetroIII: json.totalMetroTres,
+                //     totalVendidoMetroIV: json.totalMetroCuatro,
+                //     totalVendidoMetroV: json.totalMetroCinco,
+                //     totalVendidoMetroVI: json.totalMetroSeis,
+                //     totalVendidoMetroVII: json.totalMetroSiete,
+                //     totalVendidoMetroVIII: json.totalMetroOcho,
+                //     totalVendidoMetroIX: json.totalMetroNueve,
+                //     totalVendidoMetroX: json.totalMetroDiez,
+                //     totalVendidoMetroDIST: json.totalMetroDistribucion,
+                // })
+                // setAnotaciones(prev => ({
+                //     ...prev,
+                //     otros: json.otroTotalGalonesVendidos
+                // }))
+                inventarioRequest();
             }
         } catch (error) {
             alert(error);
         }
-        inventarioPut();
-        saveInventario();
     };
 
     const logout = () => {
         localStorage.removeItem('Authenticated');
         dispatch(logOut());
-        navigate('/Login');
-
+        navigate('/');
     };
         return (
             <div className="cuadre-cont">
@@ -1249,7 +1371,7 @@ export const NewCuadre = () => {
                                             name="totalDineroVendido"
                                             value={galonesCalibracion}
                                             disabled
-                                            type="text"/>
+                                            type="number"/>
                                         </div>
                                     </div>
                                     <div className="totales-side side-2">
@@ -1268,6 +1390,14 @@ export const NewCuadre = () => {
                                             value={totalDinero}
                                             disabled
                                             type="text"/>
+                                        </div>
+                                        <div className="totales-total abajo">Existencia Final: 
+                                            <input
+                                            className="input-totales" 
+                                            name="existenciaFinal"
+                                            value={anotaciones.existenciaFinal}
+                                            onChange={onChangeAnotaciones}
+                                            type="number"/>
                                         </div>
                                     </div>
                                 </div>
@@ -1325,7 +1455,7 @@ export const NewCuadre = () => {
                                     <div className="division-uno">
                                         <div className="anotacion-div">
                                             <label>Sobrante GLS:</label>
-                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.sobranteGalones} onChange={onChangeAnotaciones} type="number" />
+                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.existenciaFinal - galsRest} disabled type="number" />
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Venta Efectivo:</label>
@@ -1346,6 +1476,10 @@ export const NewCuadre = () => {
                                     </div>
                                     <div className="division-dos">
                                         <div className="anotacion-div">
+                                            <label>Otros Galones:</label>
+                                            <input className="anotaciones-input" name="otros" value={anotaciones.otros} onChange={onChangeAnotaciones} type="number" />
+                                        </div>
+                                        <div className="anotacion-div">
                                             <label>Bonos Prepago:</label>
                                             <input className="anotaciones-input" name="bonoPrepago" value={anotaciones.bonoPrepago} onChange={onChangeAnotaciones} type="number" />
                                         </div>
@@ -1363,6 +1497,7 @@ export const NewCuadre = () => {
                                         </div>
                                     </div>
                                     <div className="cuadre-submit-btn">
+                                        {/* {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>} */}
                                         <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>
                                     </div>
                                 </div>
