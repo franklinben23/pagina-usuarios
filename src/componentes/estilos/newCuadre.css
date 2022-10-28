@@ -191,8 +191,7 @@
 }
 
 .td-h {
-    font-size: 2vh;
-    width: 15%;
+    font-size: 1vw;
 }
 
 .th-th {
@@ -205,7 +204,7 @@
     background-color: transparent;
     border: 2px dashed #ff965a;
     border-radius: 10px;
-    width: 16vh;
+    width: 8vw;
 }
 
 .totales {

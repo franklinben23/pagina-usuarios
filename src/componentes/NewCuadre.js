@@ -1136,7 +1136,7 @@ export const NewCuadre = () => {
                             <div className="flying-tag">{Math.floor(glpPercentage)}%</div>
                         </div>
                         <div className="names-section d-flex flex-column">
-                            <div className="page-name">
+                            <div className="page-name align-self-end">
                                 <h1 className="cuadre-mobile-page-h1">Cuadre Diario de Planta</h1>
                             </div>
                             <div className="envasadora d-flex justify-content-between">
@@ -1392,14 +1392,6 @@ export const NewCuadre = () => {
                                             disabled
                                             type="text"/>
                                         </div>
-                                        <div className="totales-total abajo">Existencia Final: 
-                                            <input
-                                            className="input-totales" 
-                                            name="existenciaFinal"
-                                            value={anotaciones.existenciaFinal}
-                                            onChange={onChangeAnotaciones}
-                                            type="number"/>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1454,9 +1446,18 @@ export const NewCuadre = () => {
                             <div className={active === 4 ? "cuadre-section cuadre-cuadre main-active" : "cuadre-section cuadre-cuadre"}>
                                 <div className="anotaciones">
                                     <div className="division-uno">
+                                    <div className="anotacion-div">
+                                        <label>Sobrante GLS:</label>
+                                            <input
+                                            className="anotaciones-input" 
+                                            name="existenciaFinal"
+                                            value={anotaciones.existenciaFinal}
+                                            onChange={onChangeAnotaciones}
+                                            type="number"/>
+                                        </div>
                                         <div className="anotacion-div">
                                             <label>Sobrante GLS:</label>
-                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.existenciaFinal - galsRest} disabled type="number" />
+                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.existenciaFinal - galsRest} disabled type="text" />
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Venta Efectivo:</label>

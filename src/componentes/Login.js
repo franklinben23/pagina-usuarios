@@ -45,7 +45,7 @@ export const Login = () => {
             }
 
         } catch (error) {
-            
+            alert('favor revisar su conexion o conactar soporte')
         }
 
         setPassword('');
