@@ -1447,7 +1447,7 @@ export const NewCuadre = () => {
                                 <div className="anotaciones">
                                     <div className="division-uno">
                                     <div className="anotacion-div">
-                                        <label>Sobrante GLS:</label>
+                                        <label>Existencia final:</label>
                                             <input
                                             className="anotaciones-input" 
                                             name="existenciaFinal"
