@@ -842,6 +842,7 @@ export const NewCuadre = () => {
                 alert('No puede introducir numeros negativos o dejar casillas vacias, favor revisar');
                 setActive(2);
                 kms = true
+                return
             }
         });
         if (kms) return
