@@ -12,6 +12,7 @@ import { Login } from './componentes/Login';
 import { Registration } from './componentes/Registration';
 // import App from './App';
 // import { CuadreDiario } from './componentes/CuadreDiario';
+import { NewLogin } from './componentes/NewLogin';
 import { NewCuadre } from './componentes/NewCuadre';
 // import { CuadreDiarioMobile } from './componentes/CuadreDiarioMobile';
 // import { CuadreDiarioMobile } from './componentes/CuadreDiarioMobile';
@@ -27,7 +28,7 @@ root.render(
             <Provider store={store}>
               <Routes>
                 <Route path='/Registration:email' element={<Registration /> } />
-                <Route path='/' element={<Login /> } />
+                <Route path='/' element={<NewLogin /> } />
                 <Route path='/PaginaCuadre' element={<NewCuadre /> } />
                 <Route path='/Mailer' element={<RegistrationMailer /> } />
               </Routes>

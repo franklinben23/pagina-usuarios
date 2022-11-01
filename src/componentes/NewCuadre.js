@@ -682,7 +682,7 @@ export const NewCuadre = () => {
     // }
     // const totalTotal = TotalesCalc();
 
-    // const [cuadreNuevo, setCuadreNuevo] = useState(false);
+    const [cuadreNuevo, setCuadreNuevo] = useState(false);
 
     // const [requestSent, setRequestSent] = useState();
     const saveInventario = async () => {
@@ -722,7 +722,7 @@ export const NewCuadre = () => {
               "fechaCreacion": "2022-10-24T13:08:24.363Z",
               "estatus": true
             },
-            "existenciaGLP":  glsActual,
+            "existenciaGLP":  anotaciones.existenciaFinal,
             "porcentajeGLP": porcentajeGlp,
             "fechaInventario": "2022-10-24T13:08:24.363Z",
             "horaInventario": "2022-10-24T13:08:24.363Z",
@@ -1029,7 +1029,7 @@ export const NewCuadre = () => {
                 alert('Algo anda mal con su conexion, favor revise antes de continuar');
             } else {
                 // console.log(json)
-                // setCuadreNuevo(true);
+                setCuadreNuevo(true);
                 // setMetros({
                 //     contadorInicialMetroI: json.contadorInicialMetroUno,
                 //     contadorInicialMetroII: json.contadorInicialMetroDos,
@@ -1102,7 +1102,6 @@ export const NewCuadre = () => {
                 //     ...prev,
                 //     otros: json.otroTotalGalonesVendidos
                 // }))
-                inventarioRequest();
             }
         } catch (error) {
             alert(error);
@@ -1499,8 +1498,8 @@ export const NewCuadre = () => {
                                         </div>
                                     </div>
                                     <div className="cuadre-submit-btn">
-                                        {/* {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>} */}
-                                        <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>
+                                        {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>}
+                                        {/* <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button> */}
                                     </div>
                                 </div>
                             </div>
