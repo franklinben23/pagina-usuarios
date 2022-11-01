@@ -6,6 +6,7 @@ import { usePath } from "./PathContext.js";
 import * as faIcon from 'react-icons/fa';
 import * as topImg from './estilos/imagenes/login_head.png';
 import * as topLogo from './estilos/imagenes/logo_metrogas_blanco.png';
+import * as logoCortado from './estilos/imagenes/logo_metrogas_cortado.png';
 import './estilos/newLogin.css';
 
 export const NewLogin = () => {
@@ -57,6 +58,7 @@ export const NewLogin = () => {
             <div className='login-inner'>
                 <div className='top-login-part'>
                     <p className='top-text'>Bienvenido a</p>
+                    <img src={logoCortado.default} alt='logo-cortado' className='logo-cortado' />
                     <img src={topImg.default} alt='login-img' className='login-img' />
                 </div>
                 <div className='bottom-login-part'>
