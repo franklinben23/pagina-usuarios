@@ -28,8 +28,8 @@ export const NewLogin = () => {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "usuario": "encmetrogasprincipal@gmail.com",
-                    "clave": "HSS654321"
+                    "usuario": email,
+                    "clave": password
                 })
             });
             if(request.ok) {
