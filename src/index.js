@@ -8,14 +8,12 @@ import { PathProvider } from './componentes/PathContext';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegistrationMailer } from './componentes/RegistrationMailer';
-import { Login } from './componentes/Login';
 import { Registration } from './componentes/Registration';
 // import App from './App';
 // import { CuadreDiario } from './componentes/CuadreDiario';
 import { NewLogin } from './componentes/NewLogin';
 import { NewCuadre } from './componentes/NewCuadre';
-// import { CuadreDiarioMobile } from './componentes/CuadreDiarioMobile';
-// import { CuadreDiarioMobile } from './componentes/CuadreDiarioMobile';
+import { Crud } from './componentes/Crud';
 // import { EnvasadoraReg } from './componentes/EnvasadoraReg';
 // import { Test } from './componentes/Test';
 
@@ -32,9 +30,9 @@ root.render(
                 <Route path='/PaginaCuadre' element={<NewCuadre /> } />
                 <Route path='/Mailer' element={<RegistrationMailer /> } />
               </Routes>
-              </Provider>
-            </PersistGate>
-          </PathProvider>
+            </Provider>
+          </PersistGate>
+        </PathProvider>
       </BrowserRouter>
     </React.StrictMode>
 );

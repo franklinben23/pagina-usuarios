@@ -13,7 +13,6 @@ import * as tanque3 from './estilos/imagenes/tanques/tnaque_sn50.png';
 import * as tanque4 from './estilos/imagenes/tanques/tnaque_sn65.png';
 import * as tanque5 from './estilos/imagenes/tanques/tnaque_sn75.png';
 import * as tanque6 from './estilos/imagenes/tanques/tnaque_sn85.png';
-// import {IoEllipsisVertical} from 'react-icons/io';
 import { AiOutlineDelete } from 'react-icons/ai';
 
 export const NewCuadre = () => {
@@ -104,6 +103,8 @@ export const NewCuadre = () => {
 
     const envName = envasadora.envasadoraNombre; // intentar decunstructing
 
+    const bancos = (envasadora.bancoEntity);
+    console.log(bancos);
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
     const  [glpPercentage, setGlpPercentage] = useState('');
@@ -184,7 +185,6 @@ export const NewCuadre = () => {
     const [active, setActive] = useState(2);
 
     // eslint-disable-next-line
-    const bancos = ([envasadora.bancoEntity]);
 
     const [anotaciones, setAnotaciones] = useState({
         sobranteGalones: 0,
