@@ -107,7 +107,7 @@ export const NewCuadre = () => {
     console.log(bancos);
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
-    const  [glpPercentage, setGlpPercentage] = useState('');
+    const  [glpPercentage, setGlpPercentage] = useState(0);
     const  [glpEx, setGlpEx] = useState('');
 
     const [inventarioId, setInventarioId] = useState('');
@@ -682,7 +682,7 @@ export const NewCuadre = () => {
     // }
     // const totalTotal = TotalesCalc();
 
-    const [cuadreNuevo, setCuadreNuevo] = useState(false);
+    // const [cuadreNuevo, setCuadreNuevo] = useState(false);
 
     // const [requestSent, setRequestSent] = useState();
     const saveInventario = async () => {
@@ -698,7 +698,8 @@ export const NewCuadre = () => {
                 "nombre": "string",
                 "estado": true
               },
-              "bancoEntity": {
+              "bancoEntity": [
+                {
                 "id": 0,
                 "nombre": "string",
                 "cuenta": "string",
@@ -706,7 +707,8 @@ export const NewCuadre = () => {
                 "responsable": "string",
                 "fecha_creacion": "2022-10-24T13:08:24.363Z",
                 "estado": true
-              },
+                }
+             ],
               "envasadoraNombre": "string",
               "cantidadDeTanque": 0,
               "capacidadTanqueUno": 0,
@@ -769,7 +771,8 @@ export const NewCuadre = () => {
                 "nombre": "string",
                 "estado": true
               },
-              "bancoEntity": {
+              "bancoEntity": [ 
+                {
                 "id": 0,
                 "nombre": "string",
                 "cuenta": "string",
@@ -777,7 +780,8 @@ export const NewCuadre = () => {
                 "responsable": "string",
                 "fecha_creacion": "2022-10-24T12:34:16.999Z",
                 "estado": true
-              },
+                }
+            ],
               "envasadoraNombre": "string",
               "cantidadDeTanque": 0,
               "capacidadTanqueUno": 0,
@@ -855,15 +859,17 @@ export const NewCuadre = () => {
                 "nombre": "string",
                 "estado": true
               },
-              "bancoEntity": {
-                "id": 0,
-                "nombre": "string",
-                "cuenta": "string",
-                "ejecutivo": "string",
-                "responsable": "string",
-                "fecha_creacion": "2022-10-21T20:29:30.067Z",
-                "estado": true
-              },
+              "bancoEntity": [
+                {
+                  "id": 0,
+                  "nombre": "string",
+                  "cuenta": "string",
+                  "ejecutivo": "string",
+                  "responsable": "string",
+                  "fecha_creacion": "2022-11-07T20:32:35.976Z",
+                  "estado": true
+                }
+              ],
               "envasadoraNombre": "string",
               "cantidadDeTanque": 0,
               "capacidadTanqueUno": 0,
@@ -982,15 +988,17 @@ export const NewCuadre = () => {
                     "nombre": "string",
                     "estado": true
                   },
-                  "bancoEntity": {
-                    "id": 0,
-                    "nombre": "string",
-                    "cuenta": "string",
-                    "ejecutivo": "string",
-                    "responsable": "string",
-                    "fecha_creacion": "2022-10-21T20:29:30.068Z",
-                    "estado": true
-                  },
+                  "bancoEntity": [
+                    {
+                        "id": 0,
+                        "nombre": "string",
+                        "cuenta": "string",
+                        "ejecutivo": "string",
+                        "responsable": "string",
+                        "fecha_creacion": "2022-10-21T20:29:30.068Z",
+                        "estado": true
+                  }
+                ],
                   "envasadoraNombre": "string",
                   "cantidadDeTanque": 0,
                   "capacidadTanqueUno": 0,
@@ -1024,84 +1032,10 @@ export const NewCuadre = () => {
                 },
                 body: JSON.stringify(block)
             });
-            // const json = await cuadreRequest.json();
             if(!cuadreRequest.ok) {
                 alert('Algo anda mal con su conexion, favor revise antes de continuar');
             } else {
-                // console.log(json)
-                setCuadreNuevo(true);
-                // setMetros({
-                //     contadorInicialMetroI: json.contadorInicialMetroUno,
-                //     contadorInicialMetroII: json.contadorInicialMetroDos,
-                //     contadorInicialMetroIII: json.contadorInicialMetroTres,
-                //     contadorInicialMetroIV: json.contadorInicialMetroCuatro,
-                //     contadorInicialMetroV: json.contadorInicialMetroCinco,
-                //     contadorInicialMetroVI: json.contadorInicialMetroSeis,
-                //     contadorInicialMetroVII: json.contadorInicialMetroSiete,
-                //     contadorInicialMetroVIII: json.contadorInicialMetroOcho,
-                //     contadorInicialMetroIX: json.contadorInicialMetroNueve,
-                //     contadorInicialMetroX: json.contadorInicialMetroDiez,
-                //     contadorInicialMetroDIST: json.contadorInicialMetroDistribucion,
-                //     contadorFinalMetroI: json.contadorFinalMetroUno,
-                //     contadorFinalMetroII: json.contadorFinalMetroDos,
-                //     contadorFinalMetroIII: json.contadorFinalMetroTres,
-                //     contadorFinalMetroIV: json.contadorFinalMetroCuatro,
-                //     contadorFinalMetroV: json.contadorFinalMetroCinco,
-                //     contadorFinalMetroVI: json.contadorFinalMetroSeis,
-                //     contadorFinalMetroVII: json.contadorFinalMetroSiete,
-                //     contadorFinalMetroVIII: json.contadorFinalMetroOcho,
-                //     contadorFinalMetroIX: json.contadorFinalMetroNueve,
-                //     contadorFinalMetroX: json.contadorFinalMetroDiez,
-                //     contadorFinalMetroDIST: json.contadorFinalMetroDistribucion,
-                //     galonesMetroI: json.galonesMetroUno,
-                //     galonesMetroII: json.galonesMetroDos,
-                //     galonesMetroIII: json.galonesMetroTres,
-                //     galonesMetroIV: json.galonesMetroCuatro,
-                //     galonesMetroV: json.galonesMetroCinco,
-                //     galonesMetroVI: json.galonesMetroSeis,
-                //     galonesMetroVII: json.galonesMetroSiete,
-                //     galonesMetroVIII: json.galonesMetroOcho,
-                //     galonesMetroIX: json.galonesMetroNueve,
-                //     galonesMetroX: json.galonesMetroDiez,
-                //     galonesMetroDIST: json.galonesMetroDistribucion,
-                //     calibracionMetroI: json.calibracionGlpMetroUno,
-                //     calibracionMetroII: json.calibracionGlpMetroDos,
-                //     calibracionMetroIII: json.calibracionGlpMetroTres,
-                //     calibracionMetroIV: json.calibracionGlpMetroCuatro,
-                //     calibracionMetroV: json.calibracionGlpMetroCinco,
-                //     calibracionMetroVI: json.calibracionGlpMetroSeis,
-                //     calibracionMetroVII: json.calibracionGlpMetroSiete,
-                //     calibracionMetroVIII: json.calibracionGlpMetroOcho,
-                //     calibracionMetroIX: json.calibracionGlpMetroNueve,
-                //     calibracionMetroX: json.calibracionGlpMetroDiez,
-                //     calibracionMetroDIST: json.calibracionGlpMetroDistribucion,
-                //     glsVendidoMetroI: json.galonesVendidoMetroUno,
-                //     glsVendidoMetroII: json.galonesVendidoMetroDos,
-                //     glsVendidoMetroIII: json.galonesVendidoMetroTres,
-                //     glsVendidoMetroIV: json.galonesVendidoMetroCuatro,
-                //     glsVendidoMetroV: json.galonesVendidoMetroCinco,
-                //     glsVendidoMetroVI: json.galonesVendidoMetroSeis,
-                //     glsVendidoMetroVII: json.galonesVendidoMetroSiete,
-                //     glsVendidoMetroVIII: json.galonesVendidoMetroOcho,
-                //     glsVendidoMetroIX: json.galonesVendidoMetroNueve,
-                //     glsVendidoMetroX: json.galonesVendidoMetroDiez,
-                //     glsVendidoMetroDIST: json.galonesVendidoMetroDist,
-                //     totalVendidoMetroI: json.totalMetroUno,
-                //     totalVendidoMetroII: json.totalMetroDos,
-                //     totalVendidoMetroIII: json.totalMetroTres,
-                //     totalVendidoMetroIV: json.totalMetroCuatro,
-                //     totalVendidoMetroV: json.totalMetroCinco,
-                //     totalVendidoMetroVI: json.totalMetroSeis,
-                //     totalVendidoMetroVII: json.totalMetroSiete,
-                //     totalVendidoMetroVIII: json.totalMetroOcho,
-                //     totalVendidoMetroIX: json.totalMetroNueve,
-                //     totalVendidoMetroX: json.totalMetroDiez,
-                //     totalVendidoMetroDIST: json.totalMetroDistribucion,
-                // })
-                // setAnotaciones(prev => ({
-                //     ...prev,
-                //     otros: json.otroTotalGalonesVendidos
-                // }))
+                inventarioRequest();
             }
         } catch (error) {
             alert(error);
@@ -1130,9 +1064,9 @@ export const NewCuadre = () => {
                                 <p>C. Minima: <span>{capacidadMinima}</span></p>
                                 <p>C. Inter.: <span>{capacidadIntermedia}</span></p>
                                 <p>GLP: <span>{glpEx}</span></p>
-                                <p>GLP%: <span>{Math.floor(glpPercentage)}</span></p>
+                                <p>GLP%: <span>{glpPercentage.toFixed(1)}</span></p>
                             </div>
-                            <div className="flying-tag">{Math.floor(glpPercentage)}%</div>
+                            <div className="flying-tag">{glpPercentage.toFixed(1)}%</div>
                         </div>
                         <div className="names-section d-flex flex-column">
                             <div className="page-name align-self-end">
@@ -1498,8 +1432,8 @@ export const NewCuadre = () => {
                                         </div>
                                     </div>
                                     <div className="cuadre-submit-btn">
-                                        {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>}
-                                        {/* <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button> */}
+                                        {/* {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>} */}
+                                        <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>
                                     </div>
                                 </div>
                             </div>
