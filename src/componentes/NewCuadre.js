@@ -3,9 +3,9 @@ import React, {useState, useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { usePath } from "./PathContext.js";
+import { logOut } from "../redux/user/userInfo.js";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
-import { logOut } from "../redux/user/userInfo";
 import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 import * as tanque1 from './estilos/imagenes/tanques/tnaque_sn35.png';
 import * as tanque2 from './estilos/imagenes/tanques/tnaque_sn45.png';
@@ -99,12 +99,10 @@ export const NewCuadre = () => {
 
     const envasadoraId = envasadora.envasadoraId;
     const userId = userBlock.userId;
-    const bancoId = envasadora.bancoEntity.id;
 
     const envName = envasadora.envasadoraNombre; // intentar decunstructing
 
     const bancos = (envasadora.bancoEntity);
-    console.log(bancos);
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
     const  [glpPercentage, setGlpPercentage] = useState(0);
@@ -1339,7 +1337,7 @@ export const NewCuadre = () => {
                                             </tr>
                                         </thead>
                                         <tbody className="tabla-cuadro-body">
-                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} setBancoAfuera={setDepositoAdentro} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={bancoId}/>)) }
+                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} setBancoAfuera={setDepositoAdentro} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={banco.Id}/>)) }
                                         </tbody>
                                     </table>
                                     <div className="total-depositos-1 totales-1 d-flex">

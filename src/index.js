@@ -9,7 +9,7 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { RegistrationMailer } from './componentes/RegistrationMailer';
 import { Registration } from './componentes/Registration';
-// import App from './App';
+import App from './App';
 // import { CuadreDiario } from './componentes/CuadreDiario';
 import { NewLogin } from './componentes/NewLogin';
 import { NewCuadre } from './componentes/NewCuadre';

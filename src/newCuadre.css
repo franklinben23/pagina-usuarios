@@ -1,0 +1,403 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+/* @import '<FontAwesomeIcon icon="fa-solid fa-grip-lines-vertical" />'; */
+
+.cuadre-cont {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(225,225,225,1) 100%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.cuadre-inner-cont {
+    width: 90%;
+    height: 90%;
+    max-width: 1440px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: transparent;
+}
+
+.name-logo-section {
+    position: relative;
+}
+
+.envasadora-span {
+    margin-top: -10px;
+    font-size: 2vw;
+    font-weight: 600;
+    justify-self: end 
+}
+
+.cuadre-mobile-page-h1 {
+    font-size: 2.2vw;
+}
+
+.daily-price {
+    width: 11vw;
+}
+
+.price-tag {
+    padding-top: 15px;
+    padding-right: 5px;
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.price-span {
+    padding-top: 8px;
+    font-size: 1.8vw;
+    color: green;
+    font-weight: 500;
+}
+
+.cuadre-mobile-logo {
+    width: 18vw;
+}
+
+.logout-refresh-btns {
+    background-color: transparent;
+    font-size: 0.89vw;
+    transition: all 0.5s ease-in;
+}
+
+.refresh {
+    border-radius: 10px 0 0 10px;
+    transition: all 0.12s ease-in;
+}
+
+.log-out {
+    border-radius: 0 10px 10px 0;
+    transition: all 0.12s ease-in;
+}
+
+.refresh:hover, .log-out:hover {
+    background-color: black;
+    color: white;
+}
+
+.main-section {
+    width: 100%;
+    background-color: #FFEEE1;
+    height: 76%;
+    max-height: 520px;
+}
+
+.nav-tab {
+    width: 33.33%;
+    height: 2em;
+    text-align: justify;
+    padding-top: 5px;
+    color: white;
+    font-size: 1.1vw;
+    background-color: #ff965a;
+    padding-left: 10px;
+}
+
+.nav-tab:hover {
+    cursor: pointer;
+}
+
+.nav-tab-active {
+    background-color: #E35400;
+}
+
+.cuadre-section {
+    display: none;
+}
+
+.main-active {
+    width: 100%;
+    display: flex;
+}
+
+.ilustration {
+    position: relative;
+    border: black solid 1px;
+    border-radius: 40px 20px;
+    display: flex;
+    height: 10vw;
+    width: 35vw;
+}
+
+.tank-graphic {
+  width: 50%;
+/* height: 25%; */
+}
+
+.tank-img-graphic {
+    width: 16vw;
+    position: absolute;
+    top: 45%;
+    transform: translateY(-55%);
+}
+
+.flying-tag {
+    position: absolute;
+    left: 17.2%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.2vw;
+    font-weight: 700;
+}
+
+.tank-graphic-labels {
+   width: 50%;
+   font-size: 0.95vw;
+   margin-top: 0.7vw;
+}
+
+.tank-graphic-labels span {
+    font-weight: 700;
+    padding-left: 6px;
+}
+
+.tank-graphic-labels p {
+    padding: 0;
+    margin: 0;
+}
+
+/* .tank-tag {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -30%);
+    font-size: 17px;
+    font-weight: 700;
+} */
+
+/* seccion cuadre abajo */
+
+.tabla-cuadre-principal {
+    margin: 10px auto;
+    width: 96%;
+}
+
+.td-cuadre-input, .td-capacidad-input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    height: 2.4vw;
+    font-size: 1vw;
+}
+
+.td-h {
+    font-size: 1vw;
+}
+
+.th-th {
+    font-size: 1vw;
+}
+
+/* seccion  de totales*/
+
+.input-totales {
+    background-color: transparent;
+    border: 2px dashed #ff965a;
+    border-radius: 10px;
+    width: 8vw;
+}
+
+.totales {
+    margin: 13px 20px;
+}
+
+.totales-total {
+    width: 20vw;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 0.9vw;
+    margin-right: 20px;
+    /* margin-top: 20px; */
+}
+
+.abajo {
+    margin-top: 10px;
+}
+
+/* seccion de depositos */
+
+.depositos {
+    border: #ff965a dashed 3px;
+    border-radius: 10px;
+    aspect-ratio: 4/2.8;
+    width: 22vw;
+    max-width: 365px;
+    margin: 5% auto;
+    position: relative;
+}
+
+.deposito-header {
+    position: absolute;
+    top: -3vw;
+    font-size: 1.2vw;
+}
+
+.tabla-cuadro {
+    margin: 10px;
+}
+
+.tabla-cuadro-header {
+    font-size: 1.07vw;
+}
+
+.btn-td-btn {
+    border: #E35400 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.15s ease-in;
+    font-size: 0.905vw;
+}
+
+.btn-td-btn:hover {
+    background-color: #E35400;
+    color: white;
+}
+
+.td-cuadro-input {
+    width: 50%;
+    border: #ff965a 1px solid;
+    font-size: 1vw;
+}
+
+.totales-1 {
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+    justify-content: space-between ;
+    font-size: 1vw;
+}
+
+.totales-depositos-input {
+    width: 50%;
+    background-color: transparent;
+    border: dashed #E35400 2px;
+    border-radius: 10px;
+}
+
+/* Seccion Lotes*/
+
+.lotes {
+    padding-top: 10px;
+    position: relative;
+    z-index: 100;
+}
+
+.lote-cont {
+    width: 98%;
+    margin: 3px auto;
+}
+
+.lote-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+
+.lote-input {
+    width: 100%;
+    background-color: transparent;
+    border: #ff965a 1px solid;
+    font-size: 1vw;
+}
+
+.un {
+    border-radius: 10px 0 0 10px;
+}
+
+.deux {
+    border-radius: 0 10px 10px 0;
+}
+
+.btn-lote-delete {
+    background-color: transparent;
+    border: none;
+}
+
+/* Seccion de anotaciones*/
+
+.anotaciones {
+    width: 90%;
+    height: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+    position: relative;
+}
+
+.anotaciones label {
+    font-size: 1.33vw;
+}
+
+.cuadre-submit-btn {
+    position: absolute;
+    bottom: -45px;
+    right: 0;
+}
+
+.cuadre-submit-btn button {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+    font-size: 0.905vw;
+}
+
+.cuadre-submit-btn button:hover {
+    background-color: #007332;
+    color: white;
+}
+
+.division-uno {
+    display: flex;
+    flex-direction: column;
+}
+
+.division-dos {
+    display: flex;
+    flex-direction: column;
+}
+
+.division-uno, .division-dos {
+   width: 40%;
+}
+
+.anotacion-div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px 0;
+    font-size: 22px;
+}
+
+.anotaciones-input {
+    background-color: transparent;
+    border: #E35400 solid 2px;
+    border-radius: 10px;
+    width: 15vw;
+    height: 2.4vw;
+    font-size: 1.3vw;
+}
+
+.btn-add {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+}
+
+.btn-add:hover {
+    background-color: #007332;
+    color: white;
+}
