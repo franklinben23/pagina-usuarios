@@ -103,6 +103,7 @@ export const NewCuadre = () => {
     const envName = envasadora.envasadoraNombre; // intentar decunstructing
 
     const bancos = (envasadora.bancoEntity);
+    console.log(envasadora.bancoEntity)
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
     const  [glpPercentage, setGlpPercentage] = useState(0);
@@ -1337,7 +1338,7 @@ export const NewCuadre = () => {
                                             </tr>
                                         </thead>
                                         <tbody className="tabla-cuadro-body">
-                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} setBancoAfuera={setDepositoAdentro} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={banco.Id}/>)) }
+                                            { bancos.map((banco) => (<Depositos bancoName={banco.nombre} functionSet={setDepositos} setBancoAfuera={setDepositoAdentro} key={banco.nombre} idEnvasadora={envasadoraId} idUser={userId} idBanco={banco.id}/>)) }
                                         </tbody>
                                     </table>
                                     <div className="total-depositos-1 totales-1 d-flex">
