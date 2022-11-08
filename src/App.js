@@ -1,13 +1,29 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useNavigate, Routes, Route, NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { NewCuadre } from './componentes/NewCuadre';
+import { Registration } from './componentes/Registration';
 import { logOut } from './redux/user/userInfo';
 import * as logoBlanco from '../src/componentes/estilos/imagenes/logo_metrogas_blanco.png';
 import './App.css';
 
 function App() {
 
-  const userName = 'Juan Rigoberto Sanchez'; //placeholder por el momento.
+  const userBlock = useSelector((state) => state.userInfo);
+  const envasadora = userBlock.envasadoraEntity[0];
+
+  const capacidadTanque = envasadora.capacidadTanqueUno;
+  const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
+  const capacidadMaxima = envasadora.capacidadMaximaTanqueUno;
+  const capacidadIntermedia = envasadora.capacidadIntermediaTanqueUno;
+
+  const envasadoraId = envasadora.envasadoraId;
+  const userId = userBlock.userId;
+  const userName = userBlock.nombre;
+  const lastName = userBlock.apellido;
+
+  const envName = envasadora.envasadoraNombre;
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -18,26 +34,46 @@ function App() {
     navigate('/');
 };
 
+const replace = (str) => {
+    if (typeof str === 'string') {
+      return str.replace(/^\w/, c => c.toUpperCase())
+    }
+    else return
+};
+
   return (
     <div className="App">
       <div className='header'>
         <div className='top-nav-links'>
           <img className='top-left-logo' alt='logo-metrogas' src={logoBlanco.default}/>
           <div className='top-right-links'>
-            <p className='user-name'>{userName}</p>
+            <p className='user-name'>{`${replace(userName)} ${replace(lastName)}`}</p>
             <button type="button" className="nav-btns log-out-btn" onClick={logout}>logout</button>
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <button className='botton-link'>Menu 1</button>
-          <button className='botton-link'>Menu 1</button>
+          <NavLink to='PaginaCuadre' className='botton-link'>Menu 1</NavLink>
+          <button to='PaginaCuadre' className='botton-link'>Menu 2</button>
           <button className='botton-link'>Menu 1</button>
           <button className='botton-link'>Menu 1</button>
           <button className='botton-link'>Menu 1</button>
         </div>
       </div>
       <div className='main-sec'>
-        
+        <Routes>
+          <Route path='/PaginaCuadre'element={<NewCuadre
+              envasadora={envasadora} 
+              envasadoraId={envasadoraId} 
+              envName={envName}
+              userId={userId}
+              capacidadTanque={capacidadTanque}
+              capacidadMaxima={capacidadMaxima}
+              capacidadIntermedia={capacidadIntermedia}
+              capacidadMinima={capacidadMinima}
+              />}
+          />
+          <Route path='/registration' element= {<Registration />} />
+        </Routes>
       </div>
       <div className='bottom'></div>
     </div>

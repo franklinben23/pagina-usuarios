@@ -1,12 +1,9 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
 import React, {useState, useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { usePath } from "./PathContext.js";
-import { logOut } from "../redux/user/userInfo.js";
 import "./estilos/newCuadre.css";
 import { Depositos } from "./Depositos";
-import * as logoImg from './estilos/imagenes/metrogas_logo.png';
 import * as tanque1 from './estilos/imagenes/tanques/tnaque_sn35.png';
 import * as tanque2 from './estilos/imagenes/tanques/tnaque_sn45.png';
 import * as tanque3 from './estilos/imagenes/tanques/tnaque_sn50.png';
@@ -15,10 +12,11 @@ import * as tanque5 from './estilos/imagenes/tanques/tnaque_sn75.png';
 import * as tanque6 from './estilos/imagenes/tanques/tnaque_sn85.png';
 import { AiOutlineDelete } from 'react-icons/ai';
 
-export const NewCuadre = () => {
+export const NewCuadre = (props) => {
+
+    const {envasadoraId, userId, capacidadTanque, capacidadMaxima, capacidadMinima, capacidadIntermedia, envasadora, envName} = props;
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         const loggedInUser = JSON.parse(localStorage.getItem('Authenticated')) || false;
@@ -89,21 +87,7 @@ export const NewCuadre = () => {
 
     const pathLocal = usePath();
 
-    const userBlock = useSelector((state) => state.userInfo);
-
-    const envasadora = userBlock.envasadoraEntity[0];
-    const capacidadTanque = envasadora.capacidadTanqueUno;
-    const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
-    const capacidadMaxima = envasadora.capacidadMaximaTanqueUno;
-    const capacidadIntermedia = envasadora.capacidadIntermediaTanqueUno;
-
-    const envasadoraId = envasadora.envasadoraId;
-    const userId = userBlock.userId;
-
-    const envName = envasadora.envasadoraNombre; // intentar decunstructing
-
     const bancos = (envasadora.bancoEntity);
-    console.log(envasadora.bancoEntity)
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
     const  [glpPercentage, setGlpPercentage] = useState(0);
@@ -202,7 +186,7 @@ export const NewCuadre = () => {
         const { name, value } = e.target;
         setAnotaciones(prev => ({
           ...prev,
-          [name]: parseInt(value)
+          [name]: parseFloat(value)
         }));
       };
 
@@ -685,7 +669,7 @@ export const NewCuadre = () => {
 
     // const [requestSent, setRequestSent] = useState();
     const saveInventario = async () => {
-        const glsActual = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
+        const glsActual = anotaciones.existenciaFinal;
         const porcentajeGlp = glsActual / parseInt(capacidadTanque) * 100;
 
         const block = {
@@ -840,13 +824,23 @@ export const NewCuadre = () => {
         e.preventDefault();
         const glsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
         let kms = false;
-        Object.entries(metros).forEach(([key, val]) => {
+        Object.entries(metros).every(([key, val]) => {
             if (isNaN(val) || val < 0) {
                 alert('No puede introducir numeros negativos o dejar casillas vacias, favor revisar');
                 setActive(2);
                 kms = true
-                return
+                return false
             }
+            return true
+        });
+        Object.entries(anotaciones).every(([key, val]) => {
+            if (isNaN(val) || val < 0) {
+                alert('No puede introducir numeros negativos o dejar casillas vacias, favor revisar');
+                setActive(3);
+                kms = true
+                return false
+            }
+            return true
         });
         if (kms) return
         const block = {
@@ -1040,19 +1034,10 @@ export const NewCuadre = () => {
             alert(error);
         }
     };
-
-    const logout = () => {
-        localStorage.removeItem('Authenticated');
-        dispatch(logOut());
-        navigate('/');
-    };
         return (
             <div className="cuadre-cont">
                 <div className="cuadre-inner-cont">
                     <div className="name-logo-section d-flex justify-content-between">
-                        <div className="logo">
-                            <img alt="ig-logo" src={logoImg.default} className="cuadre-mobile-logo"/>
-                        </div>
                         <div className="initial-ilustration ilustration">
                             <div className="tank-graphic">
                                 <img src={tank1.default} alt="img-1" className="tank-img-graphic"/>
@@ -1078,10 +1063,6 @@ export const NewCuadre = () => {
                             <div className="daily-price d-flex justify-content-between align-self-end">
                                 <p className="price-tag">Precio:</p>
                                 <span className="price-span">{precioFormatado}</span>
-                            </div>
-                            <div className="logout-refresh-btns align-self-end">
-                                <button type="button" className="nav-btns refresh" onClick={()=>{window.location.reload()}}>Refrescar</button>
-                                <button type="button" className="nav-btns log-out" onClick={logout}>logout</button>
                             </div>
                         </div>
                     </div>
@@ -1351,7 +1332,7 @@ export const NewCuadre = () => {
                                     {lotes.map((obj, index) => <form className="lote-cont d-flex">
                                         <input className="lote-input un" type="text" name="codigo" placeholder="codigo" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
                                         <input className="lote-input deux" type="text" name="monto" placeholder="monto" onChange={(e)=>{handleLoteChange(index, e)}} disabled={obj.activo ? false : true} />
-                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete size={23} color="red"/></button>
+                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeLote(index)}}> <AiOutlineDelete color="red" className="btn-trash"/></button>
                                     </form>
                                     )}
                                     {loteActive ? <button type="button" className="lote-btn btn-td-btn btn-add" onClick={saveLote}> Guardar Lote</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addLote}> Añadir Lote</button>}
@@ -1365,7 +1346,7 @@ export const NewCuadre = () => {
                                     {MontosB.map((obj, index) => <form className="lote-cont d-flex"> {/** esto solo es para enseñar, terminar fucionalidad pendiente */}
                                         <input className="lote-input un" name="codigo" type="text" placeholder="codigo Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
                                         <input className="lote-input deux" name="monto" type="text" placeholder="monto Bonogas" onChange={(e) =>{handleMontoChange(index, e)}} disabled={obj.activo ? false : true}/>
-                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeMonto(index)}}> <AiOutlineDelete size={23} color="red"/></button>
+                                        <button type="button" className="btn-lote-delete" onClick={()=>{removeMonto(index)}}> <AiOutlineDelete color="red" className="btn-trash"/></button>
                                     </form>
                                     )}
                                     {montoActive ? <button type="button" className="lote-btn btn-td-btn btn-add" onClick={saveMonto}> Guardar Monto</button> : <button type="button" className="lote-btn btn-td-btn" onClick={addMontoB}> Añadir Monto</button>}

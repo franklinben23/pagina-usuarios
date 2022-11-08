@@ -37,7 +37,7 @@ export const NewLogin = () => {
                 const json = await request.json();
                 console.log(json);// aqui se va a conectar con la tienda.
                 dispatch(logUser(json));
-                navigate('PaginaCuadre');
+                navigate('App/PaginaCuadre');
 
             } else {
                 alert('Contraseña o correo incorrecto, favor revisar credenciales')

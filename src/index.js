@@ -12,8 +12,6 @@ import { Registration } from './componentes/Registration';
 import App from './App';
 // import { CuadreDiario } from './componentes/CuadreDiario';
 import { NewLogin } from './componentes/NewLogin';
-import { NewCuadre } from './componentes/NewCuadre';
-import { Crud } from './componentes/Crud';
 // import { EnvasadoraReg } from './componentes/EnvasadoraReg';
 // import { Test } from './componentes/Test';
 
@@ -27,7 +25,8 @@ root.render(
               <Routes>
                 <Route path='/Registration:email' element={<Registration /> } />
                 <Route path='/' element={<NewLogin /> } />
-                <Route path='/PaginaCuadre' element={<NewCuadre /> } />
+
+                <Route path='/App/*' element={<App /> } />
                 <Route path='/Mailer' element={<RegistrationMailer /> } />
               </Routes>
             </Provider>
