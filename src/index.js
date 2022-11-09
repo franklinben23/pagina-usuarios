@@ -25,7 +25,6 @@ root.render(
               <Routes>
                 <Route path='/Registration:email' element={<Registration /> } />
                 <Route path='/' element={<NewLogin /> } />
-
                 <Route path='/App/*' element={<App /> } />
                 <Route path='/Mailer' element={<RegistrationMailer /> } />
               </Routes>

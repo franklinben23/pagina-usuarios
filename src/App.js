@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Routes, Route, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { NewCuadre } from './componentes/NewCuadre';
@@ -9,6 +9,16 @@ import './App.css';
 
 function App() {
 
+  const navigate = useNavigate(); 
+  const [authenticated, setauthenticated] = useState(null);
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("Authenticated");
+    if (loggedInUser) {
+      setauthenticated(loggedInUser);
+    } else {
+      navigate('/')
+    }
+  }, []);;
   const userBlock = useSelector((state) => state.userInfo);
   const envasadora = userBlock.envasadoraEntity[0];
 
@@ -25,8 +35,6 @@ function App() {
   const envName = envasadora.envasadoraNombre;
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem('Authenticated');
@@ -52,7 +60,7 @@ const replace = (str) => {
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <NavLink to='PaginaCuadre' className='botton-link'>Menu 1</NavLink>
+          <NavLink to='/PaginaCuadre' className='botton-link'>Menu 1</NavLink>
           <button to='PaginaCuadre' className='botton-link'>Menu 2</button>
           <button className='botton-link'>Menu 1</button>
           <button className='botton-link'>Menu 1</button>
@@ -61,7 +69,7 @@ const replace = (str) => {
       </div>
       <div className='main-sec'>
         <Routes>
-          <Route path='/PaginaCuadre'element={<NewCuadre
+          <Route path='PaginaCuadre'element={<NewCuadre
               envasadora={envasadora} 
               envasadoraId={envasadoraId} 
               envName={envName}
@@ -72,7 +80,7 @@ const replace = (str) => {
               capacidadMinima={capacidadMinima}
               />}
           />
-          <Route path='/registration' element= {<Registration />} />
+          <Route path='registration' element= {<Registration />} />
         </Routes>
       </div>
       <div className='bottom'></div>
