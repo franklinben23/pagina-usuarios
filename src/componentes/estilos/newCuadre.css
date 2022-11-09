@@ -393,3 +393,186 @@
     background-color: #007332;
     color: white;
 }
+
+@media only screen and (max-width: 740px) {
+
+    .ilustration {
+        position: relative;
+        display: flex;
+        margin-top: 1vmin;
+        height: 12vmin;
+        width: 60vmin;
+    }
+
+    .tank-graphic {
+        width: 35%;
+      /* height: 25%; */
+      }
+      
+      .tank-img-graphic {
+          width: 25vmin;
+      }
+      
+      .flying-tag {
+          position: absolute;
+          left: 8vmin;
+          font-size: 3vmin;
+          font-weight: 700;
+      }
+      
+      .tank-graphic-labels {
+         width: 30%;
+         font-size: 1.3vmin;
+         margin-left: 10vmin;
+         margin-top: 1.2vmin;
+      }
+      
+      .tank-graphic-labels span {
+          font-weight: 700;
+          padding-left: 6px;
+      }
+
+       .envasadora-span {
+        font-size: 1.9vmin;
+    }
+
+    .cuadre-mobile-page-h1 {
+        font-size: 2.3vmin;
+        margin-top: 2vmin;
+        margin-bottom: 3vmin;
+        text-align: end;
+    }
+
+    .daily-price {
+        right: 1.7vmin;
+        bottom: -2vmin;
+        width: 10vmin;
+    }
+
+    .price-tag {
+        margin-right: 1vmin;
+        font-size: 1.1vmin;
+    }
+
+    .price-span {
+        font-size: 1.9vmin;
+    }
+    /* secccion cuadre*/
+
+    .td-cuadre-input, .td-capacidad-input {
+        height: 1.7vmin;
+        font-size: 1.3vmin;
+    }
+    
+    .td-h {
+        font-size: 1.2vmin;
+    }
+    
+    .th-th {
+        font-size: 1.3vmin;
+    }
+
+    /*seccion totales*/
+
+    .input-totales {
+        width: 12vmin;
+        height: 3vmin;
+    }
+    
+    .totales {
+        margin: 8px 12px;
+    }
+    
+    .totales-total {
+        width: 30vmin;
+        font-size: 1.6vmin;
+        margin-right: 12px;
+        /* margin-top: 20px; */
+    }
+    
+    .abajo {
+        margin-top: 10px;
+    }
+
+    /*seccion depositos*/
+
+    .depositos {
+        aspect-ratio: 1/1.5;
+        width: 24vmin;
+    }
+    
+    .deposito-header {
+        position: absolute;
+        top: -3.2vmin;
+        font-size: 2.3vmin;
+        font-weight: 500;
+    }
+    
+    .tabla-cuadro {
+        margin: 5px;
+    }
+    
+    .tabla-cuadro-header {
+        font-size: 1.7vmin;
+    }
+    
+    .btn-td-btn {
+        background-color: transparent;
+        transition: all 0.15s ease-in;
+        font-size: 1.2vmin;
+    }
+    
+    .btn-td-btn:hover {
+        background-color: #E35400;
+        color: white;
+    }
+    
+    .td-cuadro-input {
+        width: 70%;
+        font-size: 1.2vmin;
+    }
+    
+    .totales-1 {
+        position: absolute;
+        left: 0;
+        bottom: -50px;
+        justify-content: space-between ;
+        font-size: 1.3vmin;
+    }
+    
+    .totales-depositos-input {
+        width: 40%;
+        height: 2.5vmin;
+    }
+
+    .anotacion-div {
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    
+    .anotaciones-input {
+        width: 16vmin;
+        height: 3vmin;
+        font-size: 1.7vmin;
+    }
+
+    .btn-trash {
+        width: 3vmin;
+        height: 3vmin;
+    }
+
+    .anotaciones {
+        margin-top: 2vmin;
+        position: relative;
+    }
+    
+    .anotaciones label {
+        font-size: 1.7vmin;
+        font-weight: 400;
+    }
+
+    .cuadre-submit-btn button {
+        font-size: 1.4vmin;
+    }
+
+}

@@ -75,8 +75,8 @@ export const Deposito = (props) => {
              <input name="fk_banco" className="deposito-input" hidden value={fk_bank}/>
              <input name="fk_usuario" className="deposito-input" hidden value={fk_user}/> */}
              <div className="input-btn-cont d-flex">
-                 <button type="button" className="delete-field-btn" onClick={()=>{removeFields(indexB)}}><RiDeleteBin2Line size={22}  color="rgb(172, 0, 0)" /></button>
-                 <button type="button" className="crear-field-btn" onClick={()=>{patchField(indexB)}}><FiEdit size={20} color="green" /></button>
+                 <button type="button" className="delete-field-btn" onClick={()=>{removeFields(indexB)}}><RiDeleteBin2Line size={22}  color="rgb(172, 0, 0)" className="rga-btn" /></button>
+                 <button type="button" className="crear-field-btn" onClick={()=>{patchField(indexB)}}><FiEdit size={20} color="green" className="rga-btn"/></button>
              </div>
         </div>
      )

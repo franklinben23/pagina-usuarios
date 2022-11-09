@@ -77,3 +77,48 @@
 .deposito-input-label, .deposito-input {
     font-size: 1vw;
 }
+
+@media only screen and (max-width: 740px) {
+
+    .close-btn-btn {
+        width: 4vmin;
+        height: 4vmin;
+    }
+
+    .add-btn-btn {
+        height: 2.7vmin;
+        width: 2.7vmin;
+    }
+
+    .total-depositos {
+        font-size: 2.2vmin;
+    }
+
+    .popup-inner {
+        padding: 32px;
+        width: 60%;
+        height: 70%;
+    }
+
+    .cargando-span {
+        font-size: 1.9vmin;
+    }
+
+    .banco-label {
+        font-size: 1.7vmin;
+    }
+    
+    .deposito-input-label, .deposito-input {
+        font-size: 1.7vmin;
+    }
+
+    .popup-form-div {
+        padding-bottom: 0;
+    }
+    
+    .rga-btn {
+        width: 2.7vmin;
+        height: 2.7vmin;
+    }
+
+}

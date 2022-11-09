@@ -183,7 +183,7 @@ export const Depositos = (props) => {
                                             </tbody>
                                         </table>
                                             <div className="input-btn-cont d-flex">
-                                              <button type="button" className="crear-field-btn" onClick={newHandleForm}><BsPlusLg size={25} color="green" /></button>
+                                              <button type="button" className="crear-field-btn" onClick={newHandleForm}><BsPlusLg size={25} color="green" className="add-btn-btn"/></button>
                                             </div>
                                     </div>
                             </form>
@@ -191,7 +191,7 @@ export const Depositos = (props) => {
                         <form className="depositos-form">
                             {depositosGuardados.map((deposito, index) => (<Deposito key={deposito.depositoId} depositoB={deposito} indexB={index} depositosGuardadosB={depositosGuardados} setdepositosGuardadosB={setdepositosGuardados} />))}
                         </form>
-                        <button type="button" className="close-btn" onClick={ () => setTrigger(false) }><CgCloseO size={30} color="rgb(172, 0, 0)" /></button>
+                        <button type="button" className="close-btn" onClick={ () => setTrigger(false) }><CgCloseO className="close-btn-btn" size={30} color="rgb(172, 0, 0)" /></button>
                         <button type="button" className="total-depositos"onClick={summarizeDepositos} > guardar</button>
                     </div>
                 </div> : ''}
