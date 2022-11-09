@@ -10,15 +10,13 @@ import './App.css';
 function App() {
 
   const navigate = useNavigate(); 
-  const [authenticated, setauthenticated] = useState(null);
+  let loggedInUser = false;
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("Authenticated");
-    if (loggedInUser) {
-      setauthenticated(loggedInUser);
-    } else {
-      navigate('/')
-    }
+    loggedInUser = localStorage.getItem("Authenticated");
   }, []);;
+
+  if (!loggedInUser) navigate('/');
+
   const userBlock = useSelector((state) => state.userInfo);
   const envasadora = userBlock.envasadoraEntity[0];
 
