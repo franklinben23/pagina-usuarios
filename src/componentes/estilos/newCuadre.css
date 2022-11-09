@@ -394,7 +394,7 @@
     color: white;
 }
 
-@media only screen and (max-width: 740px) {
+@media only screen and (max-width: 1080px) {
 
     .ilustration {
         position: relative;
