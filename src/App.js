@@ -57,10 +57,11 @@ const replace = (str) => {
           <div className='top-right-links'>
             <p className='user-name'>{`${replace(userName)} ${replace(lastName)}`}</p>
             <button type="button" className="nav-btns log-out-btn" onClick={logout}>logout</button>
+            <button type="button" className="nav-btns log-out-btn"style={{'background-color': '#007332'}} onClick={()=>{window.location.reload()}}>refrescar</button>
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <NavLink to='/PaginaCuadre' className='botton-link'>Menu 1</NavLink>
+          <NavLink to='PaginaCuadre' className='botton-link'>Menu 1</NavLink>
           <button to='PaginaCuadre' className='botton-link'>Menu 2</button>
           <button className='botton-link'>Menu 1</button>
           <button className='botton-link'>Menu 1</button>
