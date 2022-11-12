@@ -150,14 +150,33 @@
     margin: 0;
 }
 
-/* .tank-tag {
+/* seccion trnsferencias*/
+
+.seccion-transferencias {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+}
+
+.codigo-transferencias, .cantidad-transferencias {
+    width: 50%;
+    padding: 20px;
+}
+
+.cantidad-transferencia, .codigo-transferencia {
+    width: 100%;
+}
+
+.transferencias-th {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -30%);
-    font-size: 17px;
-    font-weight: 700;
-} */
+}
+
+.bloques-transfer {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+}
 
 /* seccion cuadre abajo */
 
@@ -202,7 +221,6 @@
     font-weight: 700;
     font-size: 1.9vmin;
     margin-right: 20px;
-    /* margin-top: 20px; */
 }
 
 .abajo {
@@ -456,6 +474,41 @@
 
     .price-span {
         font-size: 1.9vmin;
+    }
+
+    /* seccion trnsferencias*/
+
+    .seccion-transferencias {
+        position: relative;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .bloques-transfer {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 60px;
+    }
+
+    .codigo-transferencias, .cantidad-transferencias {
+        width: 80%;
+        padding: 10px;
+    }
+
+    .codigo-label, .cantidad-label {
+        font-size: 2.7vmin;
+    }
+
+    .cantidad-transferencia, .codigo-transferencia {
+        width: 100%;
+        font-size: 2vmin;
+    }
+
+    .transferencias-th {
+        position: absolute;
+        margin-top: 10px;
+        font-size: 4vmin;
     }
     /* secccion cuadre*/
 

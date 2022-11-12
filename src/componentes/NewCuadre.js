@@ -163,6 +163,17 @@ export const NewCuadre = (props) => {
         totalVendidoMetroX: 0,
         totalVendidoMetroDIST: 0,
     });
+    const [transferencias, setTransferencias] = useState({
+        cantidadTransfer: 0,
+        codigoTransfer: 0
+    });
+    const onChangeTransfer= e => {
+        const { name, value } = e.target;
+        setTransferencias(prev => ({
+          ...prev,
+          [name]: parseFloat(value)
+        }));
+    };
 
     const [tank1, setTank1] = useState(tanque1)
     const [active, setActive] = useState(2);
@@ -659,15 +670,33 @@ export const NewCuadre = (props) => {
     const totalPre = parseFloat(galonesVendidos * precio);
     const totalDinero = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPre);
 
-    // const TotalesCalc = () => {
-    //     const counter = anotaciones.creditoCliente + depositoAdentro + totalMontoPre + anotaciones.bonoPrepago + anotaciones.cheque;
-    //     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(counter);
-    // }
-    // const totalTotal = TotalesCalc();
+    const changeNbr = (nbr) => { // buscar forma de simplificar
+        const strng = (nbr.toFixed(1) + '').split('');
+        let lastnbr = strng[strng.length - 1];
+        let secondNbr = strng[1];
+        let firstNbr = strng[0];
+        if (parseInt(lastnbr) <= 2) {
+            lastnbr = '0'
+        } if (parseInt(lastnbr) >= 3 && parseInt(lastnbr) <= 7) {
+            lastnbr  = '5'
+        } if (parseInt(lastnbr) >= 7.5) {
+            if (parseInt(secondNbr) === 9) {
+                firstNbr =  parseInt(firstNbr) + 1
+                secondNbr = 0
+                lastnbr = '0'
+            }
+            else {
+                secondNbr = parseInt(secondNbr) + 1
+                lastnbr = '0'
+            }
+        }
+        strng[0] = firstNbr
+        strng[1] = secondNbr
+        strng[strng.length - 1] = lastnbr
+        const joined = strng.join('');
+        return parseFloat(joined)
+    };
 
-    // const [cuadreNuevo, setCuadreNuevo] = useState(false);
-
-    // const [requestSent, setRequestSent] = useState();
     const saveInventario = async () => {
         const glsActual = anotaciones.existenciaFinal;
         const porcentajeGlp = glsActual / parseInt(capacidadTanque) * 100;
@@ -708,7 +737,7 @@ export const NewCuadre = (props) => {
               "estatus": true
             },
             "existenciaGLP":  anotaciones.existenciaFinal,
-            "porcentajeGLP": porcentajeGlp,
+            "porcentajeGLP": changeNbr(porcentajeGlp),
             "fechaInventario": "2022-10-24T13:08:24.363Z",
             "horaInventario": "2022-10-24T13:08:24.363Z",
             "actualmente": "string",
@@ -823,7 +852,7 @@ export const NewCuadre = (props) => {
     const cuadreSubmitF = async (e) => {
         e.preventDefault();
         const glsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
-        let kms = false;
+        let kms = false; 
         Object.entries(metros).every(([key, val]) => {
             if (isNaN(val) || val < 0) {
                 alert('No puede introducir numeros negativos o dejar casillas vacias, favor revisar');
@@ -884,8 +913,8 @@ export const NewCuadre = (props) => {
             "existenciaFinalVolumen": 0,
             "existenciaFinalGalones": anotaciones.existenciaFinal,
             "existenciaFinalTemperatura": 0,
-            "conduceNumero": 0,
-            "cantiGalonesRecibidos": 0,
+            "conduceNumero": transferencias.codigoTransfer,
+            "cantiGalonesRecibidos": transferencias.cantidadTransfer,
             "precioActual": precio,
             "contadorInicialMetroUno": metros.contadorInicialMetroI,
             "contadorFinalMetroUno": metros.contadorFinalMetroI,
@@ -955,7 +984,7 @@ export const NewCuadre = (props) => {
             "totalMetroDistribucion": metros.totalVendidoMetroDIST,
             "totalGalonesVendidos": galonesVendidos,
             "totalDineroVendido": totalPre,
-            "sobranteGalones": anotaciones.existenciaFinal - glsRest,
+            "sobranteGalones": anotaciones.existenciaFinal - transferencias.cantidadTransfer - glsRest,
             "ventaEfectivo": anotaciones.ventaEfectivo,
             "creditoCliente": anotaciones.creditoCliente,
             "creditoTarjeta": anotaciones.creditoTarjeta,
@@ -1068,9 +1097,9 @@ export const NewCuadre = (props) => {
                     </div>
                     <div className="main-section">
                         <div className="nav-tabs w-100 d-flex">
-                            {/* <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
+                            <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
                             Estado del Tanque
-                            </div> */}
+                            </div>
                             <div className={active === 2 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(2)}}>
                             Relacion de Metros
                             </div>
@@ -1082,85 +1111,21 @@ export const NewCuadre = (props) => {
                             </div>
                         </div>
                         <div className="cuadre-contents">
-                            {/* <div className={active === 1 ? "cuadre-section estado-tanque main-active" : "cuadre-section estado-tanque"}>
-                                <div className="existencia-inicial estado-tanque-section">
-                                    <p className="estado-tanque-label">Existencia inicial</p>
-                                    <div className="input-list">
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Volumen</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaInicialVolumen}
-                                            name="existenciaInicialVolumen"
-                                            onChange={onInputChangeCapacidad2}/>
+                            <div className={active === 1 ? "cuadre-section estado-tanque main-active" : "cuadre-section estado-tanque"}>
+                                <div className="seccion-transferencias d-flex">
+                                    <h1 className="transferencias-th"> Transferencias</h1>
+                                    <div className="bloques-transfer">
+                                        <div className="codigo-transferencias">
+                                            <h4 className="codigo-label">Código transferencias</h4>
+                                            <input type='number' name="codigoTransfer" value={transferencias.codigoTransfer} onChange={onChangeTransfer} className='codigo-transferencia'/>
                                         </div>
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Galones</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaInicialGalones}
-                                            name="existenciaInicialGalones"
-                                            onChange={onInputChangeCapacidad}/>
-                                        </div>
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Temperatura</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaInicialTemperatura}
-                                            name="existenciaInicialTemperatura"
-                                            onChange={onInputChangeCapacidad}/>
+                                        <div className="cantidad-transferencias">
+                                            <h4 className="cantidad-label">Código transferencias</h4>
+                                            <input type='number' name="cantidadTransfer" value={transferencias.cantidadTransfer} onChange={onChangeTransfer} className='cantidad-transferencia'/>
                                         </div>
                                     </div>
                                 </div>
-    
-                                <div className="existencia-final estado-tanque-section">
-                                    <p className="estado-tanque-label">Existencia Final</p>
-                                    <div className="input-list">
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Volumen</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaFinalVolumen}
-                                            name="existenciaFinalVolumen"
-                                            onChange={onInputChangeCapacidad2}/>
-                                        </div>
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Galones</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaFinalGalones}
-                                            name="existenciaFinalGalones"
-                                            onChange={onInputChangeCapacidad}/>
-                                        </div>
-                                        <div className="input-group">
-                                            <span className="input-group-tag">Temp.</span>
-                                            <input
-                                            className="volumen-inicial-input" 
-                                            type="number"
-                                            value={capacidadRegistro.existenciaFinalTemperatura}
-                                            name="existenciaFinalTemperatura"
-                                            onChange={onInputChangeCapacidad}/>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-    
-                                <div className="ilustrations estado-tanque-section">
-
-                                </div>
-                                {/* <div className="existencia-final estado-section">
-                                    <p className="estado-tanque-label d-block">Existencia Final</p>
-                                </div>
-                                <div className="ilustrations estado-section">
-    
-                                </div> */}
-    
-                            {/* </div> */}
+                            </div>
                             <div className={active === 2 ? "cuadre-section relacion-metros main-active flex-column" : "cuadre-section relacion-metros"}>
                                 <div className="cuadre-principal seccion">
                                     <table className="tabla-cuadre-principal">
@@ -1370,7 +1335,7 @@ export const NewCuadre = (props) => {
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Sobrante GLS:</label>
-                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.existenciaFinal - galsRest} disabled type="text" />
+                                            <input className="anotaciones-input" name="sobranteGalones" value={anotaciones.existenciaFinal - transferencias.cantidadTransfer - galsRest} disabled type="text" />
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Venta Efectivo:</label>

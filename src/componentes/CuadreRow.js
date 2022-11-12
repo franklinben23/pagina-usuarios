@@ -1,11 +1,12 @@
 import React from "react";
 
 export const CuadreRow = (props) => {
-    const {id, precio, totalVendido, deposito, tarjetas, bonos, sobrante} = props;
+    const {id, envasadora, precio, totalVendido, deposito, tarjetas, bonos, sobrante} = props;
 
     return (
         <tr>
             <td className='td-crud'>{id}</td>
+            <td className='td-crud'>{envasadora}</td>
             <td className='td-crud'>{precio}</td>
             <td className='td-crud'>{totalVendido}</td>
             <td className='td-crud'>{deposito}</td>

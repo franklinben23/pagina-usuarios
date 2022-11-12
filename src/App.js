@@ -3,6 +3,7 @@ import { useNavigate, Routes, Route, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { NewCuadre } from './componentes/NewCuadre';
 import { Registration } from './componentes/Registration';
+import { Crud } from './componentes/Crud';
 import { logOut } from './redux/user/userInfo';
 import * as logoBlanco from '../src/componentes/estilos/imagenes/logo_metrogas_blanco.png';
 import './App.css';
@@ -79,6 +80,7 @@ const replace = (str) => {
               capacidadMinima={capacidadMinima}
               />}
           />
+          <Route path='HistorialCuadres' element={ <Crud/>} />
           <Route path='registration' element= {<Registration />} />
         </Routes>
       </div>
