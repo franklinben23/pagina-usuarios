@@ -1120,7 +1120,7 @@ export const NewCuadre = (props) => {
                                             <input type='number' name="codigoTransfer" value={transferencias.codigoTransfer} onChange={onChangeTransfer} className='codigo-transferencia'/>
                                         </div>
                                         <div className="cantidad-transferencias">
-                                            <h4 className="cantidad-label">Código transferencias</h4>
+                                            <h4 className="cantidad-label">Cantidad transferencias</h4>
                                             <input type='number' name="cantidadTransfer" value={transferencias.cantidadTransfer} onChange={onChangeTransfer} className='cantidad-transferencia'/>
                                         </div>
                                     </div>
