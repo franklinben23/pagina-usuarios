@@ -160,11 +160,16 @@
 
 .codigo-transferencias, .cantidad-transferencias {
     width: 50%;
-    padding: 20px;
+    padding: 40px;
+}
+
+.codigo-label, .cantidad-label {
+    font-size: 2.9vmin;
+    width: 140%;
 }
 
 .cantidad-transferencia, .codigo-transferencia {
-    width: 100%;
+    width: 120%;
 }
 
 .transferencias-th {
@@ -189,8 +194,8 @@
     width: 100%;
     border: none;
     background-color: transparent;
-    height: 2vmin;
-    font-size: 1.7vmin;
+    height: 2.7vmin;
+    font-size: 1.9vmin;
 }
 
 .td-h {

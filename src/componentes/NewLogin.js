@@ -35,13 +35,11 @@ export const NewLogin = () => {
             if(request.ok) {
                 localStorage.setItem('Authenticated', true)
                 const json = await request.json();
-                console.log(json);// aqui se va a conectar con la tienda.
                 dispatch(logUser(json));
                 navigate('App/PaginaCuadre');
 
             } else {
                 alert('Contraseña o correo incorrecto, favor revisar credenciales')
-                console.log(email, password)
             }
 
         } catch (error) {
