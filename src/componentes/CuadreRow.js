@@ -1,7 +1,7 @@
 import React from "react";
 
 export const CuadreRow = (props) => {
-    const {id, fechaCierre, envasadora, precio, totalVendido, deposito, depositos, tarjeta , tarjetas, bono, bonos, sobrante, setListaDepositos, setListaBonos, setListaLotes} = props; // importar prop-types y arreglar el arr.reduce erros cuando trato de pasar el reduce par aca.
+    const {id, fechaCierre, envasadora, precio, totalVendido, deposito, depositos, tarjeta , tarjetas, bono, bonos, creditoCliente, sobrante, setListaDepositos, setListaBonos, setListaLotes} = props; // importar prop-types y arreglar el arr.reduce erros cuando trato de pasar el reduce par aca.
 
     function addInfo(e) {
         setListaDepositos(depositos);
@@ -22,11 +22,12 @@ export const CuadreRow = (props) => {
             <td className='td-crud'>{fechaCierre}</td>
             <td className='td-crud'>{envasadora}</td>
             <td className='td-crud'>{precio}</td>
-            <td className='td-crud'>{totalVendido}</td>
             <td className='td-crud'>{deposito}</td>
             <td className='td-crud'>{tarjeta}</td>
             <td className='td-crud'>{bono}</td>
+            <td className='td-crud'>{creditoCliente}</td>
             <td className='td-crud'>{sobrante}</td>
+            <td className='td-crud'>{totalVendido}</td>
         </tr>
     );
 };

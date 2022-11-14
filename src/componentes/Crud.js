@@ -57,6 +57,7 @@ export const Crud = () => {
                     </div>
                 </div>
                 <div className='tabla-div una'>
+                        <h5 className='cc'>Detalles de Depósito:</h5>
                         <table className='tabla-de-cuadres'>
                             {/* <colgroup>
                                 <col span="1" style={{width: '5%'}}/>
@@ -74,11 +75,12 @@ export const Crud = () => {
                                     <th className='td-crud'>Fecha</th>
                                     <th className='td-crud'>Envasadora</th>
                                     <th className='td-crud'>Precio</th>
-                                    <th className='td-crud'>Total RD$</th>
                                     <th className='td-crud'>Depositos</th>
                                     <th className='td-crud'>Tarjetas</th>
                                     <th className='td-crud'>Bonogas</th>
+                                    <th className='td-crud'>Crédito Cliente</th>
                                     <th className='td-crud'>sobrante Galones</th>
+                                    <th className='td-crud'>Total RD$</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,6 +97,7 @@ export const Crud = () => {
                                 tarjetas={el.loteEntity}
                                 bono={reduceArray(el.bonogasEntity)}
                                 bonos={el.bonogasEntity}
+                                creditoCliente={el.creditoCliente}
                                 sobrante={el.sobranteGalones}
                                 setListaDepositos={setListaDepositos}
                                 setListaBonos={setListaBonos}
@@ -106,6 +109,8 @@ export const Crud = () => {
                     <div className='tabla-div dos'>
                         {
                             listaDepositos.length ?
+                            <div className='sec-cont'> 
+                                <h5 className='titulo-sec'>Detalles de Depósito:</h5>
                                 <table className='tabla-de-cuadres'>
                                     <thead>
                                         <tr>
@@ -128,13 +133,16 @@ export const Crud = () => {
                                             </tr>
                                         )}
                                     </tbody>
-                                </table> :
+                                    </table>
+                                </div> :
                                 <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
                         }
                     </div>
                     <div className='tabla-div tres'>
                         {
                             listaLotes.length ?
+                            <div className='sec-cont'>
+                                <h5 className='titulo-sec'>Detalles de Lotes:</h5>
                                     <table className='tabla-de-cuadres tres'>
                                         <thead>
                                             <tr>
@@ -151,13 +159,16 @@ export const Crud = () => {
                                             </tr>
                                         )}
                                         </tbody>
-                                    </table> :
+                                    </table>
+                                </div>     :
                                 <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
                             }
                     </div>
                     <div className='tabla-div cuatro'>
                         {
                             listaBonos.length ?
+                            <div className='sec-cont'>
+                                    <h5 className='titulo-sec'>Detalles de Montos Bonogas:</h5>
                                     <table className='tabla-de-cuadres tres'>
                                         <thead>
                                             <tr>
@@ -174,7 +185,8 @@ export const Crud = () => {
                                             </tr>
                                         )}
                                         </tbody>
-                                    </table> :
+                                    </table>
+                                </div> :
                                 <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
                             }
                     </div>

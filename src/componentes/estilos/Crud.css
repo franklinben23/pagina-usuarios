@@ -27,6 +27,18 @@
     font-size: 1.7vmin;
 }
 
+.sec-cont {
+    position: relative;
+}
+
+.titulo-sec {
+    position: absolute;
+    border-bottom: 3px black solid;
+    top: -40px;
+    left: 0;
+    font-weight: 600;
+}
+
 .tabla-div {
     height: 170px;
     /* border: 1px black solid; */
@@ -37,6 +49,14 @@
 .una {
     width: 100%;
     height: 200px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.cc {
+    width: 220px;
+    border-bottom: 3px black solid;
+    font-weight: 600;
 }
 
 .dos {
