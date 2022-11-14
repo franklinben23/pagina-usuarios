@@ -7,6 +7,9 @@ export const Crud = () => {
 
     const path = usePath();
     const [listaCuadres, setListaCuadres] = useState([]);
+    const [listaDepositos, setListaDepositos] = useState([]);
+    const [listaBonos, setListaBonos] = useState([]);
+    const [listaLotes, setListaLotes] = useState([]);
 
     useEffect(() => {
         const getInfo = async () => {
@@ -26,6 +29,8 @@ export const Crud = () => {
         getInfo();
     }, [])
 
+    const listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
+
     const splitString = (str) => {
         if (typeof str === 'string') {
             const string = str.split(' ');
@@ -35,9 +40,13 @@ export const Crud = () => {
         return
     };
 
+    const reduceArray = (arr) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(arr.reduce((acc, obj) => acc + obj.monto  ,0));
+    }
+
     return (
            <div className='crud-main'>
-                <h1 className='titulo-registro'>Registro de Cuadres</h1>
+                <h1 className='titulo-registro'>Registros de Cuadres</h1>
                 <div className='seccion-de-filtros'>
                     <p className='flltrar-tag'>filtrar por:</p>
                     <div className='filtros'>
@@ -47,43 +56,128 @@ export const Crud = () => {
                         <button type='button' className='btn-filtros'>Aplicar</button>
                     </div>
                 </div>
-                <div className='lista-de-cuadres'>
-                    <table className='tabla-de-cuadres'>
-                        <colgroup>
-                            <col span="1" style={{width: '10%'}}/>
-                            <col span="2" style={{width: '10%'}}/>
-                            <col span="3" style={{width: '10%'}}/>
-                            <col span="4" style={{width: '10%'}}/>
-                            <col span="5" style={{width: '10%'}}/>
-                            <col span="6" style={{width: '10%'}}/>
-                            <col span="7" style={{width: '10%'}}/>
-                            <col span="8" style={{width: '10%'}}/>
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th className='td-crud'>ID</th>
-                                <th className='td-crud td-env'>Envasadora</th>
-                                <th className='td-crud'>Precio</th>
-                                <th className='td-crud'>Total RD$</th>
-                                <th className='td-crud'>Depositos</th>
-                                <th className='td-crud'>Tarjetas</th>
-                                <th className='td-crud'>Bonogas</th>
-                                <th className='td-crud'>sobrante Galones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listaCuadres.map((el, index) => <CuadreRow 
-                            key={el.cuadreId}
-                            envasadora={el.envasadoraIdEnvasadora.envasadoraNombre}
-                            id={el.cuadreId}
-                            precio={el.precioActual}
-                            totalVendido={Math.floor(el.totalDineroVendido)}
-                            deposito={Math.floor(el.totalDineroVendido)} 
-                            tarjetas={el.creditoCliente}
-                            bonos={el.creditoCliente} 
-                            sobrante={el.sobranteGalones}/>)}
-                        </tbody>
-                    </table>
+                <div className='tabla-div una'>
+                        <table className='tabla-de-cuadres'>
+                            {/* <colgroup>
+                                <col span="1" style={{width: '5%'}}/>
+                                <col span="2" style={{width: '20%'}}/>
+                                <col span="3" style={{width: '5%'}}/>
+                                <col span="4" style={{width: '5%'}}/>
+                                <col span="5" style={{width: '5%'}}/>
+                                <col span="6" style={{width: '5%'}}/>
+                                <col span="7" style={{width: '5%'}}/>
+                                <col span="8" style={{width: '5%'}}/>
+                            </colgroup> */}
+                            <thead>
+                                <tr>
+                                    <th className='td-crud'>ID</th>
+                                    <th className='td-crud'>Fecha</th>
+                                    <th className='td-crud'>Envasadora</th>
+                                    <th className='td-crud'>Precio</th>
+                                    <th className='td-crud'>Total RD$</th>
+                                    <th className='td-crud'>Depositos</th>
+                                    <th className='td-crud'>Tarjetas</th>
+                                    <th className='td-crud'>Bonogas</th>
+                                    <th className='td-crud'>sobrante Galones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {listaFinal.map((el, index) => <CuadreRow 
+                                key={el.cuadreId}
+                                envasadora={el.envasadoraIdEnvasadora.envasadoraNombre}
+                                id={el.cuadreId}
+                                fechaCierre={el.fechaCierre}
+                                precio={el.precioActual}
+                                totalVendido={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.totalDineroVendido)}
+                                deposito={reduceArray(el.depositoEntity)}
+                                depositos={el.depositoEntity}
+                                tarjeta={reduceArray(el.loteEntity)}
+                                tarjetas={el.loteEntity}
+                                bono={reduceArray(el.bonogasEntity)}
+                                bonos={el.bonogasEntity}
+                                sobrante={el.sobranteGalones}
+                                setListaDepositos={setListaDepositos}
+                                setListaBonos={setListaBonos}
+                                setListaLotes={setListaLotes}/>)}
+                            </tbody>
+                        </table>
+                    </div>
+                <div className='lista-de-cuadres d-flex'>
+                    <div className='tabla-div dos'>
+                        {
+                            listaDepositos.length ?
+                                <table className='tabla-de-cuadres'>
+                                    <thead>
+                                        <tr>
+                                            <th className='td-crud'>ID</th>
+                                            <th className='td-crud'>Código</th>
+                                            <th className='td-crud'>Monto</th>
+                                            <th className='td-crud'>Descripción</th>
+                                            <th className='td-crud'>Banco</th>
+                                            <th className='td-crud'>envasadora</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {listaDepositos.map((el) => <tr key={el.id}>
+                                                <td className='td-crud'>{el.depositoId}</td>
+                                                <td className='td-crud'>{el.codigo}</td>
+                                                <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.monto)}</td>
+                                                <td className='td-crud'>{el.descripcion}</td>
+                                                <td className='td-crud'>{el.bancoEntity.nombre}</td>
+                                                <td className='td-crud'>{el.envasadoraEntity.envasadoraNombre}</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table> :
+                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                        }
+                    </div>
+                    <div className='tabla-div tres'>
+                        {
+                            listaLotes.length ?
+                                    <table className='tabla-de-cuadres tres'>
+                                        <thead>
+                                            <tr>
+                                                <th className='td-crud'>ID</th>
+                                                <th className='td-crud'>Código</th>
+                                                <th className='td-crud'>Monto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {listaLotes.map((el) => <tr key={el.id}>
+                                                <td className='td-crud'>{el.id}</td>
+                                                <td className='td-crud'>{el.codigo}</td>
+                                                <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.monto)}</td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table> :
+                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                            }
+                    </div>
+                    <div className='tabla-div cuatro'>
+                        {
+                            listaBonos.length ?
+                                    <table className='tabla-de-cuadres tres'>
+                                        <thead>
+                                            <tr>
+                                                <th className='td-crud'>ID</th>
+                                                <th className='td-crud'>Código</th>
+                                                <th className='td-crud'>Monto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {listaBonos.map((el) => <tr key={el.id}>
+                                                <td className='td-crud'>{el.id}</td>
+                                                <td className='td-crud'>{el.codigo}</td>
+                                                <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.monto)}</td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table> :
+                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                            }
+                    </div>
                 </div>
             </div> 
     );

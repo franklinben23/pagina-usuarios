@@ -1,24 +1,17 @@
-/*.crud-main {
-    width: 80%;
-    height: 90%;
+.crud-main {
+    height: 100%;
     /* max-width: 1440px; */
-    /* margin: 0 auto;
-    
-    background-color: #FFEEE1;
-    border-radius: 20px;
-    overflow-y: scroll;
-    
+    margin: 0 auto;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(225,225,225,1) 100%)
 }
 
 .titulo-registro {
     text-align: center;
-    margin-top: 20px;
 }
 
 .seccion-de-filtros {
-    margin-top: 50px;
+    margin-top: 10px;
     width: 100%;
-
 }
 
 .flltrar-tag {
@@ -30,16 +23,73 @@
     margin: 0 auto;
 }
 
-.lista-de-cuadres {
-   width: 100%;
-   border: 1px red solid;
-   padding: 25px;
+.filtro-input, .btn-filtros {
+    font-size: 1.7vmin;
 }
 
-.tabla-de-cuadres {
-    margin: 40px auto;
-    border: blue 1px solid;
-    padding: 10px;
+.tabla-div {
+    height: 170px;
+    /* border: 1px black solid; */
+    overflow-y: scroll;
+    padding: 40px;
+}
+
+.una {
     width: 100%;
-    table-layout: auto;
-} */
+    height: 200px;
+}
+
+.dos {
+    width: 40%;
+}
+
+.tres, .cuatro {
+    width: 30%
+}
+
+.tabla-div::-webkit-scrollbar {
+    width: 3px
+}
+
+.tabla-div::-webkit-scrollbar-track {
+    background-color: rgba(211, 211, 211, 0.44);
+}
+
+.tabla-div::-webkit-scrollbar-thumb {
+    height: 20px;
+    background-color: lightgrey;
+}
+
+.lista-de-cuadres {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.tabla-de-cuadres, .empty-arr-span {
+    width: 100%;
+}
+
+th {
+    background-color: green;
+    color: white;
+}
+
+tr {
+    height: 10px;
+}
+
+.una tr:hover, .una tr:active {
+    background-color: #ff965a;
+}
+
+.td-crud {
+    font-size: 2vmin;
+    font-weight: 600;
+    padding: 3px;
+    border: 0.5px green solid;
+}
+
+.active {
+    background-color: #E35400;
+    color: white;
+}

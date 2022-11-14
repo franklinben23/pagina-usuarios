@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Routes, Route, NavLink } from "react-router-dom";
+import { useNavigate, Routes, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { NewCuadre } from './componentes/NewCuadre';
 import { Registration } from './componentes/Registration';
@@ -15,8 +15,6 @@ function App() {
   useEffect(() => {
     loggedInUser = localStorage.getItem("Authenticated");
   }, []);;
-
-  if (!loggedInUser) navigate('/');
 
   const userBlock = useSelector((state) => state.userInfo);
   const envasadora = userBlock.envasadoraEntity[0];
@@ -56,11 +54,11 @@ const replace = (str) => {
           <div className='top-right-links'>
             <p className='user-name'>{`${replace(userName)} ${replace(lastName)}`}</p>
             <button type="button" className="nav-btns log-out-btn" onClick={logout}>logout</button>
-            <button type="button" className="nav-btns log-out-btn"style={{'background-color': '#007332'}} onClick={()=>{window.location.reload()}}>refrescar</button>
+            <button type="button" className="nav-btns log-out-btn"style={{'backgroundColor': '#007332'}} onClick={()=>{window.location.reload()}}>refrescar</button>
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <NavLink to='PaginaCuadre' className='botton-link'>Menu 1</NavLink>
+          <Link to='HistorialCuadres' className='botton-link'>Menu 1</Link>
           <button to='PaginaCuadre' className='botton-link'>Menu 2</button>
           <button className='botton-link'>Menu 1</button>
           <button className='botton-link'>Menu 1</button>
