@@ -58,11 +58,8 @@ const replace = (str) => {
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <Link to='HistorialCuadres' className='botton-link'>Menu 1</Link>
-          <button to='PaginaCuadre' className='botton-link'>Menu 2</button>
-          <button className='botton-link'>Menu 1</button>
-          <button className='botton-link'>Menu 1</button>
-          <button className='botton-link'>Menu 1</button>
+          <Link to='PaginaCuadre' className='botton-link'>Cuadre</Link>
+          <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
         </div>
       </div>
       <div className='main-sec'>
