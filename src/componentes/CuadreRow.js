@@ -1,12 +1,36 @@
 import React from "react";
 
 export const CuadreRow = (props) => {
-    const {id, fechaCierre, envasadora, precio, totalVendido, deposito, depositos, tarjeta , tarjetas, bono, bonos, creditoCliente, sobrante, setListaDepositos, setListaBonos, setListaLotes} = props; // importar prop-types y arreglar el arr.reduce erros cuando trato de pasar el reduce par aca.
+    const {el, setMetros, id, fechaCierre, envasadora, precio, totalVendido, deposito, depositos, tarjeta , tarjetas, bono, bonos, creditoCliente, sobrante, setListaDepositos, setListaBonos, setListaLotes} = props; // importar prop-types y arreglar el arr.reduce erros cuando trato de pasar el reduce par aca.
 
     function addInfo(e) {
         setListaDepositos(depositos);
         setListaLotes(tarjetas);
         setListaBonos(bonos);
+        setMetros({
+            gls1: el.galonesVendidoMetroUno,
+            gls2: el.galonesVendidoMetroDos,
+            gls3: el.galonesVendidoMetroTres,
+            gls4: el.galonesVendidoMetroCuatro,
+            gls5: el.galonesVendidoMetroCinco,
+            gls6: el.galonesVendidoMetroSeis,
+            gls7: el.galonesVendidoMetroSiete,
+            gls8: el.galonesVendidoMetroOcho,
+            gls9: el.galonesVendidoMetroUno,
+            gls10: el.galonesVendidoMetroUno,
+            glsDIST: el.galonesVendidoMetroUno,
+            ttl1: el.totalMetroUno,
+            ttl2: el.totalMetroDos,
+            ttl3: el.totalMetroTres,
+            ttl4: el.totalMetroCuatro,
+            ttl5: el.totalMetroCinco,
+            ttl6: el.totalMetroSeis,
+            ttl7: el.totalMetroSiete,
+            ttl8: el.totalMetroOcho,
+            ttl9: el.totalMetroNueve,
+            ttl10: el.totalMetroDiez,
+            ttlDIST: el.totalMetroDiez
+        })
         const parent =  e.target.parentNode;
         const div = Array.from(parent.parentNode.children)
         div.forEach((el) => {

@@ -10,6 +10,7 @@ export const Crud = () => {
     const [listaDepositos, setListaDepositos] = useState([]);
     const [listaBonos, setListaBonos] = useState([]);
     const [listaLotes, setListaLotes] = useState([]);
+    const [metros, setMetros] = useState(null);
 
     useEffect(() => {
         const getInfo = async () => {
@@ -50,7 +51,7 @@ export const Crud = () => {
                 <div className='seccion-de-filtros'>
                     <p className='flltrar-tag'>filtrar por:</p>
                     <div className='filtros'>
-                        <input type='text' name='fecha' className='filtro-input' placeholder='fecha'/>
+                        <input type='date' name='fecha' className='filtro-input' placeholder='fecha'/>
                         <input type='text' name='envasadora' className='filtro-input' placeholder='envasadora'/>
                         <input type='text' name='encargado' className='filtro-input' placeholder='encargado'/>
                         <button type='button' className='btn-filtros'>Aplicar</button>
@@ -84,7 +85,9 @@ export const Crud = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listaFinal.map((el, index) => <CuadreRow 
+                                {listaFinal.map((el, index) => <CuadreRow
+                                el={el}
+                                setMetros={setMetros}
                                 key={el.cuadreId}
                                 envasadora={el.envasadoraIdEnvasadora.envasadoraNombre}
                                 id={el.cuadreId}
@@ -190,6 +193,64 @@ export const Crud = () => {
                                 <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
                             }
                     </div>
+                </div>
+                <div className='tabla-div cinco'>
+                    {
+                        metros ? 
+                        <div className='sec-cont'>
+                            <h5 className='titulo-sec'>Detalles de Metros envasadora:</h5>
+                            <table className='tabla-de-cuadres'>
+                            <thead>
+                                <tr>
+                                    <th className='td-crud'>Tipo</th>
+                                    <th className='td-crud'>Metro I</th>
+                                    <th className='td-crud'>Metro II</th>
+                                    <th className='td-crud'>Metro III</th>
+                                    <th className='td-crud'>Metro IV</th>
+                                    <th className='td-crud'>Metro V</th>
+                                    <th className='td-crud'>Metro VI</th>
+                                    <th className='td-crud'>Metro VII</th>
+                                    <th className='td-crud'>Metro VIII</th>
+                                    <th className='td-crud'>Metro IX</th> 
+                                    <th className='td-crud'>Metro X</th>
+                                    <th className='td-crud'>Metro DIST</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className='td-crud'>Gls Vendido</td>
+                                    <td className='td-crud'>{metros.gls1}</td>
+                                    <td className='td-crud'>{metros.gls2}</td>
+                                    <td className='td-crud'>{metros.gls3}</td>
+                                    <td className='td-crud'>{metros.gls4}</td>
+                                    <td className='td-crud'>{metros.gls5}</td>
+                                    <td className='td-crud'>{metros.gls6}</td>
+                                    <td className='td-crud'>{metros.gls7}</td>
+                                    <td className='td-crud'>{metros.gls8}</td>
+                                    <td className='td-crud'>{metros.gls9}</td>
+                                    <td className='td-crud'>{metros.gls10}</td>
+                                    <td className='td-crud'>{metros.glsDIST}</td>
+                                </tr>
+                                <tr>
+                                    <td className='td-crud'>Total Vendido</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl1)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl2)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl3)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl4)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl5)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl6)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl7)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl8)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl9)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttl10)}</td>
+                                    <td className='td-crud'>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(metros.ttlDIST)}</td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div> :
+                        <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                    }
+                    
                 </div>
             </div> 
     );

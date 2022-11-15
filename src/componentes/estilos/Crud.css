@@ -2,7 +2,8 @@
     height: 100%;
     /* max-width: 1440px; */
     margin: 0 auto;
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(225,225,225,1) 100%)
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(225,225,225,1) 100%);
+    overflow-y: scroll;
 }
 
 .titulo-registro {
@@ -10,7 +11,7 @@
 }
 
 .seccion-de-filtros {
-    margin-top: 10px;
+    margin-top: 5px;
     width: 100%;
 }
 
@@ -24,7 +25,7 @@
 }
 
 .filtro-input, .btn-filtros {
-    font-size: 1.7vmin;
+    font-size: 1.4vmin;
 }
 
 .sec-cont {
@@ -67,6 +68,10 @@
     width: 30%
 }
 
+.cinco {
+    margin-top: 20px;
+}
+
 .tabla-div::-webkit-scrollbar {
     width: 3px
 }
@@ -89,12 +94,12 @@
     width: 100%;
 }
 
-th {
+.tabla-de-cuadres th {
     background-color: green;
     color: white;
 }
 
-tr {
+.tabla-de-cuadres tr {
     height: 10px;
 }
 
@@ -103,7 +108,7 @@ tr {
 }
 
 .td-crud {
-    font-size: 2vmin;
+    font-size: 1.7vmin;
     font-weight: 600;
     padding: 3px;
     border: 0.5px green solid;
