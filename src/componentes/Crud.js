@@ -58,7 +58,7 @@ export const Crud = () => {
                     </div>
                 </div>
                 <div className='tabla-div una'>
-                        <h5 className='cc'>Detalles de Depósito:</h5>
+                        <h5 className='cc'>Lista de Cuadres:</h5>
                         <table className='tabla-de-cuadres'>
                             {/* <colgroup>
                                 <col span="1" style={{width: '5%'}}/>
