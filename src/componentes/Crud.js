@@ -52,6 +52,7 @@ export const Crud = () => {
                     <p className='flltrar-tag'>filtrar por:</p>
                     <div className='filtros'>
                         <input type='date' name='fecha' className='filtro-input' placeholder='fecha'/>
+                        <input type='date' name='fecha' className='filtro-input' placeholder='fecha'/>
                         <input type='text' name='envasadora' className='filtro-input' placeholder='envasadora'/>
                         <input type='text' name='encargado' className='filtro-input' placeholder='encargado'/>
                         <button type='button' className='btn-filtros'>Aplicar</button>
