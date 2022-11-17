@@ -16,9 +16,9 @@ export const CuadreRow = (props) => {
             gls6: el.galonesVendidoMetroSeis,
             gls7: el.galonesVendidoMetroSiete,
             gls8: el.galonesVendidoMetroOcho,
-            gls9: el.galonesVendidoMetroUno,
-            gls10: el.galonesVendidoMetroUno,
-            glsDIST: el.galonesVendidoMetroUno,
+            gls9: el.galonesVendidoMetroNueve,
+            gls10: el.galonesVendidoMetroDiez,
+            glsDIST: el.galonesVendidoMetroDist,
             ttl1: el.totalMetroUno,
             ttl2: el.totalMetroDos,
             ttl3: el.totalMetroTres,
@@ -51,6 +51,7 @@ export const CuadreRow = (props) => {
             <td className='td-crud'>{bono}</td>
             <td className='td-crud'>{creditoCliente}</td>
             <td className='td-crud'>{sobrante}</td>
+            <td className='td-crud'>{el.totalGalonesVendidos}</td>
             <td className='td-crud'>{totalVendido}</td>
         </tr>
     );

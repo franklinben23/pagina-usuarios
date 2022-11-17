@@ -1,5 +1,5 @@
 /*eslint-disable react-hooks/exhaustive-deps*/
-import React, {useState, useEffect, useMemo} from "react";
+import React, {useState, useEffect, useMemo, useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import { usePath } from "./PathContext.js";
 import "./estilos/newCuadre.css";
@@ -1044,7 +1044,9 @@ export const NewCuadre = (props) => {
             "estado": true,
             "galonesRestante": glsRest,
             "otroTotalGalonesVendidos": anotaciones.otros,
-            "resultadoOperacional": "string"
+            "resultadoOperacional": "string",
+            "transferenciaIdTransferencia": [],
+            "fechaCuadre": dateRef.current.value
           }  
         try {
             const cuadreRequest = await fetch(`${pathLocal}cuadre/save`, {
@@ -1063,6 +1065,8 @@ export const NewCuadre = (props) => {
             alert(error);
         }
     };
+
+    const dateRef = useRef(null);
         return (
             <div className="cuadre-cont">
                 <div className="cuadre-inner-cont">
@@ -1376,6 +1380,7 @@ export const NewCuadre = (props) => {
                                             <input className="anotaciones-input deposito" name="deposito" value={depositosFormatado} type="text" disabled />
                                         </div>
                                     </div>
+                                    <input type='date' className="date-input-cuadre" ref={dateRef}/>
                                     <div className="cuadre-submit-btn">
                                         {/* {cuadreNuevo ? <button type="button" onClick={inventarioRequest}>Crear Cuadre Nuevo</button> : <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>} */}
                                         <button type="button" onClick={cuadreSubmitF}>Guardar Cuadre</button>

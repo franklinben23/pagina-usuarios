@@ -13,14 +13,14 @@ export const Crud = () => {
     const [metros, setMetros] = useState(null);
 
     useEffect(() => {
+        const controller = new AbortController();
         const getInfo = async () => {
             try {
-                const request = await fetch(`${path}cuadre/all`);
+                const request = await fetch(`${path}cuadre/all`, {signal: controller.signal});
                 if (!request.ok) {
                     alert('Hubo un error al tratar de consumir la base de datos, favor revisar conexion o contactar soporte')
                 } else {
                     const cuadres = await request.json();
-                    console.log(cuadres);
                     setListaCuadres(cuadres)
                 }
             } catch (error) {
@@ -28,9 +28,11 @@ export const Crud = () => {
             }
         };
         getInfo();
+        return () => controller.abort();
     }, [])
 
     const listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
+    .sort((a,b) => b.cuadreId - a.cuadreId);
 
     const splitString = (str) => {
         if (typeof str === 'string') {
@@ -82,6 +84,7 @@ export const Crud = () => {
                                     <th className='td-crud'>Bonogas</th>
                                     <th className='td-crud'>Crédito Cliente</th>
                                     <th className='td-crud'>sobrante Galones</th>
+                                    <th className='td-crud'>Galones Vendidos</th>
                                     <th className='td-crud'>Total RD$</th>
                                 </tr>
                             </thead>
@@ -92,7 +95,7 @@ export const Crud = () => {
                                 key={el.cuadreId}
                                 envasadora={el.envasadoraIdEnvasadora.envasadoraNombre}
                                 id={el.cuadreId}
-                                fechaCierre={el.fechaCierre}
+                                fechaCierre={el.fechaCuadre}
                                 precio={el.precioActual}
                                 totalVendido={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.totalDineroVendido)}
                                 deposito={reduceArray(el.depositoEntity)}

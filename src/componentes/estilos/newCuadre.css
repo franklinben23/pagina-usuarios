@@ -374,6 +374,16 @@
     color: white;
 }
 
+.date-input-cuadre {
+    position: absolute;
+    bottom: 0;
+    background-color: transparent;
+    padding: 0.2vmin;
+    border-radius: 10px;
+    right: 20vmin;
+    font-size: 1.9vmin;
+}
+
 .division-uno {
     display: flex;
     flex-direction: column;
@@ -417,7 +427,7 @@
     color: white;
 }
 
-@media only screen and (max-width: 1240px) {
+@media only screen and (max-width: 1440px) {
 
     .ilustration {
         position: relative;
@@ -630,6 +640,11 @@
     }
 
     .cuadre-submit-btn button {
+        font-size: 1.4vmin;
+    }
+
+    .date-input-cuadre {
+        right: 16vmin;
         font-size: 1.4vmin;
     }
 
