@@ -29,7 +29,7 @@ export const CuadreRow = (props) => {
             ttl8: el.totalMetroOcho,
             ttl9: el.totalMetroNueve,
             ttl10: el.totalMetroDiez,
-            ttlDIST: el.totalMetroDiez
+            ttlDIST: el.totalMetroDistribucion
         })
         const parent =  e.target.parentNode;
         const div = Array.from(parent.parentNode.children)

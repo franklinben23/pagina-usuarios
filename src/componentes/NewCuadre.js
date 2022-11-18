@@ -985,7 +985,7 @@ export const NewCuadre = (props) => {
             "totalGalonesVendidos": galonesVendidos,
             "totalDineroVendido": totalPre,
             "sobranteGalones": anotaciones.existenciaFinal - transferencias.cantidadTransfer - glsRest,
-            "ventaEfectivo": totalPre - totalLotePre - totalMontoPre,
+            "ventaEfectivo": totalPre - totalLotePre - totalMontoPre - anotaciones.creditoCliente,
             "creditoCliente": anotaciones.creditoCliente,
             "creditoTarjeta": anotaciones.creditoTarjeta,
             "tarjetaSolidaridad": anotaciones.tarjetaSolidaridad,
@@ -1343,7 +1343,7 @@ export const NewCuadre = (props) => {
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Venta Efectivo:</label>
-                                            <input className="anotaciones-input" name="ventaEfectivo" value={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPre - totalLotePre -totalMontoPre)} type="text" disabled />
+                                            <input className="anotaciones-input" name="ventaEfectivo" value={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(totalPre - totalLotePre - totalMontoPre - anotaciones.creditoCliente)} type="text" disabled />
                                         </div>
                                         <div className="anotacion-div">
                                             <label>Crédito Cliente:</label>
