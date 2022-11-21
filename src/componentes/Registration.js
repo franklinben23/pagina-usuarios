@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { usePath } from "./PathContext";
 import Multiselect from 'multiselect-react-dropdown';
 import PhoneInput from 'react-phone-input-2';
+import * as logoType from './estilos/imagenes/1247194.png';
 import './estilos/registro.css';
 import 'react-phone-input-2/lib/style.css';
 
@@ -197,7 +198,9 @@ export const Registration = () => {
                       </div>
                       {input.password === input.confirmPassword ? <button  className='registration-btn'>enviar</button> : <button  className='registration-btn no' disabled>enviar</button>}
                   </form>
-                  <div className="image-div"></div>
+                  <div className="image-div">
+                    <img className="img-logotype" src={logoType.default} alt='logo-typo' />
+                  </div>
                 </div>
             </div>
         </div>

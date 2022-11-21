@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { usePath } from './PathContext';
 import { CuadreRow } from './CuadreRow';
 import './estilos/Crud.css';
@@ -31,8 +31,29 @@ export const Crud = () => {
         return () => controller.abort();
     }, [])
 
-    const listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
+    let listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
     .sort((a,b) => b.cuadreId - a.cuadreId);
+    const [list, setList] = useState(listaFinal);
+
+    const date1 = useRef(null);
+    const date2 = useRef(null);
+    const envRef = useRef(null);
+    const encRef = useRef(null);
+    const valR = useRef(null);
+
+    let lista;
+
+    const filterArr = () => {
+       lista = listaFinal.filter((el) => el.cuadreId > valR.current.value)
+        // console.log(date1.current.value, date2.current.value)
+        // listaFinal.forEach((el) => {
+        //     console.log(el.)
+        // })
+        // console.log(listaFinal)
+        return lista
+    }
+
+    const litin = filterArr();
 
     const splitString = (str) => {
         if (typeof str === 'string') {
@@ -53,11 +74,11 @@ export const Crud = () => {
                 <div className='seccion-de-filtros'>
                     <p className='flltrar-tag'>filtrar por:</p>
                     <div className='filtros'>
-                        <input type='date' name='fecha' className='filtro-input' placeholder='fecha'/>
-                        <input type='date' name='fecha' className='filtro-input' placeholder='fecha'/>
+                        <input type='date' name='fecha' ref={date1} className='filtro-input' placeholder='fecha'/>
+                        <input type='date' name='fecha' ref={date2} className='filtro-input' placeholder='fecha'/>
                         <input type='text' name='envasadora' className='filtro-input' placeholder='envasadora'/>
-                        <input type='text' name='encargado' className='filtro-input' placeholder='encargado'/>
-                        <button type='button' className='btn-filtros'>Aplicar</button>
+                        <input type='number' ref={valR} name='encargado' className='filtro-input' placeholder='encargado'/>
+                        <button type='button' onClick={filterArr} className='btn-filtros'>Aplicar</button>
                     </div>
                 </div>
                 <div className='tabla-div una'>
@@ -89,7 +110,7 @@ export const Crud = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listaFinal.map((el, index) => <CuadreRow
+                                {litin.map((el, index) => <CuadreRow
                                 el={el}
                                 setMetros={setMetros}
                                 key={el.cuadreId}
@@ -111,7 +132,7 @@ export const Crud = () => {
                                 setListaLotes={setListaLotes}/>)}
                             </tbody>
                         </table>
-                    </div>
+                </div>
                 <div className='lista-de-cuadres d-flex'>
                     <div className='tabla-div dos'>
                         {
@@ -142,7 +163,7 @@ export const Crud = () => {
                                     </tbody>
                                     </table>
                                 </div> :
-                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                                <h5 className='empty-arr-span'>Entrada vacía.</h5>
                         }
                     </div>
                     <div className='tabla-div tres'>
@@ -168,7 +189,7 @@ export const Crud = () => {
                                         </tbody>
                                     </table>
                                 </div>     :
-                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                                <h5 className='empty-arr-span'>Entrada vacía.</h5>
                             }
                     </div>
                     <div className='tabla-div cuatro'>
@@ -194,7 +215,7 @@ export const Crud = () => {
                                         </tbody>
                                     </table>
                                 </div> :
-                                <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                                <h5 className='empty-arr-span'>Entrada vacía.</h5>
                             }
                     </div>
                 </div>
@@ -252,7 +273,7 @@ export const Crud = () => {
                             </tbody>
                             </table>
                         </div> :
-                        <h5 className='empty-arr-span'>Favor seleccione una lista</h5>
+                        <h5 className='empty-arr-span'>Entrada vacía.</h5>
                     }
                     
                 </div>

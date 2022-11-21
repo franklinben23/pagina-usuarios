@@ -12,6 +12,7 @@
     background-color: #FFEEE1;
     height: 63.3vmin;
     padding-top: 3vmin;
+    display: flex;
 }
 
 .band {
@@ -24,6 +25,19 @@
 .registration-form {
     width: 40%;
     margin: 0 0 0 4vmin;
+}
+
+.image-div {
+    width: 60%;
+    position: relative;
+}
+
+.img-logotype {
+    width: 40%;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
 }
 
 .input-divider {
