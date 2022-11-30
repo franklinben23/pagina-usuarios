@@ -848,6 +848,7 @@ export const NewCuadre = (props) => {
         saveInventario();
     };
 
+    const dateRef = useRef(null);
     const galsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;// Ver si glpEx se puede cambiar a 0.
     const cuadreSubmitF = async (e) => {
         e.preventDefault();
@@ -871,6 +872,10 @@ export const NewCuadre = (props) => {
             }
             return true
         });
+        if (dateRef.current.value === '') {
+            alert('favor no dejar fecha vacia')
+            kms = true
+        }
         if (kms) return
         const block = {
             "cuadreId": 0,
@@ -1065,8 +1070,6 @@ export const NewCuadre = (props) => {
             alert(error);
         }
     };
-
-    const dateRef = useRef(null);
         return (
             <div className="cuadre-cont">
                 <div className="cuadre-inner-cont">
