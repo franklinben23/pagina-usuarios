@@ -3,7 +3,7 @@ import React, {createContext, useContext} from "react";
 const PathContext = createContext({});
 
 export const PathProvider = ({children}) => {
-    const path = 'https://cuadre-diario-planta.herokuapp.com/';
+    const path = 'https://backendmetrogas.herokuapp.com/';
     // In here we won't use deestructuring anywhere because I am only returning one value
 
     return (

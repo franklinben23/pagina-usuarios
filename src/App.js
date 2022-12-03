@@ -3,6 +3,7 @@ import { useNavigate, Routes, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { NewCuadre } from './componentes/NewCuadre';
 import { Registration } from './componentes/Registration';
+import { RegistratroAlmacen } from './componentes/RegistroAlmacen';
 import { Crud } from './componentes/Crud';
 import { logOut } from './redux/user/userInfo';
 import * as logoBlanco from '../src/componentes/estilos/imagenes/logo_metrogas_blanco.png';
@@ -77,7 +78,7 @@ const replace = (str) => {
               />}
           />
           <Route path='HistorialCuadres' element={ <Crud/>} />
-          <Route path='registration' element= {<Registration />} />
+          <Route path='registration' element= {<RegistratroAlmacen />} />
         </Routes>
       </div>
       <div className='bottom'></div>

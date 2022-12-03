@@ -40,6 +40,10 @@
     transform: translate(-50%, -50%);
 }
 
+.almacen-jpg {
+    width: 75%;
+}
+
 .input-divider {
     display: flex;
     flex-direction: column;

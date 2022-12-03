@@ -43,7 +43,7 @@ export const NewLogin = () => {
             }
 
         } catch (error) {
-            alert('favor revisar su conexion o conactar soporte')
+            alert('favor revisar su conexion a la red o contactar soporte')
         }
 
         setPassword('');
