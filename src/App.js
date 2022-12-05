@@ -59,13 +59,28 @@ const replace = (str) => {
           </div>
         </div>
         <div className='bottom-nav-links'>
-          <Link to='PaginaCuadre' className='botton-link'>Cuadre</Link>
-          <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
-          <Link to='registration' className='botton-link'>Registro</Link>
+          { userBlock.rol.rolId === 5 ?
+            <div>
+              <Link to='PaginaCuadre' className='botton-link'>Cuadre</Link>
+              <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
+              <Link to='registration' className='botton-link'>Registro</Link>
+            </div> : ''
+            }
+            {/* { userBlock.rol.rolId === 2 ?
+            <div>
+              <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
+            </div> : ''
+            }
+            { userBlock.rol.rolId === 2 ?
+            <div>
+              <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
+            </div> : ''
+            } */}
         </div>
       </div>
       <div className='main-sec'>
         <Routes>
+          <Route path='HistorialCuadres' element={ <Crud/>} />
           <Route path='PaginaCuadre'element={<NewCuadre
               envasadora={envasadora} 
               envasadoraId={envasadoraId} 
@@ -77,7 +92,6 @@ const replace = (str) => {
               capacidadMinima={capacidadMinima}
               />}
           />
-          <Route path='HistorialCuadres' element={ <Crud/>} />
           <Route path='registration' element= {<RegistratroAlmacen />} />
         </Routes>
       </div>

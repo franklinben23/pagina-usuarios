@@ -36,7 +36,13 @@ export const NewLogin = () => {
                 localStorage.setItem('Authenticated', true)
                 const json = await request.json();
                 dispatch(logUser(json));
-                navigate('App/PaginaCuadre');
+                if (json.rol.rolId === 3) {
+                    navigate('App/PaginaCuadre');
+                } if (json.rol.rolId === 2) {
+                    navigate('App/HistorialCuadres')
+                } if (json.rol.rolId === 5) {
+                    navigate('App/PaginaCuadre')
+                }
 
             } else {
                 alert('Contraseña o correo incorrecto, favor revisar credenciales')
