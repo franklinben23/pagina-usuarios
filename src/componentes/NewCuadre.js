@@ -1105,7 +1105,7 @@ export const NewCuadre = (props) => {
                     <div className="main-section">
                         <div className="nav-tabs w-100 d-flex">
                             <div className={active === 1 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(1)}}>
-                            Estado del Tanque
+                            Transferencia
                             </div>
                             <div className={active === 2 ? "nav-tab nav-tab-active" : "nav-tab"} onClick={()=>{setActive(2)}}>
                             Relacion de Metros
