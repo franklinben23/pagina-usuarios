@@ -51,7 +51,7 @@ export const CuadreRow = (props) => {
             <td className='td-crud'>{bono}</td>
             <td className='td-crud'>{creditoCliente}</td>
             <td className='td-crud'>{sobrante}</td>
-            <td className='td-crud'>{el.totalGalonesVendidos}</td>
+            <td className='td-crud'>{new Intl.NumberFormat({ style: 'currency', currency: 'USD' }).format(el.totalGalonesVendidos)}</td>
             <td className='td-crud'>{totalVendido}</td>
         </tr>
     );

@@ -101,8 +101,8 @@ export const Crud = () => {
                                 tarjetas={el.loteEntity}
                                 bono={reduceArray(el.bonogasEntity)}
                                 bonos={el.bonogasEntity}
-                                creditoCliente={el.creditoCliente}
-                                sobrante={el.sobranteGalones}
+                                creditoCliente={new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(el.creditoCliente)}
+                                sobrante={new Intl.NumberFormat({ style: 'currency', currency: 'USD' }).format(el.sobranteGalones)}
                                 setListaDepositos={setListaDepositos}
                                 setListaBonos={setListaBonos}
                                 setListaLotes={setListaLotes}/>)}
