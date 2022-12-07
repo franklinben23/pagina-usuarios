@@ -33,36 +33,12 @@ export const Crud = () => {
 
     let listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
     .sort((a,b) => b.cuadreId - a.cuadreId);
-    const [list, setList] = useState(listaFinal);
 
     const date1 = useRef(null);
     const date2 = useRef(null);
     const envRef = useRef(null);
     const encRef = useRef(null);
     const valR = useRef(null);
-
-    let lista;
-
-    const filterArr = () => {
-       lista = listaFinal.filter((el) => el.cuadreId > valR.current.value)
-        // console.log(date1.current.value, date2.current.value)
-        // listaFinal.forEach((el) => {
-        //     console.log(el.)
-        // })
-        // console.log(listaFinal)
-        return lista
-    }
-
-    const litin = filterArr();
-
-    const splitString = (str) => {
-        if (typeof str === 'string') {
-            const string = str.split(' ');
-            const lastEl = string[string.length -1];
-            return lastEl
-        }
-        return
-    };
 
     const reduceArray = (arr) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(arr.reduce((acc, obj) => acc + obj.monto  ,0));
@@ -78,7 +54,7 @@ export const Crud = () => {
                         <input type='date' name='fecha' ref={date2} className='filtro-input' placeholder='fecha'/>
                         <input type='text' name='envasadora' className='filtro-input' placeholder='envasadora'/>
                         <input type='number' ref={valR} name='encargado' className='filtro-input' placeholder='encargado'/>
-                        <button type='button' onClick={filterArr} className='btn-filtros'>Aplicar</button>
+                        <button type='button' className='btn-filtros'>Aplicar</button>
                     </div>
                 </div>
                 <div className='tabla-div una'>
@@ -110,7 +86,7 @@ export const Crud = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {litin.map((el, index) => <CuadreRow
+                                {listaFinal.map((el, index) => <CuadreRow
                                 el={el}
                                 setMetros={setMetros}
                                 key={el.cuadreId}

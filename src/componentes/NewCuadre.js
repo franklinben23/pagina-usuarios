@@ -17,6 +17,7 @@ export const NewCuadre = (props) => {
     const {envasadoraId, userId, capacidadTanque, capacidadMaxima, capacidadMinima, capacidadIntermedia, envasadora, envName} = props;
 
     const navigate = useNavigate();
+    const pathLocal = usePath();
 
     useEffect(() => {
         const loggedInUser = JSON.parse(localStorage.getItem('Authenticated')) || false;
@@ -85,9 +86,21 @@ export const NewCuadre = (props) => {
        
    }, [])
 
-    const pathLocal = usePath();
+    let bancos = [];
+    if (!envasadora.bancoEntity.length) {
+        bancos = [{
+            id: 1,
+            nombre: "BHD",
+            cuenta: "028-98-84-0-029",
+            ejecutivo: "Elsa Rodríguez",
+            responsable: "Ricardo Mejía",
+            fecha_creacion: "2022-10-31",
+            estado: true
+          }]
+    } else {
+        bancos = envasadora.bancoEntity;
+    };
 
-    const bancos = (envasadora.bancoEntity);
     const [precio, setPrecio] = useState(0);
     const precioFormatado = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(precio);
     const  [glpPercentage, setGlpPercentage] = useState(0);
@@ -849,10 +862,10 @@ export const NewCuadre = (props) => {
     };
 
     const dateRef = useRef(null);
-    const galsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;// Ver si glpEx se puede cambiar a 0.
+    const galsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros - anotaciones.bonoPrepago;// Ver si glpEx se puede cambiar a 0.
     const cuadreSubmitF = async (e) => {
         e.preventDefault();
-        const glsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros;
+        const glsRest = parseInt(glpEx) - galonesVendidos - anotaciones.otros - anotaciones.bonoPrepago;
         let kms = false; 
         Object.entries(metros).every(([key, val]) => {
             if (isNaN(val) || val < 0) {

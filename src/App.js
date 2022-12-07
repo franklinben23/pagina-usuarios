@@ -18,6 +18,7 @@ function App() {
   }, []);;
 
   const userBlock = useSelector((state) => state.userInfo);
+  console.log(userBlock)
   const envasadora = userBlock.envasadoraEntity[0];
 
   const capacidadTanque = envasadora.capacidadTanqueUno;
