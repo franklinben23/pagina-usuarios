@@ -18,8 +18,7 @@ function App() {
   }, []);;
 
   const userBlock = useSelector((state) => state.userInfo);
-  console.log(userBlock)
-  const envasadora = userBlock.envasadoraEntity[0];
+  const [envasadora, setEnvasadora] = useState(userBlock.envasadoraEntity[0]);
 
   const capacidadTanque = envasadora.capacidadTanqueUno;
   const capacidadMinima = envasadora.capacidadMinimaTanqueUno;
@@ -59,7 +58,7 @@ const replace = (str) => {
             <button type="button" className="nav-btns log-out-btn"style={{'backgroundColor': '#007332'}} onClick={()=>{window.location.reload()}}>refrescar</button>
           </div>
         </div>
-        <div className='bottom-nav-links'>
+        <div className='bottom-nav-links' style={{position: 'relative'}}>
           { userBlock.rol.rolId === 5 ?
             <div>
               <Link to='PaginaCuadre' className='botton-link'>Cuadre</Link>
@@ -77,6 +76,10 @@ const replace = (str) => {
               <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
             </div> : ''
             } */}
+            <select name="selectEnv" style={{position: 'absolute', 'right': '7%', 'background': 'transparent', 'padding': '2px', 'border': 'black 2px solid', 'borderRadius': '10px', 'fontWeight': '700'}} onChange={(e)=> {console.log(JSON.parse(e.target.value))}}>
+              <option value='userBlock.envasadoraEntity[0]'>{userBlock.envasadoraEntity[0].envasadoraNombre}</option>
+              <option value={userBlock.envasadoraEntity[1]}>{userBlock.envasadoraEntity[1].envasadoraNombre}</option>
+            </select>
         </div>
       </div>
       <div className='main-sec'>
