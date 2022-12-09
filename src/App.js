@@ -68,7 +68,7 @@ const changeFunc = (e) => {
             <div>
               <Link to='PaginaCuadre' className='botton-link'>Cuadre</Link>
               <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
-              <Link to='registration' className='botton-link'>Registro</Link>
+              {/* <Link to='registration' className='botton-link'>Registro</Link> */}
             </div> : ''
             }
             {/* { userBlock.rol.rolId === 2 ?

@@ -71,7 +71,6 @@ export const Crud = () => {
                         <input type='date' name='fecha' value={date2} onChange={(e)=>{setDate2(e.target.value)}}  className='filtro-input' placeholder='fecha'/> */}
                         <input type='text' name='envasadora' onChange={(e)=>{setEnvState(e.target.value)}} className='filtro-input' placeholder='envasadora'/>
                         <input type='number' name='encargado' onChange={(e)=>{setEncState(e.target.value)}} className='filtro-input' placeholder='encargado'/>
-                        <button type='button' className='btn-filtros'>Aplicar</button>
                     </div>
                 </div>
                 <div className='tabla-div una'>
