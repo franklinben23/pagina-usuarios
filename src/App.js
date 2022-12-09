@@ -47,6 +47,11 @@ const replace = (str) => {
     else return
 };
 
+const changeFunc = (e) => {
+  const id = e.target.value;
+  setEnvasadora(userBlock.envasadoraEntity[id]);
+};
+
   return (
     <div className="App">
       <div className='header'>
@@ -76,10 +81,13 @@ const replace = (str) => {
               <Link to='HistorialCuadres' className='botton-link'>Historial cuadres </Link>
             </div> : ''
             } */}
-            <select name="selectEnv" style={{position: 'absolute', 'right': '7%', 'background': 'transparent', 'padding': '2px', 'border': 'black 2px solid', 'borderRadius': '10px', 'fontWeight': '700'}} onChange={(e)=> {console.log(JSON.parse(e.target.value))}}>
-              <option value='userBlock.envasadoraEntity[0]'>{userBlock.envasadoraEntity[0].envasadoraNombre}</option>
-              <option value={userBlock.envasadoraEntity[1]}>{userBlock.envasadoraEntity[1].envasadoraNombre}</option>
-            </select>
+            {userBlock.envasadoraEntity.length > 1 ?
+              <select name="selectEnv" style={{position: 'absolute', 'right': '7%', 'background': 'transparent', 'padding': '2px', 'border': 'black 2px solid', 'borderRadius': '10px', 'fontWeight': '700'}} onChange={(e)=>{changeFunc(e)}}>
+                {userBlock.envasadoraEntity.map((el, index) => 
+                  <option value={index}>{userBlock.envasadoraEntity[index].envasadoraNombre}</option>
+                )}
+              </select> : ''
+            }
         </div>
       </div>
       <div className='main-sec'>

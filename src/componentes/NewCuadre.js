@@ -45,7 +45,9 @@ export const NewCuadre = (props) => {
             const request = await fetch(`${pathLocal}/inventario/altual`);
             const json = await request.json();
             if(request.ok) {
-                const obj = json.findLast(el => el.envasadoraEntity.envasadoraId === envasadoraId);
+                let envId;
+                envasadoraId === 55 ? envId = 44 : envId = envasadoraId;
+                const obj = json.findLast(el => el.envasadoraEntity.envasadoraId === envId);
                 setGlpPercentage(obj.porcentajeGLP);
                 setGlpEx(obj.existenciaGLP)
                 setInventarioId(obj.inventarioId);
@@ -714,10 +716,13 @@ export const NewCuadre = (props) => {
         const glsActual = anotaciones.existenciaFinal;
         const porcentajeGlp = glsActual / parseInt(capacidadTanque) * 100;
 
+        let envId;
+        envasadoraId === 55 ? envId = 44 : envId = envasadoraId;
+
         const block = {
             "inventarioId": 0,
             "envasadoraEntity": {
-              "envasadoraId": envasadoraId,
+              "envasadoraId": envId,
               "empresaEntity": {
                 "empresaId": 0,
                 "nombre": "string",
