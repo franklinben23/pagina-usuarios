@@ -1,68 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+/* @import '<FontAwesomeIcon icon="fa-solid fa-grip-lines-vertical" />'; */
 
 .cuadre-cont {
     position: fixed;
     top: 0;
     left: 0;
+    height: 100%;
     width: 100%;
-    height: 100vh;
-    background: rgb(255,255,255);
-    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(225,225,225,1) 100%);
 
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .cuadre-inner-cont {
     width: 90%;
     height: 90%;
     max-width: 1440px;
+    
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     background: transparent;
 }
 
+.name-logo-section {
+    position: relative;
+    margin-bottom: 2vmin;
+}
+
 .envasadora-span {
-    margin-top: -10px;
-    font-size: 35px;
+    margin-top: -2vmin;
+    font-size: 3.5vmin;
     font-weight: 600;
     justify-self: end 
 }
 
+.cuadre-mobile-page-h1 {
+    font-size: 4vmin;
+}
+
+.daily-price {
+    position: absolute;
+    right: 8vmin;
+    bottom: -0.8vmin;
+    width: 10vmin;
+}
+
 .price-tag {
-    padding-top: 15px;
-    padding-right: 5px;
-    font-size: 17px;
+    margin-top: 0.4vmin;
+    margin-right: 1vmin;
+    font-size: 1.9vmin;
     font-weight: 600;
 }
 
 .price-span {
-    font-size: 30px;
+    font-size: 3vmin;
     color: green;
     font-weight: 500;
 }
 
-.cuadre-mobile-logo {
-    width: 300px;
+.refresh {
+    background-color: green;
+    border: white 1px solid;
+    border-radius: 20px;
+    padding: 0.2vmin 1.5vmin 0.2vmin 1.5vmin;
+    color: white;
+    padding-top: -2vmin;
+    font-size: 1.7vmin;
+    font-weight: 600;
 }
 
 .main-section {
     width: 100%;
     background-color: #FFEEE1;
-    height: 77%;
+    height: 100%;
+    max-height: 520px;
 }
 
 .nav-tab {
-    width: 25%;
+    width: 33.33%;
     height: 2em;
     text-align: justify;
     padding-top: 5px;
     color: white;
-    font-size: 1.2em;
+    font-size: 2vmin;
     background-color: #ff965a;
+    padding-left: 10px;
 }
 
 .nav-tab:hover {
@@ -82,73 +105,82 @@
     display: flex;
 }
 
-.estado-tanque-section {
-    width: 28%;
-    padding-top: 20px;
-}
-
-.volumen-inicial-input {
-    border: none;
-}
-
-.input-group {
-    padding: 20px 0 20px 0;
-    font-size: 15px;
-}
-
-.existencia-inicial {
-    padding-left: 15px;
-}
-
-.existencia-inicial .input-group {
+.ilustration {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-}
-
-.existencia-final .input-group {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.existencia-final .input-group-tag {
-    padding-right: 10px;
-}
-
-.existencia-final .estado-tanque-label {
-    padding-left: 40px;
-}
-
-.ilustrations {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.tanque-tag {
-    position: absolute;
-    left: 50%;
-    top: 10%;
-    transform: translateX(-50%);
+    height: 14vmin;
+    width: 60vmin;
 }
 
 .tank-graphic {
-    position: relative;
-    width: 400px;
+  width: 50%;
+/* height: 25%; */
 }
 
 .tank-img-graphic {
-    width: 100%;
+    width: 35vmin;
+    position: absolute;
+    top: 45%;
+    transform: translateY(-55%);
 }
 
-.tank-tag {
+.flying-tag {
     position: absolute;
-    left: 50%;
+    left: 11vmin;
     top: 50%;
-    transform: translate(-50%, -30%);
-    font-size: 30px;
+    transform: translateY(-50%);
+    font-size: 4vmin;
     font-weight: 700;
+}
+
+.tank-graphic-labels {
+   width: 30%;
+   font-size: 1.6vmin;
+   margin-left: 10vmin;
+   margin-top: 0.3vmin;
+}
+
+.tank-graphic-labels span {
+    font-weight: 700;
+    padding-left: 6px;
+}
+
+.tank-graphic-labels p {
+    padding: 0;
+    margin: 0;
+}
+
+/* seccion trnsferencias*/
+
+.seccion-transferencias {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+}
+
+.codigo-transferencias, .cantidad-transferencias {
+    width: 50%;
+    padding: 40px;
+}
+
+.codigo-label, .cantidad-label {
+    font-size: 2.9vmin;
+    width: 140%;
+}
+
+.cantidad-transferencia, .codigo-transferencia {
+    width: 120%;
+}
+
+.transferencias-th {
+    position: absolute;
+}
+
+.bloques-transfer {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
 }
 
 /* seccion cuadre abajo */
@@ -162,12 +194,16 @@
     width: 100%;
     border: none;
     background-color: transparent;
-    height: 42px;
+    height: 2.7vmin;
+    font-size: 1.9vmin;
 }
 
 .td-h {
-    font-size: 1em;
-    width: 15%;
+    font-size: 1.8vmin;
+}
+
+.th-th {
+    font-size: 1.9vmin;
 }
 
 /* seccion  de totales*/
@@ -176,7 +212,7 @@
     background-color: transparent;
     border: 2px dashed #ff965a;
     border-radius: 10px;
-    width: 150px;
+    width: 20vmin;
 }
 
 .totales {
@@ -184,12 +220,12 @@
 }
 
 .totales-total {
-    width: 300px;
+    width: 40vmin;
     display: flex;
     justify-content: space-between;
     font-weight: 700;
+    font-size: 1.9vmin;
     margin-right: 20px;
-    /* margin-top: 20px; */
 }
 
 .abajo {
@@ -201,19 +237,25 @@
 .depositos {
     border: #ff965a dashed 3px;
     border-radius: 10px;
-    height: 250px;
-    width: 350px;
+    aspect-ratio: 4/2.8;
+    width: 44vmin;
+    max-width: 365px;
     margin: 5% auto;
     position: relative;
 }
 
 .deposito-header {
     position: absolute;
-    top: -40px;
+    top: -6vmin;
+    font-size: 2.7vmin;
 }
 
 .tabla-cuadro {
     margin: 10px;
+}
+
+.tabla-cuadro-header {
+    font-size: 2.1vmin;
 }
 
 .btn-td-btn {
@@ -221,6 +263,7 @@
     border-radius: 10px;
     background-color: transparent;
     transition: all 0.15s ease-in;
+    font-size: 1.7vmin;
 }
 
 .btn-td-btn:hover {
@@ -231,6 +274,22 @@
 .td-cuadro-input {
     width: 50%;
     border: #ff965a 1px solid;
+    font-size: 1.7vmin;
+}
+
+.totales-1 {
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+    justify-content: space-between ;
+    font-size: 2vmin;
+}
+
+.totales-depositos-input {
+    width: 50%;
+    background-color: transparent;
+    border: dashed #E35400 2px;
+    border-radius: 10px;
 }
 
 /* Seccion Lotes*/
@@ -256,6 +315,7 @@
     width: 100%;
     background-color: transparent;
     border: #ff965a 1px solid;
+    font-size: 2vmin;
 }
 
 .un {
@@ -269,41 +329,323 @@
 .btn-lote-delete {
     background-color: transparent;
     border: none;
+    margin: 0;
+    padding: 0;
 }
+
+.btn-trash {
+    width: 3.5vmin;
+    height: 3.5vmin;
+}
+
+/* Seccion de anotaciones*/
 
 .anotaciones {
     width: 90%;
+    height: 90%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    margin-top: 60px;
+    margin-top: 3vmin;
+    position: relative;
+}
+
+.anotaciones label {
+    font-size: 2.7vmin;
+    font-weight: 400;
+}
+
+.cuadre-submit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.cuadre-submit-btn button {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+    font-size: 1.905vmin;
+}
+
+.cuadre-submit-btn button:hover {
+    background-color: #007332;
+    color: white;
+}
+
+.date-input-cuadre {
+    position: absolute;
+    bottom: 0;
+    background-color: transparent;
+    padding: 0.2vmin;
+    border-radius: 10px;
+    right: 20vmin;
+    font-size: 1.9vmin;
 }
 
 .division-uno {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.division-uno label {
-    margin-right: 20px;
 }
 
 .division-dos {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
 }
 
-
-
 .division-uno, .division-dos {
-   width: 50%;
+   width: 40%;
 }
 
 .anotacion-div {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     margin: 10px 0;
     font-size: 22px;
+}
+
+.anotaciones-input {
+    background-color: transparent;
+    border: #E35400 solid 2px;
+    border-radius: 10px;
+    width: 30vmin;
+    height: 4.2vmin;
+    font-size: 2.7vmin;
+}
+
+.btn-add {
+    border: #007332 3px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all 0.10s ease-in;
+}
+
+.btn-add:hover {
+    background-color: #007332;
+    color: white;
+}
+
+@media only screen and (max-width: 1440px) {
+
+    .ilustration {
+        position: relative;
+        display: flex;
+        margin-top: 1vmin;
+        height: 12vmin;
+        width: 60vmin;
+    }
+
+    .tank-graphic {
+        width: 35%;
+      /* height: 25%; */
+      }
+      
+      .tank-img-graphic {
+          width: 25vmin;
+      }
+      
+      .flying-tag {
+          position: absolute;
+          left: 8vmin;
+          font-size: 3vmin;
+          font-weight: 700;
+      }
+      
+      .tank-graphic-labels {
+         width: 30%;
+         font-size: 1.3vmin;
+         margin-left: 10vmin;
+         margin-top: 1.2vmin;
+      }
+      
+      .tank-graphic-labels span {
+          font-weight: 700;
+          padding-left: 6px;
+      }
+
+       .envasadora-span {
+        font-size: 1.9vmin;
+    }
+
+    .cuadre-mobile-page-h1 {
+        font-size: 2.3vmin;
+        margin-top: 2vmin;
+        margin-bottom: 3vmin;
+        text-align: end;
+    }
+
+    .daily-price {
+        right: 1.7vmin;
+        bottom: -2vmin;
+        width: 10vmin;
+    }
+
+    .price-tag {
+        margin-right: 1vmin;
+        font-size: 1.1vmin;
+    }
+
+    .price-span {
+        font-size: 1.9vmin;
+    }
+
+    /* seccion trnsferencias*/
+
+    .seccion-transferencias {
+        position: relative;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .bloques-transfer {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 60px;
+    }
+
+    .codigo-transferencias, .cantidad-transferencias {
+        width: 80%;
+        padding: 10px;
+    }
+
+    .codigo-label, .cantidad-label {
+        font-size: 2.7vmin;
+    }
+
+    .cantidad-transferencia, .codigo-transferencia {
+        width: 100%;
+        font-size: 2vmin;
+    }
+
+    .transferencias-th {
+        position: absolute;
+        margin-top: 10px;
+        font-size: 4vmin;
+    }
+    /* secccion cuadre*/
+
+    .td-cuadre-input, .td-capacidad-input {
+        height: 1.7vmin;
+        font-size: 1.3vmin;
+    }
+    
+    .td-h {
+        font-size: 1.2vmin;
+    }
+    
+    .th-th {
+        font-size: 1.3vmin;
+    }
+
+    /*seccion totales*/
+
+    .input-totales {
+        width: 12vmin;
+        height: 3vmin;
+    }
+    
+    .totales {
+        margin: 8px 12px;
+    }
+    
+    .totales-total {
+        width: 30vmin;
+        font-size: 1.6vmin;
+        margin-right: 12px;
+        /* margin-top: 20px; */
+    }
+    
+    .abajo {
+        margin-top: 10px;
+    }
+
+    /*seccion depositos*/
+
+    .depositos {
+        aspect-ratio: 1/1.5;
+        width: 24vmin;
+    }
+    
+    .deposito-header {
+        position: absolute;
+        top: -3.2vmin;
+        font-size: 2.3vmin;
+        font-weight: 500;
+    }
+    
+    .tabla-cuadro {
+        margin: 5px;
+    }
+    
+    .tabla-cuadro-header {
+        font-size: 1.7vmin;
+    }
+    
+    .btn-td-btn {
+        background-color: transparent;
+        transition: all 0.15s ease-in;
+        font-size: 1.2vmin;
+    }
+    
+    .btn-td-btn:hover {
+        background-color: #E35400;
+        color: white;
+    }
+    
+    .td-cuadro-input {
+        width: 70%;
+        font-size: 1.2vmin;
+    }
+    
+    .totales-1 {
+        position: absolute;
+        left: 0;
+        bottom: -50px;
+        justify-content: space-between ;
+        font-size: 1.3vmin;
+    }
+    
+    .totales-depositos-input {
+        width: 40%;
+        height: 2.5vmin;
+    }
+
+    .anotacion-div {
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    
+    .anotaciones-input {
+        width: 16vmin;
+        height: 3vmin;
+        font-size: 1.7vmin;
+    }
+
+    .btn-trash {
+        width: 3vmin;
+        height: 3vmin;
+    }
+
+    .anotaciones {
+        margin-top: 2vmin;
+        position: relative;
+    }
+    
+    .anotaciones label {
+        font-size: 1.7vmin;
+        font-weight: 400;
+    }
+
+    .cuadre-submit-btn button {
+        font-size: 1.4vmin;
+    }
+
+    .date-input-cuadre {
+        right: 16vmin;
+        font-size: 1.4vmin;
+    }
+
 }

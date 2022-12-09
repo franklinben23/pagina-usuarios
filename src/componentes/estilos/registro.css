@@ -1,0 +1,67 @@
+.registration-form-div {
+    margin: 0 auto;
+    width: 95%;
+    margin-top: 4vmin;
+}
+
+.registration-header {
+    background-color: transparent;
+}
+
+.maine {
+    background-color: #FFEEE1;
+    height: 63.3vmin;
+    padding-top: 3vmin;
+    display: flex;
+}
+
+.band {
+    width: 100%;
+    height: 4vmin;
+    margin-top: -1vmin;
+    background-color: #ff975c;
+}
+
+.registration-form {
+    width: 40%;
+    margin: 0 0 0 4vmin;
+}
+
+.image-div {
+    width: 60%;
+    position: relative;
+}
+
+.img-logotype {
+    width: 40%;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+}
+
+.almacen-jpg {
+    width: 75%;
+}
+
+.input-divider {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.4vmin;
+}
+
+.nombre-input-label {
+    font-size: 2.6vmin;
+    font-weight: 500;
+}
+
+.input-field {
+    width: 100%;
+    height: 4vmin;
+    border: 0.5px lightgray solid;
+    border-radius: 5px;
+}
+
+.react-tel-input .form-control {
+    width: 100%;
+}

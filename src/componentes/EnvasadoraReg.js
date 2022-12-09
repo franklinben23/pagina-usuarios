@@ -7,6 +7,9 @@ import Multiselect from 'multiselect-react-dropdown';
 
 export const EnvasadoraReg = () => {
 
+    const pathHeroku = 'https://cuadre-diario-planta.herokuapp.com/';
+    const pathLocal = 'http://10.1.105.205:8080/webapp.metrogas/';
+
     const multiselectRef = useRef();
     const [bancosSelected, setBancosSelected] = useState([]);
     const [bancosPulled, setBancosPull] = useState([]);
@@ -31,7 +34,7 @@ export const EnvasadoraReg = () => {
 
     useEffect(() => {
         const fetchBancos = async () => {
-            const bancosFetched = await fetch('http://10.1.105.205:8080/webapp.metrogas/banco/all');
+            const bancosFetched = await fetch(`${pathLocal}/banco/all`);
             const bancosJson = await bancosFetched.json();
             const bancosStatus = bancosFetched.status;
             setBancosPull(bancosJson);
