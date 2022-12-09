@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import { usePath } from './PathContext';
 import { CuadreRow } from './CuadreRow';
 import './estilos/Crud.css';
@@ -34,15 +34,32 @@ export const Crud = () => {
     let listaFinal = listaCuadres.filter((el) => el.envasadoraIdEnvasadora.envasadoraNombre !== "Tecnología envasadora")
     .sort((a,b) => b.cuadreId - a.cuadreId);
 
-    const date1 = useRef(null);
-    const date2 = useRef(null);
-    const envRef = useRef(null);
-    const encRef = useRef(null);
-    const valR = useRef(null);
+    const [date1, setDate1] = useState('2000-12-12');
+    const [date2, setDate2] = useState('2100-12-12');
+    const [envState, setEnvState] = useState('');
+    const [encState, setEncState] = useState('');
+
+    const filterMethods = [
+        (cuadre => cuadre.usuarioEntity.nombre.toLowerCase().includes(encState)),
+        (cuadre => cuadre.envasadoraIdEnvasadora.envasadoraNombre.toLowerCase().replace('ñ','n').includes(envState)),
+    ]
+
+    const listaFiltrada = useMemo(()=> {
+       const listaAFiltrar = [...listaFinal];
+       return listaAFiltrar.filter((cuadre) => {
+        for (let i = 0; i < filterMethods.length; i++) {
+            if (!filterMethods[i](cuadre)) {
+              return false
+            }
+          }
+          return true
+       })
+    }, [date1, date2, envState, encState])
 
     const reduceArray = (arr) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(arr.reduce((acc, obj) => acc + obj.monto  ,0));
     }
+    console.log(date1, date2)
 
     return (
            <div className='crud-main'>
@@ -50,10 +67,10 @@ export const Crud = () => {
                 <div className='seccion-de-filtros'>
                     <p className='flltrar-tag'>filtrar por:</p>
                     <div className='filtros'>
-                        <input type='date' name='fecha' ref={date1} className='filtro-input' placeholder='fecha'/>
-                        <input type='date' name='fecha' ref={date2} className='filtro-input' placeholder='fecha'/>
-                        <input type='text' name='envasadora' className='filtro-input' placeholder='envasadora'/>
-                        <input type='number' ref={valR} name='encargado' className='filtro-input' placeholder='encargado'/>
+                        {/* <input type='date' name='fecha' value={date1} onChange={(e)=>{setDate1(e.target.value)}} className='filtro-input' placeholder='fecha'/>
+                        <input type='date' name='fecha' value={date2} onChange={(e)=>{setDate2(e.target.value)}}  className='filtro-input' placeholder='fecha'/> */}
+                        <input type='text' name='envasadora' onChange={(e)=>{setEnvState(e.target.value)}} className='filtro-input' placeholder='envasadora'/>
+                        <input type='number' name='encargado' onChange={(e)=>{setEncState(e.target.value)}} className='filtro-input' placeholder='encargado'/>
                         <button type='button' className='btn-filtros'>Aplicar</button>
                     </div>
                 </div>
@@ -86,7 +103,7 @@ export const Crud = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listaFinal.map((el, index) => <CuadreRow
+                                {listaFiltrada.map((el, index) => <CuadreRow
                                 el={el}
                                 setMetros={setMetros}
                                 key={el.cuadreId}
